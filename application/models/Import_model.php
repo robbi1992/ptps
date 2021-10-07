@@ -38,6 +38,12 @@ class Import_model extends CI_Model {
         return isset($type[$id]) ? $type[$id] : '';
     }
 
+    public function change_status($header_id) {
+        $this->db->set('status', 2);
+        $this->db->where('id', $header_id);
+        $this->db->update('import');
+    }
+
     public function get_office() {
         return $this->db->get('office')->result_array();
     }

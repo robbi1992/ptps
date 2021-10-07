@@ -27,6 +27,11 @@ class Import extends MY_Controller {
 		//  exit();
 		return $kurs->data;
 	}
+
+	private function change_status_import($header) {
+		$this->import_model->change_status($header);
+	}
+
 	public function index(){
 		$data['users'] = $this->auth();
 		$data['menuActive'] = 4;
@@ -121,6 +126,8 @@ class Import extends MY_Controller {
 		$header = $this->my_decrypt($id);
 		$data =  $this->import_model->get_data_print($header);
 		
+		$this->change_status_import($header);
+
 		$this->load->view('impor/print_page', $data);
 	}
 
@@ -129,6 +136,8 @@ class Import extends MY_Controller {
 		$data = array();
 		$header = $this->my_decrypt($id);
 		$data =  $this->import_model->get_data_print($header);
+
+		$this->change_status_import($header);
 		
 		$this->load->view('impor/print_page_is', $data);
 	}
