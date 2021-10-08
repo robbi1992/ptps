@@ -131,7 +131,7 @@ class Import_model extends CI_Model {
         $this->db->set('return_type', $personal['returnGuarantee']);
         $this->db->set('airport_in', $personal['airportIn']);
         $this->db->set('airport_out', $personal['airportOut']);
-        $this->db->set('inv_number', $personal['returnGuarantee']);
+        $this->db->set('inv_number', $personal['invNumber']);
         $this->db->set('inv_date', $personal['invDate']);
         $this->db->set('inv_date_out', $personal['invDateOut']);
         $this->db->set('inv_number', $personal['invNumber']);
@@ -180,6 +180,9 @@ class Import_model extends CI_Model {
                 $this->db->set('description', $val['description']);
                 $this->db->set('currency', $val['currency']);
                 $this->db->set('kurs', $val['kurs']);
+                $this->db->set('fob', $val['fob']);
+                $this->db->set('freight', $val['freight']);
+                $this->db->set('insurance', $val['insurance']);
                 $this->db->set('cif', $val['cif']);
                 $this->db->set('bm_tax', $val['bm_tax']);
                 $this->db->set('ppn_tax', $val['ppn_tax']);
@@ -238,6 +241,9 @@ class Import_model extends CI_Model {
             'package_type' => $val['package'],
             'currency' => $val['currency'],
             'kurs' => $val['kurs'],
+            'fob' => $val['fob'],
+            'freight' => $val['freight'],
+            'insurance' => $val['insurance'],
             'cif' => $val['cif'],
             'bm_tax' => $val['pabeanIn'],
             'ppn_tax' => $val['ppn'],

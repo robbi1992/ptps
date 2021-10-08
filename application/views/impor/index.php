@@ -233,19 +233,19 @@
                                             <legend class="col-form-label col-sm-4 pt-0">Jenis Identitas</legend>
                                             <div class="col-sm-8">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="identityType" id="identityType1" value="1">
+                                                    <input class="form-check-input" type="radio" name="identityType" id="identityType1" value="1" required>
                                                     <label class="form-check-label" for="identityType1">
                                                         NPWP
                                                     </label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="identityType" id="identityType2" value="2">
+                                                    <input class="form-check-input" type="radio" name="identityType" id="identityType2" value="2" required>
                                                     <label class="form-check-label" for="identityType2">
                                                         KTP
                                                     </label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="identityType" id="identityType3" value="3">
+                                                    <input class="form-check-input" type="radio" name="identityType" id="identityType3" value="3" required>
                                                     <label class="form-check-label" for="identityType3">
                                                         Paspor
                                                     </label>
@@ -298,19 +298,19 @@
                                             <legend class="col-form-label col-sm-4 pt-0">Pengembalian</legend>
                                             <div class="col-sm-8">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="returnGuarantee" id="returnGuarantee1" value="1">
+                                                    <input class="form-check-input" type="radio" name="returnGuarantee" id="returnGuarantee1" value="1" required>
                                                     <label class="form-check-label" for="returnGuarantee1">
                                                         Diambil sendiri
                                                     </label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="returnGuarantee" id="returnGuarantee2" value="2">
+                                                    <input class="form-check-input" type="radio" name="returnGuarantee" id="returnGuarantee2" value="2" required>
                                                     <label class="form-check-label" for="returnGuarantee2">
                                                         Transfer bank
                                                     </label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="returnGuarantee" id="returnGuarantee3" value="3">
+                                                    <input class="form-check-input" type="radio" name="returnGuarantee" id="returnGuarantee3" value="3" required>
                                                     <label class="form-check-label" for="returnGuarantee3">
                                                         Sponsor
                                                     </label>
@@ -507,7 +507,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="itemCurrency">Mata Uang</label>
-                                    <select name="itemCurrency" class="form-control" id="itemCurrency">
+                                    <select name="itemCurrency" id="itemCurrency" class="form-control selectpicker" data-size="7" data-live-search="true">
                                         <option value="">-- Pilih --</option>
                                         <?php
                                         foreach ($kurs as $val) {?>
@@ -519,26 +519,26 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="itemFob">FOB</label>
-                                    <input type="text" name="itemFob" class="form-control" id="itemFob" />
+                                    <input type="text" name="itemFob" class="form-control" id="itemFob" value="0" />
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="itemFreight">Freight</label>
-                                            <input type="text" name="itemFreight" class="form-control" id="itemFreight" />
+                                            <input type="text" name="itemFreight" class="form-control" id="itemFreight" value="0" />
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="itemInsurance">Insurance</label>
-                                            <input type="text" name="itemInsurance" class="form-control" id="itemInsurance" />
+                                            <input type="text" name="itemInsurance" class="form-control" id="itemInsurance" value="0" />
                                         </div>
                                     </div>
                                 </div>
                                 <!-- end row in col -->
                                 <div class="form-group">
                                     <label for="itemCif">CIF</label>
-                                    <input type="text" name="itemCif" class="form-control" id="itemCif" value="0" />
+                                    <input type="text" name="itemCif" class="form-control" id="itemCif" value="0" readonly />
                                 </div>
                                 <div class="form-group">
                                     <label for="itemKurs">Kurs / NDPBM</label>
@@ -557,7 +557,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="itemCode">Pos Tarif HS Code</label>
-                                    <select class="form-control selectpicker myselectpicker" data-size="7" data-live-search="true" name="itemCode" id="itemCode" >
+                                    <select class="form-control selectpicker" data-size="7" data-live-search="true" name="itemCode" id="itemCode" >
                                         <option value="">-- Pilih --</option>
                                     </select>
                                     <!-- <textarea type="text" name="itemCode" class="form-control" id="itemCode"></textarea> -->

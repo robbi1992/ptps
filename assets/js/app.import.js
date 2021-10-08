@@ -15,6 +15,14 @@
             keyItemPost: '',
             attachments: []
         },
+        setIdr: function(value) {
+            var output = value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+            return output;
+        },
+        unsetIdr: function(value) {
+            newValue = value.split('.').join('');
+            return newValue;
+        },
         enabled: function(formName, value) {
             if (value) $('form[name="'+formName+'"]').find('[name^="search"], button').removeAttr('disabled');
             else $('form[name="'+formName+'"]').find('[name^="search"], button').attr('disabled', 'disabled');
@@ -361,26 +369,32 @@
                 // mapping data
                 var itemName = $(this).find('[name="itemName"]').val(),
                     itemTotal = $(this).find('[name="itemTotal"]').val(), //total as qty
-                    itemCategory = $(this).find('[name="itemCom"]').val(),
-                    itemCategoryText = $(this).find('[name="itemCom"] option:selected').text(),
-                    itemPackage = $(this).find('[name="itemPackage"]').val(),
+                    itemCategory = $(this).find('select[name="itemCom"]').val(),
+                    itemCategoryText = $(this).find('select[name="itemCom"] option:selected').text(),
+                    itemPackage = $(this).find('select[name="itemPackage"]').val(),
                     itemPackageText = $('select[name=itemPackage] option:selected').text(),
                     itemBruto = $(this).find('[name="itemBruto"]').val(),
                     itemCollect = $(this).find('[name="itemTotalCollect"]').val(),
-                    itemCurrency = $(this).find('[name="itemCurrency"]').val(),
+                    itemCurrency = $(this).find('select[name="itemCurrency"]').val(),
                     itemCurrencyText = $('select[name=itemCurrency] option:selected').text(),
                     itemDescription = $(this).find('textarea[name=itemSpec]' ).val(),
+
+                    fob = $(this).find('[name="itemFob"]').val(),
+                    freight = $(this).find('[name="itemFreight"]').val(),
+                    insurance = $(this).find('[name="itemInsurance"]').val(),
+
                     cif = $(this).find('[name="itemCif"]').val(),
                     pabeanIn = $(this).find('[name="itemPabeanIn"]').val(),
                     ppn = $(this).find('[name="itemPpn"]').val(),
                     pph = $(this).find('[name="itemPph"]').val(),
                     ppnbm = $(this).find('[name="itemPpnbm"]').val();
-                    // console.log(itemCategoryText);
+                    // console.log(itemPackage);
                     // return false;
                 var params = {
                     name: itemName, quantity : itemTotal, package: itemPackage, category: itemCategory, bruto: itemBruto,
                     currency: itemCurrencyText, kurs: itemCurrency, description: itemDescription,
-                    cif: cif, pabeanIn: pabeanIn, ppn: ppn, pph: pph, ppnbm: ppnbm,
+                    fob: fob, freight: freight, insurance: insurance,
+                    cif: cif, pabeanIn: Import.unsetIdr(pabeanIn), ppn: Import.unsetIdr(ppn), pph: Import.unsetIdr(pph), ppnbm: Import.unsetIdr(ppnbm),
                     keyHeader: Import.params.keyHeaderPost, keyItem: Import.params.keyItemPost
                 };
                 
@@ -520,15 +534,6 @@
                 $('#itemKurs').val($(this).val());
             });
 
-            // set pabean value
-            $('#itemCif').on('change', function() {
-                // set kurs value
-                var kurs = parseFloat($('#itemCurrency').val());
-                var cif = parseInt($('#itemCif').val());
-                var value = kurs * cif;
-                $('#itemValue').val(value);
-            });
-
             /*$('#itemCode').bind('input propertychange', function() {
                 if(this.value.length > 2){
                     $.getJSON("https://api-patops.bcsoetta.org/hs?number=50&q=" + $(this).val(),
@@ -541,7 +546,7 @@
             });*/
             $('#itemCode').on('loaded.bs.select', function (e, clickedIndex, isSelected, previousValue) { 
                 $(this).closest('.bootstrap-select').find('.bs-searchbox').find('input[type="search"]').on('keyup', function(){
-                    $(".selectpicker option").remove();
+                    $(this).closest('.bootstrap-select').find(".selectpicker option").remove();
                     $('#itemCode').selectpicker('refresh'); 
                     if(this.value.length > 2){
                         $.getJSON("https://api-patops.bcsoetta.org/hs?number=50&q=" + $(this).val(),
@@ -560,7 +565,7 @@
                 var bm = $('#itemCode option:selected').attr('bm_tarif'),
                 ppn = $('#itemCode option:selected').attr('ppn_tarif'),
                 ppnbm = $('#itemCode option:selected').attr('ppnbm_tarif'),
-                pabean_value = $('#itemKurs').val(),
+                pabean_value = Import.unsetIdr($('#itemValue').val()),
                 pph = parseFloat($('#itemPph').val());
                 
                 // set label from server
@@ -569,26 +574,47 @@
                 $('span[view="ppnbm_label"]').html(ppnbm);
 
                 // set value * idr (pabean value)
-                var bmValue = parseFloat(bm) * parseFloat(pabean_value);
-                var ppnValue = parseFloat(ppn) * parseFloat(pabean_value);
-                var ppnbmValue = parseFloat(ppnbm) * parseFloat(pabean_value);
+                // formula bmvalue ok
+                // ppnValue = ((pabean value + bm) * ppn_tarif) / 100
+                var bmValue = Math.ceil((parseFloat(bm) * parseFloat(pabean_value)) / 100);
+                // var ppnValue = (parseFloat(ppn) * parseFloat(pabean_value)) / 100;
+                var ppnValue = Math.ceil(((bmValue + parseFloat(pabean_value)) * parseFloat(ppn)) / 100);
+                var ppnbmValue = Math.ceil((parseFloat(ppnbm) * parseFloat(pabean_value)) / 100);
                 var totalCollect = parseFloat(pabean_value) + bmValue + ppnValue + ppnbmValue + pph;
 
-                $('#itemPabeanIn').val(bmValue);
-                $('#itemPpn').val(ppnValue);
-                $('#itemPpnbm').val(ppnbmValue);
-                $('#itemTotalCollect').val(totalCollect);
+                $('#itemPabeanIn').val(Import.setIdr(bmValue));
+                $('#itemPpn').val(Import.setIdr(ppnValue));
+                $('#itemPpnbm').val(Import.setIdr(ppnbmValue));
+                $('#itemTotalCollect').val(Import.setIdr(totalCollect));
             });
 
-            $('#itemPph, #itemCif, #itemPabeanIn').on('keyup', function(){
+            $('#itemPph, #itemPabeanIn').on('keyup', function(){
                 var bm = parseFloat($('#itemPabeanIn').val()),
                 ppn = parseFloat($('#itemPpn').val()),
                 ppnbm = parseFloat($('#itemPpnbm').val()),
-                pabean_value = parseFloat($('#itemValue').val()),
+                pabean_value = parseFloat(Import.unsetIdr($('#itemValue').val())),
                 pph = parseFloat($('#itemPph').val());
 
                 var totalCollect = pabean_value + bm + ppn + ppnbm + pph;
-                $('#itemTotalCollect').val(totalCollect);
+                $('#itemTotalCollect').val(Import.setIdr(totalCollect));
+            });
+
+            // set cif automaticly
+            // cif = fob + freight + insurance
+            $('#itemFob, #itemFreight, #itemInsurance').on('keyup', function() {
+                var fob = parseInt($('#itemFob').val()),
+                freight = parseInt($('#itemFreight').val()),
+                insurance = parseInt($('#itemInsurance').val()),
+                kurs = parseFloat($('#itemKurs').val());
+
+                var cif = fob + freight + insurance;
+                $('#itemCif').val(cif);
+                // set nilai pabean
+                // cif * kurs
+                var pabean_value = cif * kurs;
+                // set to idr
+                var newPabeanValue = Import.setIdr(Math.ceil(pabean_value));
+                $('#itemValue').val(newPabeanValue);
             });
         }
     };
