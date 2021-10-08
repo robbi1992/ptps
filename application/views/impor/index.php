@@ -475,7 +475,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="itemPackage">Kemasan</label>
-                                            <select name="itemPackage" class="form-control" id="itemPackage">
+                                            <select name="itemPackage" id="itemPackage" class="form-control selectpicker" data-size="7" data-live-search="true">
                                                 <option value="">-- Pilih --</option>
                                                 <?php
                                                 foreach ($packages as $val) {?>
@@ -495,7 +495,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="itemCom">Tag Komoditi</label>
-                                    <select name="itemCom" class="form-control" id="itemCom">
+                                    <select name="itemCom" id="itemCom" class="form-control selectpicker" data-size="7" data-live-search="true">
                                         <option value="">-- Pilih --</option>
                                         <?php
                                         foreach ($categories as $val) {?>
