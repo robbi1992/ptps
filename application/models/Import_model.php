@@ -262,6 +262,25 @@ class Import_model extends CI_Model {
         $this->db->insert('import_items_attachment_temp');
     }
 
+    public function save_import_attachments($fileName, $key) {
+        $this->db->set('name', $fileName);
+        $this->db->set('header_id', $key);
+        $this->db->insert('import_reexport_attachments');
+    }
+
+    public function update_header($params) {
+        $this->db->set('re_notes', $params['notes']);
+        $this->db->set('re_status', $params['key']);
+        if($params['key'] == 1) {
+            $this->db->set('re_office', $params['office']);
+            $this->db->set('re_date', $params['date']);
+            $this->db->set('re_doc_number', $params['notes']);
+        }   
+        $this->db->set('status', '3');
+        $this->db->where('id', $params['header']);
+        return $this->db->update('import');
+    }
+
     public function get_detail($header_id) {
         $result = array(
             'header' => array(),

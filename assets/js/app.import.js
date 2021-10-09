@@ -13,6 +13,7 @@
             },
             keyHeaderPost: '',
             keyItemPost: '',
+            headerID: '',
             attachments: []
         },
         setIdr: function(value) {
@@ -151,6 +152,19 @@
                 alert('Please allow popups for this website');
             }
         },
+        updateStatus:function() {
+            var row = $(this).closest('tr'),
+            data = parseInt(row.attr('id'));
+            // set header
+            Import.params.headerID = data;
+            
+            docNumber = row.find('[view="docNumber"]').html(),
+            modalName = $('#statusModal');
+    
+            modalName.find('input[name="headerID"]').val(data);
+            modalName.find('span[view="title"]').html(docNumber);
+            modalName.modal('show');
+        },
         renderData: function(data) {
             var result = $('[name="searchResult"]');
             var template = result.find('[template="searchResultRow"]');
@@ -185,6 +199,7 @@
                 } else if (value.status == '2') {
                     status = '<button class="btn btn-sm btn-danger">Open</button>';
                 } else {
+                    row.find('[view="actionConfirm"]').addClass('d-none');
                     status = '<button class="btn btn-sm btn-success">Closed</button>';
                 }
     
@@ -193,6 +208,7 @@
                 row.find('[view="actionPrintIS"]').on('click', Import.printPage);
                 row.find('[view="actionDetail"]').on('click', Import.getDetail);
                 row.find('[view="actionDelete"]').on('click', Import.deleteData);
+                row.find('[view="actionConfirm"]').on('click', Import.updateStatus);
                 row.appendTo(rows);
             });
             
@@ -294,8 +310,54 @@
                 }
             }
         },
+        uploadImport: function(data) {
+            $('#pleaseWaitDialog').modal('show');
+            
+            var formData =  new FormData();
+	        formData.append('file', data);
+            formData.append('header_id', Import.params.headerID);
+            $.ajax({
+                url: '/import/upload_import',
+                dataType: 'json', 
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,
+                type: 'post'
+            }).done(function (result) {
+                    
+            }).always(function() {
+                $('#pleaseWaitDialog').modal('hide');
+                $('body').removeClass('modal-open');
+                $(".modal-backdrop").remove();
+                $('#pleaseWaitDialog').removeClass('show');
+                $('#pleaseWaitDialog').removeAttr('style');
+            });
+        },
+        verifyAttach: function(fileData) {
+            // console.log(fileData.size);
+            if (fileData.size > 0) {
+                if (fileData.size > 2000000) {
+                    alert('Ukuran Max. file 2Mb');
+                } else {
+                    Import.uploadImport(fileData);
+                }
+            }
+        },
         generateKey: function() {
             return Math.floor(Math.random() * 26) + Date.now();
+        },
+        updateHeader:function(params){
+            $.ajax({
+                url: '/import/update_header',
+                type: 'post',
+                dataType: 'json',
+                data: JSON.stringify(params)
+            }).done(function(result) {
+                alert('data berhasil disimpan');
+                $('#statusModal').modal('hide');
+                Import.doSearch();
+            });
         },
         init: function() {
             /**
@@ -615,6 +677,61 @@
                 // set to idr
                 var newPabeanValue = Import.setIdr(Math.ceil(pabean_value));
                 $('#itemValue').val(newPabeanValue);
+            });
+
+            $('form[name="statusForm"]').on('submit', function(){
+                // var tab1 = $('#kt_tab_pane_1_4').hasClass('active');
+                var tab2 = $('#kt_tab_pane_2_4').hasClass('active');
+                // tab sesuai = 1
+                
+                if (tab2) {
+                    var notes = $(this).find('textarea[name=reNotesNOK]').val();
+                    tabValue = 0;
+                    // save images
+                    var fileData = $(this).find('#reAttachNOK1').prop('files')[0],
+                        fileData2 = $(this).find('#reAttachNOK2').prop('files')[0],
+                        fileData3 = $(this).find('#reAttachNOK3').prop('files')[0];
+                        
+                    if (fileData) {
+                        Import.verifyAttach(fileData);
+                    }
+                    if (fileData2) {
+                        Import.verifyAttach(fileData2);
+                    }
+                    if (fileData3) {
+                        Import.verifyAttach(fileData3);
+                    }
+                    
+                    var params = { key: tabValue, notes: notes, header: Import.params.headerID };
+                } else {
+                    var notes = $(this).find('textarea[name="reNotes"]').val(),
+                        office = ($(this).find('select[name="reOffice"]').val()) ? $(this).find('select[name="reOffice"]').val() : 143,
+                        date = $(this).find('input[name="reDate"]').val(),
+                        docNumber = $(this).find('input[name="reDocNumber"]').val(),
+                        tabValue = 1;
+
+                    var fileData = $(this).find('#reAttach1').prop('files')[0],
+                        fileData2 = $(this).find('#reAttach2').prop('files')[0],
+                        fileData3 = $(this).find('#reAttach3').prop('files')[0];
+                        
+                    if (fileData) {
+                        Import.verifyAttach(fileData);
+                    }
+                    if (fileData2) {
+                        Import.verifyAttach(fileData2);
+                    }
+                    if (fileData3) {
+                        Import.verifyAttach(fileData3);
+                    }
+
+                    var params = { key: tabValue, notes: notes, office: office, date: date, number: docNumber, header: Import.params.headerID };
+                }
+
+                // update data header
+                Import.updateHeader(params);
+                // console.log(params);
+                
+                return false;
             });
         }
     };

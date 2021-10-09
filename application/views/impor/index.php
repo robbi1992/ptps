@@ -170,19 +170,20 @@
                                                             <td class="text-center" view="periode"></td>
                                                             <td view="status"></td>
                                                             <td>
-                                                                <!-- create button menu for print -->
-                                                                <div class="dropdown">
-                                                                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                        <i class="fa fa-print"></i>
-                                                                    </button>
-                                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                                        <a class="dropdown-item" view="actionPrint" value="0">Form Jaminan</a>
-                                                                        <a class="dropdown-item" view="actionPrintIS" value="1">Form IS</a>
+                                                                <div class="dropdown dropdown-inline">
+                                                                    <a href="javascript:;" class="btn btn-sm btn-clean btn-icon" data-toggle="dropdown">
+                                                                        <i class="la la-cog"></i>
+                                                                    </a>
+                                                                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                                                        <ul class="nav nav-hoverable flex-column">
+                                                                            <li class="nav-item"><a class="nav-link" view="actionDetail" style="cursor: pointer;"><i class="nav-icon la la-eye"></i><span class="nav-text">Review</span></a></li>
+                                                                            <li class="nav-item"><a class="nav-link" view="actionPrint" value="0" style="cursor: pointer;"><i class="nav-icon la la-print"></i><span class="nav-text">Form Jaminan</span></a></li>
+                                                                            <li class="nav-item"><a class="nav-link" view="actionPrintIS" value="1" style="cursor: pointer;"><i class="nav-icon la la-print"></i><span class="nav-text">Form IS</span></a></li>
+                                                                            <li class="nav-item"><a class="nav-link" view="actionConfirm" style="cursor: pointer;"><i class="nav-icon la la-edit"></i><span class="nav-text">Status</span></a></li>
+                                                                            <li class="nav-item"><a class="nav-link" view="actionDelete" style="cursor: pointer;"><i class="nav-icon la la-remove"></i><span class="nav-text">Hapus</span></a></li>
+                                                                        </ul>
                                                                     </div>
                                                                 </div>
-                                                                <!--  -->
-                                                                <button view="actionDetail" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i></button>
-                                                                <button view="actionDelete" class="btn btn-sm btn-danger"><i class="fa fa-minus"></i></button>
                                                             </td>
                                                         </tr>
                                                     </thead>
@@ -595,9 +596,9 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="itemAttach">Lampiran</label>
-                                    <input type="file" class="form-control" name="itemAttach1" id="itemAttach1" />
-                                    <input type="file" class="form-control" name="itemAttach2" id="itemAttach2" />
-                                    <input type="file" class="form-control" name="itemAttach3" id="itemAttach3" />
+                                    <input type="file" class="form-control" name="itemAttach1" id="itemAttach1" accept="image/png, image/gif, image/jpeg" />
+                                    <input type="file" class="form-control" name="itemAttach2" id="itemAttach2" accept="image/png, image/gif, image/jpeg" />
+                                    <input type="file" class="form-control" name="itemAttach3" id="itemAttach3" accept="image/png, image/gif, image/jpeg" />
                                 </div>
                             </div>
                             <!-- end col -->
@@ -872,6 +873,99 @@
             </div>
         </div>
         <!-- end image viewer -->
+        
+        <!-- modal update status -->
+        <div class="modal fade" id="statusModal" name="statusModal" data-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form name="statusForm">
+                        <input type="hidden" name="headerID" />
+                    <div class="modal-header">
+                        <h4 class="modal-title"></span> UPDATE STATUS - PENYELESAIAN <span view="title"></h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="nav nav-tabs nav-bold nav-tabs-line">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1_4">
+                                    <span class="nav-icon"><i class="fa fa-check-circle"></i></span>
+                                    <span class="nav-text">SESUAI</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_2_4">
+                                    <span class="nav-icon"><i class="fa fa-minus-circle"></i></span>
+                                    <span class="nav-text">TIDAK SESUAI</span>
+                                </a>
+                            </li>
+                        </ul>
+            
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="kt_tab_pane_1_4" role="tabpanel" aria-labelledby="kt_tab_pane_1_4">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="reOffice">Kantor Re-ekspor</label>
+                                            <select class="form-control selectpicker" data-size="7" data-live-search="true" name="reOffice" id="reOffice" >
+                                                <option value="">-- Pilih --</option>
+                                                <?php
+                                                foreach ($office as $val) {?>
+                                                <option value="<?=$val['id'];?>" <?= ($val['id'] == 143) ? 'selected' : '' ;?> ><?=$val['name'];?></option>
+                                                <?php
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="reDate">Tanggal Re-ekspor</label>
+                                            <input id="reDate" name="reDate" class="form-control bc-date" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="reDocNumber">Nomor Dokumen</label>
+                                            <input id="reDocNumber" name="reDocNumber" class="form-control" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="reNotes">Catatan</label>
+                                            <textarea id="reNotes" name="reNotes" class="form-control"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="reAttach1">Lampiran</label>
+                                            <input type="file" class="form-control" name="reAttach1" id="reAttach1" accept="image/png, image/gif, image/jpeg" />
+                                            <input type="file" class="form-control" name="reAttach2" id="reAttach2" accept="image/png, image/gif, image/jpeg" />
+                                            <input type="file" class="form-control" name="reAttach3" id="reAttach3" accept="image/png, image/gif, image/jpeg" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="kt_tab_pane_2_4" role="tabpanel" aria-labelledby="kt_tab_pane_2_4">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="reNotesNOK">Catatan</label>
+                                            <textarea id="reNotesNOK" name="reNotesNOK" class="form-control"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="reAttachNOK1">Lampiran</label>
+                                            <input type="file" class="form-control" name="reAttachNOK1" id="reAttachNOK1" accept="image/png, image/gif, image/jpeg" />
+                                            <input type="file" class="form-control" name="reAttachNOK2" id="reAttachNOK2" accept="image/png, image/gif, image/jpeg" />
+                                            <input type="file" class="form-control" name="reAttachNOK3" id="reAttachNOK3" accept="image/png, image/gif, image/jpeg" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end tab content -->
+                    </div>
+                    <!-- end modal body -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary font-weight-bold" >Simpan</button>
+                    </div>
+                    </form>
+                </div>
+             </div>
+        </div>
+        <!-- modal update status -->
 
         <!-- modal confirm -->
         <div class="modal fade" id="confirmModal" name="confirmModal" data-backdrop="static">
