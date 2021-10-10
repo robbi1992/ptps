@@ -40,9 +40,17 @@
         </style>
     </head>
     <body>
+        <?php
+        for ($i=1; $i<=3; $i++) {
+        $print = array(
+            '1' => 'Pihak yang menyerahkan jaminan',
+            '2' => 'pengeluaran barang/disematkan pada berkas',
+            '3' => 'Pejabat Bea dan Cukai/Bendahara Penerimaan'
+        );
+        ?> 
         <table width="100%" style="border: 1px solid;">
             <tr>
-                <td style="border-right: 1px solid; font-size: 12px;"><b>KEMENTERIAN KEUANGAN RI</b><br />
+                <td width="30%" style="border-right: 1px solid; font-size: 12px;"><b>KEMENTERIAN KEUANGAN RI</b><br />
                     Direktorat Jenderal Bea dan Cukai <br />
                     <table>
                         <tr>
@@ -57,25 +65,15 @@
                         </tr>
                     </table>
                 </td>
-                <td class="center" style="border-right: 1px solid; font-size:16px;">
+                <td width="40%" class="center" style="border-right: 1px solid; font-size:16px;">
                     <b>BUKTI PENERIMAAN JAMINAN<br /> NOMOR : <?= $header->doc_number; ?> </b>
                 </td>
-                <td style="font-size: 12px;">
+                <td width="30%" style="font-size: 12px;">
                     <table>
                         <tr>
-                            <td>Lembar ke-1</td>
+                            <td>Lembar ke-<?=$i;?></td>
                             <td>:</td>
-                            <td>untuk Pihak yang menyerahkan jaminan</td>
-                        </tr>
-                        <tr>
-                            <td>Lembar ke-2</td>
-                            <td>:</td>
-                            <td>untuk pengeluaran barang/disematkan pada berkas</td>
-                        </tr>
-                        <tr>
-                            <td>Lembar ke-3</td>
-                            <td>:</td>
-                            <td>untuk Pejabat Bea dan Cukai/Bendahara Penerimaan</td>
+                            <td>untuk <?=$print[$i];?></td>
                         </tr>
                     </table>
                 </td>
@@ -218,5 +216,7 @@
                 <td width="45%">NIP <?= $header->officer_nip; ?></td>
             </tr>
         </table>
+        <div class="pagebreak"></div>
+        <?php } ?>
     </body>
 </html>

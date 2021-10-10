@@ -38,6 +38,12 @@ class Import_model extends CI_Model {
         return isset($type[$id]) ? $type[$id] : '';
     }
 
+    public function change_status($header_id) {
+        $this->db->set('status', 2);
+        $this->db->where('id', $header_id);
+        $this->db->update('import');
+    }
+
     public function get_office() {
         return $this->db->get('office')->result_array();
     }
@@ -125,7 +131,7 @@ class Import_model extends CI_Model {
         $this->db->set('return_type', $personal['returnGuarantee']);
         $this->db->set('airport_in', $personal['airportIn']);
         $this->db->set('airport_out', $personal['airportOut']);
-        $this->db->set('inv_number', $personal['returnGuarantee']);
+        $this->db->set('inv_number', $personal['invNumber']);
         $this->db->set('inv_date', $personal['invDate']);
         $this->db->set('inv_date_out', $personal['invDateOut']);
         $this->db->set('inv_number', $personal['invNumber']);
@@ -174,6 +180,9 @@ class Import_model extends CI_Model {
                 $this->db->set('description', $val['description']);
                 $this->db->set('currency', $val['currency']);
                 $this->db->set('kurs', $val['kurs']);
+                $this->db->set('fob', $val['fob']);
+                $this->db->set('freight', $val['freight']);
+                $this->db->set('insurance', $val['insurance']);
                 $this->db->set('cif', $val['cif']);
                 $this->db->set('bm_tax', $val['bm_tax']);
                 $this->db->set('ppn_tax', $val['ppn_tax']);
@@ -232,6 +241,9 @@ class Import_model extends CI_Model {
             'package_type' => $val['package'],
             'currency' => $val['currency'],
             'kurs' => $val['kurs'],
+            'fob' => $val['fob'],
+            'freight' => $val['freight'],
+            'insurance' => $val['insurance'],
             'cif' => $val['cif'],
             'bm_tax' => $val['pabeanIn'],
             'ppn_tax' => $val['ppn'],
@@ -248,6 +260,25 @@ class Import_model extends CI_Model {
         $this->db->set('name', $fileName);
         $this->db->set('key_item', $key);
         $this->db->insert('import_items_attachment_temp');
+    }
+
+    public function save_import_attachments($fileName, $key) {
+        $this->db->set('name', $fileName);
+        $this->db->set('header_id', $key);
+        $this->db->insert('import_reexport_attachments');
+    }
+
+    public function update_header($params) {
+        $this->db->set('re_notes', $params['notes']);
+        $this->db->set('re_status', $params['key']);
+        if($params['key'] == 1) {
+            $this->db->set('re_office', $params['office']);
+            $this->db->set('re_date', $params['date']);
+            $this->db->set('re_doc_number', $params['notes']);
+        }   
+        $this->db->set('status', '3');
+        $this->db->where('id', $params['header']);
+        return $this->db->update('import');
     }
 
     public function get_detail($header_id) {
@@ -347,5 +378,38 @@ class Import_model extends CI_Model {
 
         return $data;
     }  
+
+    public function get_data_return($header_id) {
+        $data = array();
+        $this->db->select('A.name, A.passport, B.nominal');
+        $this->db->from('import A');
+        $this->db->join('import_guarantee B', 'A.id = B.header_id');
+        $this->db->where('A.id', $header_id);
+        $data['header'] = $this->db->get()->row_array();
+
+        // get items
+        $this->db->select('name, bruto');
+        $this->db->from('import_items');
+        $this->db->where('header_id', $header_id);
+        $items = array();
+        $items = $this->db->get()->result_array();
+        $stringName = '';
+        $stringBruto = 0;
+        foreach($items as $index => $val) {
+            $separator = ', ';
+            if ($index == (count($items) - 1)) {
+                $separator = '';
+            }
+
+            $stringName .= $val['name'] . $separator;
+            $stringBruto += $val['bruto'];
+        }
+
+        $data['items'] = array(
+            'name' => $stringName, 'bruto' => $stringBruto
+        );
+
+        return $data;
+    }
 
 }

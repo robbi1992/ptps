@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <style>
+            @media print {
+                .pagebreak { page-break-before: always; } /* page-break-after works, as well */
+            } 
+            .full-width {
+                width: 100%;
+            }
+            .text-center {
+                text-align: center;
+            }
+            .med-font-size {
+                font-size: 12px;
+            }
+            .text-justify {
+                text-align: justify;
+            }
+            .dashed-border {
+                border: 1px dashed;
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <?php
+        for ($i=0; $i<2; $i++) { ?>
+        <div class="full-width text-center med-font-size">
+            <b>
+                DIREKTORAT JENDERAL BEA DAN CUKAI<br />
+                KANTOR PELAYANAN UTAMA BEA DAN CUKAI TIPE C SOEKARNO HATTA
+            </b><br />
+            KAWASAN GUDANG BANDARA SOEKARNO-HATTA, KOTAK POS 1023,CENGKARENG 19111<br />
+            TELEPON: 1500225; FAKSIMILE: 5502105
+        </div>
+        <br /><br />
+        <div class="full-width text-center med-font-size">
+            <b><u>TANDA TERIMA PENGEMBALIAN JAMINAN / BARANG TITIPAN</u></b>
+        </div>
+        <p class="med-font-size">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pada hari ini tanggal <?= date('d'); ?> bulan <?= date('M'); ?> <?= date('Y'); ?>
+            telah diterima kembali jaminan / barang titipan dengan rincian:
+        </p>
+        <table class="full-width med-font-size">
+            <tr>
+                <td width="5%">&nbsp;</td>
+                <td width="5%">1.</td>
+                <td width="20%">Nomor BPJ/ST</td>
+                <td width="5%">:</td>
+                <td width="70%">Nomor Apa?</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>2.</td>
+                <td>Nama</td>
+                <td>:</td>
+                <td><?= $header['name']; ?></td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>3.</td>
+                <td>Nomor Paspor</td>
+                <td>:</td>
+                <td><?= $header['passport']; ?></td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>4.</td>
+                <td>Jumlah Jaminan</td>
+                <td>:</td>
+                <td><?= $header['nominal']; ?></td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>5.</td>
+                <td>Jenis Barang</td>
+                <td>:</td>
+                <td><?= $items['name']; ?></td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>5.</td>
+                <td>Jenis Barang</td>
+                <td>:</td>
+                <td><?= $items['bruto']; ?> KG</td>
+            </tr>
+        </table>
+        <br />
+        <table class="full-width med-font-size">
+            <tr>
+                <td width="10%">&nbsp;</td>
+                <td width="45%" colspan="2">Cengkareng, <?= date('d M Y')?></td>
+            </tr>
+            <tr>
+                <td width="10%">&nbsp;</td>
+                <td width="45%">Yang Menerima,</td>
+                <td width="45%">Yang Menyerahkan,</td>
+            </tr>
+            <tr>
+                <td width="10%">&nbsp;</td>
+                <td width="45%" colspan="2">&nbsp;</td>
+            </tr>
+            <tr>
+                <td width="10%">&nbsp;</td>
+                <td width="45%" colspan="2">&nbsp;</td>
+            </tr>
+            <tr>
+                <td width="10%">&nbsp;</td>
+                <td width="45%" colspan="2">&nbsp;</td>
+            </tr>
+            <tr>
+                <td width="10%">&nbsp;</td>
+                <td width="45%">Nama Petugas?</td>
+                <td width="45%">Name Siapa?</td>
+            </tr>
+        </table>
+        <div class="full-width dashed-border"></div>
+        <?php } ?>
+    </body>
+</html>

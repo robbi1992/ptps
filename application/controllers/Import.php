@@ -27,13 +27,18 @@ class Import extends MY_Controller {
 		//  exit();
 		return $kurs->data;
 	}
+
+	private function change_status_import($header) {
+		$this->import_model->change_status($header);
+	}
+
 	public function index(){
 		$data['users'] = $this->auth();
 		$data['menuActive'] = 4;
 		$data['office'] = $this->import_model->get_office();
 		$data['packages'] = $this->import_model->get_package();	
 		$data['categories'] = $this->import_model->get_categories();	
-		$data['kurs'] = $this->get_kurs();
+		// $data['kurs'] = $this->get_kurs();
 		$this->page->template('impor/index');	
 		$this->page->view('impor/index',$data);
 	}
@@ -94,6 +99,37 @@ class Import extends MY_Controller {
         echo json_encode($data);
 	}
 
+	public function upload_import() {
+		$config['upload_path']          = './assets/custom/imports/';
+        $config['allowed_types']        = 'jpg|png|jpeg';
+        $config['max_size']             = 2000;
+        $config['file_name']            = 'IS_' . time() . '_' . rand(1, 1000) . '.jpg';
+        $config['overwrite'] = TRUE;
+
+		$this->load->library('upload', $config);
+		$data['status'] = false;
+
+		if ($this->upload->do_upload('file')) {
+            $data['status'] = true;
+            $uploaded = $this->upload->data();
+			$header_id = $this->input->post('header_id');
+			// save filename to attachment type
+			$save_data =  $this->import_model->save_import_attachments($config['file_name'], $header_id);
+        } else {
+            $data['error_msg'] = $this->upload->display_errors();
+        }
+	}
+
+	public function update_header() {
+		$params = json_decode($this->input->raw_input_stream, TRUE);
+
+		$save_data =  $this->import_model->update_header($params);
+		
+		$this->output
+			->set_content_type('application/json')
+			->set_output(json_encode($save_data));
+	}
+
 	public function create_new() {
 		$params = json_decode($this->input->raw_input_stream, TRUE);
 
@@ -121,6 +157,8 @@ class Import extends MY_Controller {
 		$header = $this->my_decrypt($id);
 		$data =  $this->import_model->get_data_print($header);
 		
+		$this->change_status_import($header);
+
 		$this->load->view('impor/print_page', $data);
 	}
 
@@ -129,7 +167,18 @@ class Import extends MY_Controller {
 		$data = array();
 		$header = $this->my_decrypt($id);
 		$data =  $this->import_model->get_data_print($header);
+
+		$this->change_status_import($header);
 		
 		$this->load->view('impor/print_page_is', $data);
+	}
+
+	public function print_form_return($id) {
+		$this->load->helper('my_helper');
+		$data = array();
+		$header = $this->my_decrypt($id);
+		$data =  $this->import_model->get_data_return($header);
+		// print_r($data); exit();
+		$this->load->view('impor/print_page_return', $data);
 	}
 }
