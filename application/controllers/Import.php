@@ -38,7 +38,7 @@ class Import extends MY_Controller {
 		$data['office'] = $this->import_model->get_office();
 		$data['packages'] = $this->import_model->get_package();	
 		$data['categories'] = $this->import_model->get_categories();	
-		$data['kurs'] = $this->get_kurs();
+		// $data['kurs'] = $this->get_kurs();
 		$this->page->template('impor/index');	
 		$this->page->view('impor/index',$data);
 	}
@@ -171,5 +171,14 @@ class Import extends MY_Controller {
 		$this->change_status_import($header);
 		
 		$this->load->view('impor/print_page_is', $data);
+	}
+
+	public function print_form_return($id) {
+		$this->load->helper('my_helper');
+		$data = array();
+		$header = $this->my_decrypt($id);
+		$data =  $this->import_model->get_data_return($header);
+		// print_r($data); exit();
+		$this->load->view('impor/print_page_return', $data);
 	}
 }

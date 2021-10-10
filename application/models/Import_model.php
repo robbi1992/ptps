@@ -379,4 +379,37 @@ class Import_model extends CI_Model {
         return $data;
     }  
 
+    public function get_data_return($header_id) {
+        $data = array();
+        $this->db->select('A.name, A.passport, B.nominal');
+        $this->db->from('import A');
+        $this->db->join('import_guarantee B', 'A.id = B.header_id');
+        $this->db->where('A.id', $header_id);
+        $data['header'] = $this->db->get()->row_array();
+
+        // get items
+        $this->db->select('name, bruto');
+        $this->db->from('import_items');
+        $this->db->where('header_id', $header_id);
+        $items = array();
+        $items = $this->db->get()->result_array();
+        $stringName = '';
+        $stringBruto = 0;
+        foreach($items as $index => $val) {
+            $separator = ', ';
+            if ($index == (count($items) - 1)) {
+                $separator = '';
+            }
+
+            $stringName .= $val['name'] . $separator;
+            $stringBruto += $val['bruto'];
+        }
+
+        $data['items'] = array(
+            'name' => $stringName, 'bruto' => $stringBruto
+        );
+
+        return $data;
+    }
+
 }

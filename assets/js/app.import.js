@@ -140,6 +140,7 @@
             
             var link = '/import/print_form/';
             if (value == '1') link = '/import/print_form_is/';
+            else if (value == '2') link = '/import/print_form_return/';
             
             var msg = myEncrypt(data);
             var base_url = window.location.origin + link + msg;
@@ -206,6 +207,7 @@
                 row.find('[view="status"]').html(status);
                 row.find('[view="actionPrint"]').on('click', Import.printPage);
                 row.find('[view="actionPrintIS"]').on('click', Import.printPage);
+                row.find('[view="actionPrintReturn"]').on('click', Import.printPage);
                 row.find('[view="actionDetail"]').on('click', Import.getDetail);
                 row.find('[view="actionDelete"]').on('click', Import.deleteData);
                 row.find('[view="actionConfirm"]').on('click', Import.updateStatus);
