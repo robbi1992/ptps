@@ -38,7 +38,7 @@ class Import extends MY_Controller {
 		$data['office'] = $this->import_model->get_office();
 		$data['packages'] = $this->import_model->get_package();	
 		$data['categories'] = $this->import_model->get_categories();	
-		// $data['kurs'] = $this->get_kurs();
+		$data['kurs'] = $this->get_kurs();
 		$this->page->template('impor/index');	
 		$this->page->view('impor/index',$data);
 	}
