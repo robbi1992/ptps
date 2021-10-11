@@ -8,9 +8,10 @@ class Import extends MY_Controller {
 		$this->load->model('import_model');
 	}
 
-	private function get_kurs(){
+	private function get_kurs($id = false){
 		$kurs = array();
-		$host = 'https://api-patops.bcsoetta.org/kurs?number=150';
+		if (empty($id)) $host = 'https://api-patops.bcsoetta.org/kurs?number=150';
+		else $host = 'https://api-patops.bcsoetta.org/kurs?id=1131';
 		 // Get cURL resource
 		 $curl = curl_init();
 		 // Set some options - we are passing in a useragent too here
@@ -39,6 +40,7 @@ class Import extends MY_Controller {
 		$data['packages'] = $this->import_model->get_package();	
 		$data['categories'] = $this->import_model->get_categories();	
 		$data['kurs'] = $this->get_kurs();
+		$data['usd'] = $this->get_kurs(true);
 		$this->page->template('impor/index');	
 		$this->page->view('impor/index',$data);
 	}

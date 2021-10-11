@@ -629,56 +629,72 @@
                 var bm = $('#itemCode option:selected').attr('bm_tarif'),
                 ppn = $('#itemCode option:selected').attr('ppn_tarif'),
                 ppnbm = $('#itemCode option:selected').attr('ppnbm_tarif'),
-                pabean_value = Import.unsetIdr($('#itemValue').val()),
-                pph = parseFloat($('#itemPph').val());
+                pabean_value = parseInt(Import.unsetIdr($('#itemValue').val()));
+                // pph = parseFloat($('#itemPph').val());
                 
                 // set label from server
-                $('span[view="bm_label"]').html(bm);
-                $('span[view="ppn_label"]').html(ppn);
-                $('span[view="ppnbm_label"]').html(ppnbm);
-
-                // set value * idr (pabean value)
-                // formula bmvalue ok
-                // ppnValue = ((pabean value + bm) * ppn_tarif) / 100
-                var bmValue = Math.ceil((parseFloat(bm) * parseFloat(pabean_value)) / 100);
-                // var ppnValue = (parseFloat(ppn) * parseFloat(pabean_value)) / 100;
-                var ppnValue = Math.ceil(((bmValue + parseFloat(pabean_value)) * parseFloat(ppn)) / 100);
-                var ppnbmValue = Math.ceil((parseFloat(ppnbm) * parseFloat(pabean_value)) / 100);
-                var totalCollect = parseFloat(pabean_value) + bmValue + ppnValue + ppnbmValue + pph;
-
-                $('#itemPabeanIn').val(Import.setIdr(bmValue));
-                $('#itemPpn').val(Import.setIdr(ppnValue));
-                $('#itemPpnbm').val(Import.setIdr(ppnbmValue));
+                $('#itemPabeanIn').val(bm);
+                $('#itemPpn').val(ppn);
+                // convert idr
+                var roundUpBea = Math.ceil(((bm * parseInt(pabean_value)) / 100)/1000);
+                var beaIDR = roundUpBea * 1000;
+                $('#itemPabeanInIDR').val(Import.setIdr(beaIDR));
+                var roundUpPpn = Math.ceil((((pabean_value + beaIDR) * ppn) / 100) / 1000);
+                var ppnIDR = roundUpPpn * 1000;
+                console.log(pabean_value + beaIDR);
+                $('#itemPpnIDR').val(Import.setIdr(ppnIDR));
+                var roundUpPpnbm = Math.ceil((((pabean_value + beaIDR) * ppnbm) / 100) / 1000);
+                var ppnbmIDR = roundUpPpnbm * 1000;
+                $('#itemPpnbmIDR').val(Import.setIdr(ppnbmIDR));
+                
+                var totalCollect = beaIDR + ppnIDR + ppnbmIDR;
                 $('#itemTotalCollect').val(Import.setIdr(totalCollect));
             });
 
-            $('#itemPph, #itemPabeanIn').on('keyup', function(){
-                var bm = parseFloat($('#itemPabeanIn').val()),
-                ppn = parseFloat($('#itemPpn').val()),
-                ppnbm = parseFloat($('#itemPpnbm').val()),
-                pabean_value = parseFloat(Import.unsetIdr($('#itemValue').val())),
-                pph = parseFloat($('#itemPph').val());
+            $('#itemPph, #itemFine').on('keyup', function(){
+                var bm = parseInt(Import.unsetIdr($('#itemPabeanInIDR').val())),
+                ppn = parseInt(Import.unsetIdr($('#itemPpnIDR').val())),
+                ppnbm = parseFloat($('#itemPpnbmIDR').val()),
+                pabean_value = parseInt(Import.unsetIdr($('#itemValue').val())),
+                pph = parseFloat($('#itemPph').val()),
+                fine = parseFloat($('#itemFine').val());
+                
+                var roundUpPph = Math.ceil((((pabean_value + bm) * pph) / 100) / 1000);
+                var pphIDR = roundUpPph * 1000;
+                $('#itemPphIDR').val(Import.setIdr(pphIDR));
 
-                var totalCollect = pabean_value + bm + ppn + ppnbm + pph;
+                var fineValue = ((bm * fine) / 100) + bm;
+                $('#itemFineIDR').val(Import.setIdr(fineValue));
+                
+                var totalCollect = bm + ppn + ppnbm + pphIDR + fineValue;
                 $('#itemTotalCollect').val(Import.setIdr(totalCollect));
             });
 
             // set cif automaticly
             // cif = fob + freight + insurance
-            $('#itemFob, #itemFreight, #itemInsurance').on('keyup', function() {
+            $('#itemFob, #itemFreight, #itemInsurance, #itemFree').on('keyup', function() {
                 var fob = parseInt($('#itemFob').val()),
                 freight = parseInt($('#itemFreight').val()),
                 insurance = parseInt($('#itemInsurance').val()),
-                kurs = parseFloat($('#itemKurs').val());
+                kurs = parseFloat($('#itemKurs').val()),
+                free = parseInt($('#itemFree').val()),
+                usd = parseFloat($('#itemFree').attr('value-kurs')),
+                freeIDR = free * usd;
 
                 var cif = fob + freight + insurance;
                 $('#itemCif').val(cif);
                 // set nilai pabean
                 // cif * kurs
-                var pabean_value = cif * kurs;
+                // new formula (cif * kurs) - freeidr
+                // set item freeidr
+                $('#itemFreeIDR').val(Import.setIdr(freeIDR));
+                var pabean_value = (cif * kurs) - freeIDR;
                 // set to idr
-                var newPabeanValue = Import.setIdr(Math.ceil(pabean_value));
+                var roundUp = Math.ceil(pabean_value/1000);
+                var newPabeanValue = Import.setIdr(roundUp * 1000);
+                // var newPabeanValue = Import.setIdr(Math.ceil(pabean_value));
                 $('#itemValue').val(newPabeanValue);
+
             });
 
             $('form[name="statusForm"]').on('submit', function(){

@@ -546,9 +546,19 @@
                                     <label for="itemKurs">Kurs / NDPBM</label>
                                     <input type="text" name="itemKurs" class="form-control" id="itemKurs" value="0" readonly />
                                 </div>
-                                <div class="form-group">
-                                    <label for="itemFree">Pembebasan</label>
-                                    <input type="text" name="itemFree" class="form-control" id="itemFree" placeholder="pembebasan" />
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="itemFree">Pembebasan (USD)</label>
+                                            <input type="text" name="itemFree" class="form-control" id="itemFree" value-kurs="<?= $usd[0]->kurs_idr; ?>" value="0" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                    <div class="form-group">
+                                            <label for="itemFreeIDR">Pembebasan (IDR)</label>
+                                            <input type="text" name="itemFreeIDR" class="form-control" id="itemFreeIDR" value="0" readonly />
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="itemValue">Nilai Pabean (Rp)</label>
@@ -567,29 +577,81 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="itemPabeanIn">Bea masuk (<span view="bm_label"></span>%)</label>
+                                            <label for="itemPabeanIn">Bea masuk (%)</label>
                                             <input type="text" name="itemPabeanIn" class="form-control" id="itemPabeanIn" value="0" />
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="itemPpn">Ppn Impor (<span view="ppn_label"></span>%)</label>
+                                            <label for="itemPabeanInIDR">IDR</label>
+                                            <input type="text" name="itemPabeanInIDR" class="form-control" id="itemPabeanInIDR" value="0" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="itemPpn">Ppn Impor (%)</label>
                                             <input type="text" name="itemPpn" class="form-control" id="itemPpn" value="0" />
                                         </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="itemPpnIDR">IDR</label>
+                                            <input type="text" name="itemPpnIDR" class="form-control" id="itemPpnIDR" value="0" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="itemPph">Pph Impor (%)</label>
                                             <input type="text" name="itemPph" class="form-control" id="itemPph" value="0" />
                                         </div>
+                                    </div>
+                                    <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="itemPpnbm">PpnBM Impor (<span view="ppnbm_label"></span>%)</label>
+                                            <label for="itemPphIDR">IDR</label>
+                                            <input type="text" name="itemPphIDR" class="form-control" id="itemPphIDR" value="0" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="itemPpnbm">PpnBM Impor (%)</label>
                                             <input type="text" name="itemPpnbm" class="form-control" id="itemPpnbm" value="0" />
                                         </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="itemPpnbmIDR">IDR</label>
+                                            <input type="text" name="itemPpnbmIDR" class="form-control" id="itemPpnbmIDR" value="0" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="itemFine">Denda (%)</label>
+                                            <input type="text" name="itemFine" class="form-control" id="itemFine" value="0" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="itemFineIDR">IDR</label>
+                                            <input type="text" name="itemFineIDR" class="form-control" id="itemFineIDR" value="0" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- 
                                         <div class="form-group">
                                             <label for="itemFine">Denda (%)</label>
                                             <input type="text" name="itemFine" class="form-control" id="itemFine" value="0" />
                                         </div>
                                     </div>
                                 </div>
+                                 -->
                                 <!-- end row in col -->
                                 <div class="form-group">
                                     <label for="itemTotalCollect">Total Pungutan</label>
