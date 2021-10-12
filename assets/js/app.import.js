@@ -18,6 +18,8 @@
             bm: 0,
             ppn: 0,
             pph: 0,
+            ppnbm: 0,
+            fine: 0,
             total: 0
         },
         setIdr: function(value) {
@@ -372,6 +374,7 @@
             Import.doSearch();
 
             $('form[name="guaranteeForm"]').on('submit', function() {
+                $(this).find('input[name=guaranteeNominal]' ).val(Import.params.total);
                 // mapping data
                 var guarantee = {
                     guaranteeType: $(this).find('input[name=guaranteeType]:checked' ).val(),
@@ -456,6 +459,7 @@
                     ppn = $(this).find('[name="itemPpn"]').val(),
                     pph = $(this).find('[name="itemPph"]').val(),
                     ppnbm = $(this).find('[name="itemPpnbm"]').val(),
+                    fine = $(this).find('[name="itemFine"]').val(),
                     free = $(this).find('[name="itemFree"]').val(),
                     freeIDR = parseInt($(this).find('[name="itemFree"]').val());
                     // console.log(itemPackage);
@@ -503,7 +507,7 @@
                         row.find('[view="imName"]').html(itemName);
                         row.find('[view="imQty"]').html(itemTotal);
                         // hscode view = bm, ppn, pph
-                        var hscode = 'BM: ' + pabeanIn + '%<br /> Ppn: ' + ppn + '%<br /> Pph: ' + pph + '%';
+                        var hscode = 'BM: ' + pabeanIn + '%<br /> Ppn: ' + ppn + '%<br /> Pph: ' + pph + '%<br /> Ppnbm: ' + ppnbm + '%<br /> Denda: ' +  fine + '%';
                         var pabeanValue = parseInt(itemCurrency) * parseInt(cif);
                         row.find('[view="imHscode"]').html(hscode);
                         row.find('[view="imPabean"]').html(Import.setIdr(pabeanValue));
@@ -512,12 +516,16 @@
                         var bmValue = Math.ceil((((pabeanValue - freeIDR) * parseFloat(pabeanIn)) / 100) / 1000) * 1000;
                         var ppnValue = Math.ceil((((pabeanValue - freeIDR) * parseFloat(ppn)) / 100) / 1000) * 1000;
                         var pphValue = Math.ceil((((pabeanValue - freeIDR) * parseFloat(pph)) / 100) / 1000) * 1000;
-                        var collect = 'BM: ' + Import.setIdr(bmValue) + '<br /> Ppn: ' + Import.setIdr(ppnValue) + '<br /> Pph: ' + Import.setIdr(pphValue);
+                        var ppnbmValue = Math.ceil((((pabeanValue - freeIDR) * parseFloat(ppnbm)) / 100) / 1000) * 1000;
+                        var fineValue = (bmValue * fine) / 100;
+                        var collect = 'BM: ' + Import.setIdr(bmValue) + '<br /> Ppn: ' + Import.setIdr(ppnValue) + '<br /> Pph: ' + Import.setIdr(pphValue) + '<br /> Ppnbm: ' + Import.setIdr(ppnbmValue) + '<br /> Denda: ' + Import.setIdr(fineValue);
                         row.find('[view="imCollect"]').html(collect);
                         Import.params.bm += bmValue;
                         Import.params.ppn += ppnValue;
                         Import.params.pph += pphValue;
-                        var totalValue = Import.params.bm + Import.params.ppn + Import.params.pph;
+                        Import.params.ppnbm += ppnbmValue;
+                        Import.params.fine += fineValue;
+                        var totalValue = Import.params.bm + Import.params.ppn + Import.params.pph + Import.params.ppnbm + Import.params.fine;
                         Import.params.total = totalValue;
                         row.appendTo(rows);
 
@@ -525,6 +533,8 @@
                         summaryTable.find('[view="summBM"]').html(Import.setIdr(Import.params.bm));
                         summaryTable.find('[view="summPpn"]').html(Import.setIdr(Import.params.ppn));
                         summaryTable.find('[view="summPph"]').html(Import.setIdr(Import.params.pph));
+                        summaryTable.find('[view="summPpnbm"]').html(Import.setIdr(Import.params.ppnbm));
+                        summaryTable.find('[view="summFine"]').html(Import.setIdr(Import.params.fine));
                         summaryTable.find('[view="summTotal"]').html(Import.setIdr(Import.params.total));
 
                         $('#addItemModal').modal('hide');
@@ -651,7 +661,7 @@
                 var bm = $('#itemCode option:selected').attr('bm_tarif'),
                 ppn = $('#itemCode option:selected').attr('ppn_tarif'),
                 ppnbm = $('#itemCode option:selected').attr('ppnbm_tarif'),
-                pabean_value = parseInt(Import.unsetIdr($('#itemValue').val()));
+                pabean_value = parseFloat(Import.unsetIdr($('#itemValue').val()));
                 // pph = parseFloat($('#itemPph').val());
                 
                 // set label from server
@@ -663,7 +673,7 @@
                 $('#itemPabeanInIDR').val(Import.setIdr(beaIDR));
                 var roundUpPpn = Math.ceil((((pabean_value + beaIDR) * ppn) / 100) / 1000);
                 var ppnIDR = roundUpPpn * 1000;
-                console.log(pabean_value + beaIDR);
+                // console.log(pabean_value + beaIDR);
                 $('#itemPpnIDR').val(Import.setIdr(ppnIDR));
                 var roundUpPpnbm = Math.ceil((((pabean_value + beaIDR) * ppnbm) / 100) / 1000);
                 var ppnbmIDR = roundUpPpnbm * 1000;
@@ -673,17 +683,21 @@
                 $('#itemTotalCollect').val(Import.setIdr(totalCollect));
             });
 
-            $('#itemPph, #itemFine').on('keyup', function(){
+            $('#itemPph, #itemFine, #itemPpnbm').on('keyup', function(){
                 var bm = parseInt(Import.unsetIdr($('#itemPabeanInIDR').val())),
                 ppn = parseInt(Import.unsetIdr($('#itemPpnIDR').val())),
-                ppnbm = parseFloat($('#itemPpnbmIDR').val()),
-                pabean_value = parseInt(Import.unsetIdr($('#itemValue').val())),
+                ppnbm = parseFloat($('#itemPpnbm').val()),
+                pabean_value = parseFloat(Import.unsetIdr($('#itemValue').val())),
                 pph = parseFloat($('#itemPph').val()),
                 fine = parseFloat($('#itemFine').val());
                 
                 var roundUpPph = Math.ceil((((pabean_value + bm) * pph) / 100) / 1000);
                 var pphIDR = roundUpPph * 1000;
                 $('#itemPphIDR').val(Import.setIdr(pphIDR));
+
+                var roundUpPpnbm = Math.ceil((((pabean_value + bm) * ppnbm) / 100) / 1000);
+                var ppnbmIDR = roundUpPpnbm * 1000;
+                $('#itemPpnbmIDR').val(Import.setIdr(ppnbmIDR));
 
                 var fineValue = ((bm * fine) / 100); //+ bm;
                 $('#itemFineIDR').val(Import.setIdr(fineValue));
@@ -710,13 +724,8 @@
                 // new formula (cif * kurs) - freeidr
                 // set item freeidr
                 $('#itemFreeIDR').val(Import.setIdr(freeIDR));
-                var pabean_value = (cif * kurs) - freeIDR;
-                // set to idr
-                var roundUp = Math.ceil(pabean_value/1000);
-                var newPabeanValue = Import.setIdr(roundUp * 1000);
-                // var newPabeanValue = Import.setIdr(Math.ceil(pabean_value));
-                $('#itemValue').val(newPabeanValue);
-
+                var pabean_value = Math.round((cif * kurs) - freeIDR);
+                $('#itemValue').val(Import.setIdr(pabean_value));
             });
 
             $('form[name="statusForm"]').on('submit', function(){

@@ -448,6 +448,14 @@
                                                 <td view="summPph"></td>
                                             </tr>
                                             <tr>
+                                                <td>Total Ppnbm Impor</td>
+                                                <td view="summPpnbm"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total Denda Impor</td>
+                                                <td view="summFine"></td>
+                                            </tr>
+                                            <tr>
                                                 <td>Total Bea Masuk dan Pajak</td>
                                                 <td view="summTotal"></td>
                                             </tr>
@@ -756,7 +764,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="guaranteeNominal">Jumlah Jaminan</label>
-                                    <input type="text" name="guaranteeNominal" class="form-control" id="guaranteeNominal" />
+                                    <input type="text" name="guaranteeNominal" class="form-control" id="guaranteeNominal" readonly />
                                 </div>
                                 <div class="form-group">
                                     <label for="guaranteeNominalSpelling">Dengan Huruf</label>
