@@ -14,7 +14,11 @@
             keyHeaderPost: '',
             keyItemPost: '',
             headerID: '',
-            attachments: []
+            attachments: [],
+            bm: 0,
+            ppn: 0,
+            pph: 0,
+            total: 0
         },
         setIdr: function(value) {
             var output = value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
@@ -451,7 +455,9 @@
                     pabeanIn = $(this).find('[name="itemPabeanIn"]').val(),
                     ppn = $(this).find('[name="itemPpn"]').val(),
                     pph = $(this).find('[name="itemPph"]').val(),
-                    ppnbm = $(this).find('[name="itemPpnbm"]').val();
+                    ppnbm = $(this).find('[name="itemPpnbm"]').val(),
+                    free = $(this).find('[name="itemFree"]').val(),
+                    freeIDR = parseInt($(this).find('[name="itemFree"]').val());
                     // console.log(itemPackage);
                     // return false;
                 var params = {
@@ -495,15 +501,31 @@
                         
                         var row = template.clone().removeClass('d-none').removeAttr('template');
                         row.find('[view="imName"]').html(itemName);
-                        row.find('[view="imTotal"]').html(itemTotal);
-                        row.find('[view="imPackage"]').html(itemPackageText);
-                        row.find('[view="imPackage"]').attr('im-value', itemPackage);
-                        row.find('[view="imCat"]').html(itemCategoryText);
-                        row.find('[view="imCat"]').attr('im-value', itemCategory);
-                        row.find('[view="imBruto"]').html(itemBruto);
-                        // row.find('[view="imCat"]').html('');
-                        row.find('[view="imCollect"]').html(itemCollect);
+                        row.find('[view="imQty"]').html(itemTotal);
+                        // hscode view = bm, ppn, pph
+                        var hscode = 'BM: ' + pabeanIn + '%<br /> Ppn: ' + ppn + '%<br /> Pph: ' + pph + '%';
+                        var pabeanValue = parseInt(itemCurrency) * parseInt(cif);
+                        row.find('[view="imHscode"]').html(hscode);
+                        row.find('[view="imPabean"]').html(pabeanValue);
+                        row.find('[view="imFree"]').html(free + ' USD');
+                        // row.find('[view="imPackage"]').attr('im-value', itemPackage);
+                        var bmValue = Math.ceil((((pabeanValue - freeIDR) * parseFloat(pabeanIn)) / 100) / 1000) * 1000;
+                        var ppnValue = Math.ceil((((pabeanValue - freeIDR) * parseFloat(ppn)) / 100) / 1000) * 1000;
+                        var pphValue = Math.ceil((((pabeanValue - freeIDR) * parseFloat(pph)) / 100) / 1000) * 1000;
+                        var collect = 'BM: ' + Import.setIdr(bmValue) + '<br /> Ppn: ' + Import.setIdr(ppnValue) + '<br /> Pph: ' + Import.setIdr(pphValue);
+                        row.find('[view="imCollect"]').html(collect);
+                        Import.params.bm += bmValue;
+                        Import.params.ppn += ppnValue;
+                        Import.params.pph += pphValue;
+                        var totalValue = Import.params.bm + Import.params.ppn + Import.params.pph;
+                        Import.params.total = totalValue;
                         row.appendTo(rows);
+
+                        var summaryTable = $('table[name="importSummaryTable"]');
+                        summaryTable.find('[view="summBM"]').html(Import.setIdr(Import.params.bm));
+                        summaryTable.find('[view="summPpn"]').html(Import.setIdr(Import.params.ppn));
+                        summaryTable.find('[view="summPph"]').html(Import.setIdr(Import.params.pph));
+                        summaryTable.find('[view="summTotal"]').html(Import.setIdr(Import.params.total));
 
                         $('#addItemModal').modal('hide');
                     }
@@ -663,7 +685,7 @@
                 var pphIDR = roundUpPph * 1000;
                 $('#itemPphIDR').val(Import.setIdr(pphIDR));
 
-                var fineValue = ((bm * fine) / 100) + bm;
+                var fineValue = ((bm * fine) / 100); //+ bm;
                 $('#itemFineIDR').val(Import.setIdr(fineValue));
                 
                 var totalCollect = bm + ppn + ppnbm + pphIDR + fineValue;

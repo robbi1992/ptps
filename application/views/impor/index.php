@@ -413,22 +413,45 @@
                                                 <!-- <th>No.</th> -->
                                                 <th>Nama Barang</th>
                                                 <th>Jumlah</th>
-                                                <th>Kemasan</th>
-                                                <th>Bruto (Kg)</th>
-                                                <th>Kategori</th>
-                                                <th>Pungutan</th>
+                                                <th>HS Code & Tarif</th>
+                                                <th>Nilai Pabean (CIF)</th>
+                                                <th>Pembebasan</th>
+                                                <th>Jml BM PDRI</th>
                                             </tr>
                                             <tr class="d-none" template="importTableBody">
                                                 <!-- <td view="imNumber"></td> -->
                                                 <td view="imName"></td>
-                                                <td view="imTotal"></td>
-                                                <td view="imPackage"></td>
-                                                <td view="imBruto"></td>
-                                                <td view="imCat"></td>
+                                                <td view="imQty"></td>
+                                                <td view="imHscode"></td>
+                                                <td view="imPabean"></td>
+                                                <td view="imFree"></td>
                                                 <td view="imCollect"></td>
                                             </tr>
                                         </thead>
                                         <tbody><!-- Appended by Ajax --></tbody>
+                                    </table>
+                                    <table name="importSummaryTable" class="table table-striped table-hover table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="2">Summary</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total Bea Masuk</td>
+                                                <td view="summBM"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total Ppn</td>
+                                                <td view="summPpn"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total Pph Impor</td>
+                                                <td view="summPph"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total Bea Masuk dan Pajak</td>
+                                                <td view="summTotal"></td>
+                                            </tr>
+                                        </tbody>
                                     </table>
                                 </div>
                                 <!-- end col -->
