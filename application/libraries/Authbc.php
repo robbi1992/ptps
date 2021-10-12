@@ -86,17 +86,17 @@ class Authbc {
         /**
          * for offline mode
          */
-        $this->offline_users();
+        // $this->offline_users();
         // for online mode
         // uncomment this line below
-        /*
+        
         $sso = $this->connectSSO();
 
         if ($sso) {
         } else {
             $this->offline_users();  
         }
-        */
+        
 
         return $this->_users;
     }

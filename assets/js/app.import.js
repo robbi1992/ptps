@@ -506,7 +506,7 @@
                         var hscode = 'BM: ' + pabeanIn + '%<br /> Ppn: ' + ppn + '%<br /> Pph: ' + pph + '%';
                         var pabeanValue = parseInt(itemCurrency) * parseInt(cif);
                         row.find('[view="imHscode"]').html(hscode);
-                        row.find('[view="imPabean"]').html(pabeanValue);
+                        row.find('[view="imPabean"]').html(Import.setIdr(pabeanValue));
                         row.find('[view="imFree"]').html(free + ' USD');
                         // row.find('[view="imPackage"]').attr('im-value', itemPackage);
                         var bmValue = Math.ceil((((pabeanValue - freeIDR) * parseFloat(pabeanIn)) / 100) / 1000) * 1000;

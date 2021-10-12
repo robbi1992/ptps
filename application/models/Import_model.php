@@ -358,7 +358,7 @@ class Import_model extends CI_Model {
     public function get_data_print($header_id) {
         $data = array();
         $this->db->select('A.doc_number, A.identity_type, A.doc_date, A.name, A.address, A.passport, A.officer_name, A.officer_nip,
-            A.carrier_info, B.name AS airport_in, C.name AS airport_out, A.return_type
+            A.carrier_info, B.name AS airport_in, C.name AS airport_out, A.return_type, A.created_at
         ');
         $this->db->from('import A');
         $this->db->join('office B', 'A.airport_in = B.id');

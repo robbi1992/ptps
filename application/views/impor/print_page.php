@@ -41,6 +41,11 @@
     </head>
     <body>
         <?php
+        $created = explode(' ', $header->created_at);
+        $time = time($created[0]);
+        $created_date = date('d-m-Y', $time);
+        $array_date = explode('-', $created_date);
+        $new_date = $array_date[0] . ' ' . get_month($array_date[1]) . ' ' . $array_date[2];
         for ($i=1; $i<=3; $i++) {
         $print = array(
             '1' => 'Pihak yang menyerahkan jaminan',
@@ -56,12 +61,12 @@
                         <tr>
                             <td>Nama Kantor</td>
                             <td>:</td>
-                            <td>&nbsp;</td>
+                            <td>KPU Bea dan Cukai Tipe C Soekarno Hatta</td>
                         </tr>
                         <tr>
                             <td>Kode Kantor</td>
                             <td>:</td>
-                            <td>&nbsp;</td>
+                            <td>050100</td>
                         </tr>
                     </table>
                 </td>
@@ -142,7 +147,7 @@
             <tr>
                 <td>Dengan Huruf</td>
                 <td>:</td>
-                <td colspan="4"><?= terbilang($warrant->nominal); ?></td>
+                <td colspan="4"><?= terbilang($warrant->nominal); ?> rupiah</td>
             </tr>
         </table>
         <table class="my-table">
@@ -159,7 +164,7 @@
             <tr>
                 <td>Tanggal</td>
                 <td>:</td>
-                <td>&nbsp;</td>
+                <td><?= $new_date; ?></td>
             </tr>
         </table>
         <table class="my-table">
@@ -173,7 +178,7 @@
                 <td width="30%">&nbsp;</td>
                 <td width="5%">&nbsp;</td>
                 <td width="20%" style="border-right: 1px solid;"></td>
-                <td width="45%">Jakarta, <?= date('d m Y');?></td>
+                <td width="45%">Jakarta, <?= $new_date; ?></td>
             </tr>
             <tr>
                 <td width="30%">&nbsp;</td>

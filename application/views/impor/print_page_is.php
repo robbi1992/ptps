@@ -40,13 +40,15 @@
         </style>
     </head>
     <body>
-        <table style="font-size: 14px;">
+        <table style="font-size: 14px; width: 100%;">
+            <!-- 
             <tr>
                 <td style="vertical-align: top;">B.</td>
                 <td style="text-align: justify;">FORMULIR IMPOR SEMENTARA BARANG PRIBADI PENUMPANG DAN BARANG PRIBADI AWAK SARANA PENGANGKUT DAN TATA KERJA
                     PENGELUARAN BARANG IMPOR SEMENTARA BARANG PRIBADI PENUMPANG DAN BARANG PRIBADI AWAK SARANA PENGANGKUT
                 </td>
             </tr>
+             -->
             <tr>
                 <td style="vertical-align: top;">1.</td>
                 <td style="text-align: justify;">Formulir Import Sementara Barang Pribadi Penumpang dan Barang Pribadi Awak Sarana Pengangkut
