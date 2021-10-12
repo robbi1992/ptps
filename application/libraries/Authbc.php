@@ -96,7 +96,6 @@ class Authbc {
         } else {
             $this->offline_users();  
         }
-        
 
         return $this->_users;
     }
