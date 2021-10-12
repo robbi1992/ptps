@@ -374,13 +374,16 @@
             Import.doSearch();
 
             $('form[name="guaranteeForm"]').on('submit', function() {
-                $(this).find('input[name=guaranteeNominal]' ).val(Import.params.total);
+                // $(this).find('input[name=guaranteeNominal]' ).val(Import.params.total);
+            
                 // mapping data
                 var guarantee = {
-                    guaranteeType: $(this).find('input[name=guaranteeType]:checked' ).val(),
-                    guaranteeName: $(this).find('input[name=guaranteeName]' ).val(),
+                    guaranteeType: $(this).find('input[name=guaranteeType]:checked').val(),
+                    guaranteeName: $(this).find('input[name=guaranteeName]').val(),
                     guaranteeAddress: $(this).find('textarea[name=guaranteeAddress]' ).val(),
-                    guaranteeNominal: $(this).find('input[name=guaranteeNominal]' ).val()
+                    guaranteeNominal: $(this).find('input[name=guaranteeNominal]').val(),
+                    treasurerName: $(this).find('input[name=treasurerName]').val(),
+                    treasurerNip: $(this).find('input[name=treasurerNip]').val()
                 };
 
                 Import.params.dataPost.guarantee = guarantee;
@@ -536,7 +539,8 @@
                         summaryTable.find('[view="summPpnbm"]').html(Import.setIdr(Import.params.ppnbm));
                         summaryTable.find('[view="summFine"]').html(Import.setIdr(Import.params.fine));
                         summaryTable.find('[view="summTotal"]').html(Import.setIdr(Import.params.total));
-
+                        
+                        $('form[name="guaranteeForm"]').find('input[name=guaranteeNominal]').val(Import.params.total);
                         $('#addItemModal').modal('hide');
                     }
                 }).fail(function() {

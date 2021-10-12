@@ -766,11 +766,20 @@
                                     <label for="guaranteeNominal">Jumlah Jaminan</label>
                                     <input type="text" name="guaranteeNominal" class="form-control" id="guaranteeNominal" readonly />
                                 </div>
+                                <!-- 
                                 <div class="form-group">
                                     <label for="guaranteeNominalSpelling">Dengan Huruf</label>
                                     <textarea type="text" name="guaranteeNominalSpelling" class="form-control" id="guaranteeNominalSpelling"></textarea>
                                 </div>
-                                
+                                 -->
+                                <div class="form-group">
+                                    <label for="treasurerName">Nama Bendahara</label>
+                                    <input type="text" name="treasurerName" class="form-control" id="treasurerName" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="treasurerNIP">NIP</label>
+                                    <input type="text" name="treasurerNIP" class="form-control" id="treasurerNIP" />
+                                </div>
                             </div>
                             <!-- end col -->
                         </div>

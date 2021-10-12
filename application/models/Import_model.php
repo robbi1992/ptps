@@ -164,6 +164,8 @@ class Import_model extends CI_Model {
         $this->db->set('name', $guar['guaranteeName']);
         $this->db->set('address', $guar['guaranteeAddress']);
         $this->db->set('nominal', $guar['guaranteeNominal']);
+        $this->db->set('treasurer_name', $guar['treasurerName']);
+        $this->db->set('treasurer_nip', $guar['treasurerNip']);
         $this->db->set('header_id', $header_id);
         $this->db->insert('import_guarantee');
 
@@ -219,7 +221,7 @@ class Import_model extends CI_Model {
         $this->db->where('key_header', $keys['header']);
         $this->db->delete('import_items_temp');
 
-        $doc_number  = $header_id . '/IS/T/KPU.03/' . date('Y');
+        $doc_number  = $header_id . '/IS/KPU.03/' . date('Y');
         $this->db->where('id', $header_id);
         $this->db->set('doc_number', $doc_number);
         $this->db->update('import');
@@ -272,9 +274,10 @@ class Import_model extends CI_Model {
         $this->db->set('re_notes', $params['notes']);
         $this->db->set('re_status', $params['key']);
         if($params['key'] == 1) {
+            $re_doc_number = $params['header'] . '/BPJ/KPU.03/' . date('Y');
             $this->db->set('re_office', $params['office']);
             $this->db->set('re_date', $params['date']);
-            $this->db->set('re_doc_number', $params['notes']);
+            $this->db->set('re_doc_number', $re_doc_number);
         }   
         $this->db->set('status', '3');
         $this->db->where('id', $params['header']);
@@ -367,7 +370,7 @@ class Import_model extends CI_Model {
         $data['header'] = $this->db->get()->row();
 
         // get guarantee
-        $this->db->select('type, name, address, nominal');
+        $this->db->select('type, name, address, nominal, treasurer_name, treasurer_nip');
         $this->db->where('header_id', $header_id);
         $data['warrant'] = $this->db->get('import_guarantee')->row();
         
@@ -381,7 +384,7 @@ class Import_model extends CI_Model {
 
     public function get_data_return($header_id) {
         $data = array();
-        $this->db->select('A.name, A.passport, B.nominal');
+        $this->db->select('A.name, A.passport, B.nominal, A.officer_name');
         $this->db->from('import A');
         $this->db->join('import_guarantee B', 'A.id = B.header_id');
         $this->db->where('A.id', $header_id);

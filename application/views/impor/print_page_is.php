@@ -41,19 +41,6 @@
     </head>
     <body>
         <table style="font-size: 14px; width: 100%;">
-            <!-- 
-            <tr>
-                <td style="vertical-align: top;">B.</td>
-                <td style="text-align: justify;">FORMULIR IMPOR SEMENTARA BARANG PRIBADI PENUMPANG DAN BARANG PRIBADI AWAK SARANA PENGANGKUT DAN TATA KERJA
-                    PENGELUARAN BARANG IMPOR SEMENTARA BARANG PRIBADI PENUMPANG DAN BARANG PRIBADI AWAK SARANA PENGANGKUT
-                </td>
-            </tr>
-             -->
-            <tr>
-                <td style="vertical-align: top;">1.</td>
-                <td style="text-align: justify;">Formulir Import Sementara Barang Pribadi Penumpang dan Barang Pribadi Awak Sarana Pengangkut
-                </td>
-            </tr>
             <tr>
                 <td colspan="2">&nbsp;</td>
             </tr>
@@ -235,12 +222,19 @@
                             <td>21. Perkiraan Nilai Barang (CIF)</td>
                         </tr>
                     </table>
+                    <?php
+                    $created = explode(' ', $header->created_at);
+                    $time = time($created[0]);
+                    $created_date = date('d-m-Y', $time);
+                    $array_date = explode('-', $created_date);
+                    $new_date = $array_date[0] . ' ' . get_month($array_date[1]) . ' ' . $array_date[2];
+                    ?>
                     <table class="my-table">
                         <tr>
                             <td width="5%" style="vertical-align: top;" rowspan="4">F.</td>
                             <td width="45%" class="center" rowspan="4" style="border-right: 1px solid;">Dengan ini saya menyatakan bertanggung jawab atas
                                 kebenaran hal-hal yang diberitahukan dalam dokumen ini <br />
-                                Jakarta, Tgl <?= date('d m Y'); ?><br />
+                                Jakarta, Tgl <?= $new_date; ?><br />
                                 Pemohon <br /><br />
 
                                 (<?= $header->name; ?>)
@@ -317,7 +311,7 @@
                     <table class="my-table">
                         <tr>
                             <td width="50%" style="border-right: 1px solid;">
-                                Jakarta, Tgl <?= date('d m Y'); ?><br />
+                                Jakarta, Tgl <?= $new_date; ?><br />
                                 Pejabat Bea dan Cukai
                                 <br /><br />
                                 Nama&nbsp;&nbsp;&nbsp;: <?= $header->officer_name; ?><br />
@@ -353,7 +347,7 @@
                             <td width="50%" colspan="2">&nbsp;</td>
                         </tr>
                         <tr>
-                            <td colspan="3">Jakarta, Tgl <?= date('d m Y'); ?></td>
+                            <td colspan="3">Jakarta, Tgl <?= $new_date; ?></td>
                             <td style="border-right: 1px solid;">&nbsp;</td>
                             <td colspan="2">&nbsp;</td>
                         </tr>

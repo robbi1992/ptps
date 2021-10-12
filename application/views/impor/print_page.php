@@ -215,13 +215,18 @@
                 <td width="45%">&nbsp;</td>
             </tr>
             <tr>
-                <td width="30%"><?=$header->name;?></td>
+                <td width="30%"><?= $warrant->treasurer_name; ?></td>
                 <td width="5%">&nbsp;</td>
                 <td width="20%" style="border-right: 1px solid;"></td>
-                <td width="45%">NIP <?= $header->officer_nip; ?></td>
+                <td width="45%">NIP <?= $warrant->treasurer_nip; ?></td>
             </tr>
         </table>
+        <?php
+        if ($i != 3) { ?>
         <div class="pagebreak"></div>
-        <?php } ?>
+        <?php
+        }
+    } 
+        ?>
     </body>
 </html>
