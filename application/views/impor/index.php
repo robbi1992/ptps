@@ -777,8 +777,8 @@
                                     <input type="text" name="treasurerName" class="form-control" id="treasurerName" />
                                 </div>
                                 <div class="form-group">
-                                    <label for="treasurerNIP">NIP</label>
-                                    <input type="text" name="treasurerNIP" class="form-control" id="treasurerNIP" />
+                                    <label for="treasurerNip">NIP</label>
+                                    <input type="text" name="treasurerNip" class="form-control" id="treasurerNip" />
                                 </div>
                             </div>
                             <!-- end col -->

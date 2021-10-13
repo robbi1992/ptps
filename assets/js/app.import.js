@@ -385,7 +385,7 @@
                     treasurerName: $(this).find('input[name=treasurerName]').val(),
                     treasurerNip: $(this).find('input[name=treasurerNip]').val()
                 };
-
+                // console.log(guarantee); return false;
                 Import.params.dataPost.guarantee = guarantee;
                 // confirm first then create
                 if (Import.params.confirmSave == 0) {
