@@ -543,7 +543,13 @@
                                     <select name="itemCurrency" id="itemCurrency" class="form-control selectpicker" data-size="7" data-live-search="true">
                                         <option value="">-- Pilih --</option>
                                         <?php
-                                        foreach ($kurs as $val) {?>
+                                        $kurs_usd = 0;
+                                        foreach ($kurs as $val) {
+                                            if ($val->kode_valas == 'USD') {
+                                                $kurs_usd = $val->kurs_idr;
+                                            }
+                                        ?>
+                                            
                                             <option value="<?=$val->kurs_idr;?>"><?=$val->kode_valas;?></option>
                                         <?php
                                         }
@@ -581,7 +587,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="itemFree">Pembebasan (USD)</label>
-                                            <input type="text" name="itemFree" class="form-control" id="itemFree" value-kurs="<?= $usd[0]->kurs_idr; ?>" value="0" />
+                                            <input type="text" name="itemFree" class="form-control" id="itemFree" value-kurs="<?= $kurs_usd; ?>" value="0" />
                                         </div>
                                     </div>
                                     <div class="col-md-6">

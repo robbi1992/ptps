@@ -40,7 +40,7 @@ class Import extends MY_Controller {
 		$data['packages'] = $this->import_model->get_package();	
 		$data['categories'] = $this->import_model->get_categories();	
 		$data['kurs'] = $this->get_kurs();
-		$data['usd'] = $this->get_kurs(true);
+		// $data['usd'] = $this->get_kurs(true);
 		$this->page->template('impor/index');	
 		$this->page->view('impor/index',$data);
 	}
