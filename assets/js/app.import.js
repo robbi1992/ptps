@@ -472,6 +472,7 @@
                     currency: itemCurrencyText, kurs: itemCurrency, description: itemDescription,
                     fob: fob, freight: freight, insurance: insurance,
                     cif: cif, pabeanIn: Import.unsetIdr(pabeanIn), ppn: Import.unsetIdr(ppn), pph: Import.unsetIdr(pph), ppnbm: Import.unsetIdr(ppnbm),
+                    freeIDR: Import.unsetIdr(freeIDR),
                     keyHeader: Import.params.keyHeaderPost, keyItem: Import.params.keyItemPost
                 };
                 
@@ -662,6 +663,7 @@
             });
 
             $('#itemCode').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) { 
+                // pabean value = nilai pabean - pembebasan
                 var bm = $('#itemCode option:selected').attr('bm_tarif'),
                 ppn = $('#itemCode option:selected').attr('ppn_tarif'),
                 ppnbm = $('#itemCode option:selected').attr('ppnbm_tarif'),

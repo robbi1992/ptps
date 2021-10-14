@@ -186,6 +186,7 @@ class Import_model extends CI_Model {
                 $this->db->set('freight', $val['freight']);
                 $this->db->set('insurance', $val['insurance']);
                 $this->db->set('cif', $val['cif']);
+                $this->db->set('free', $val['free']);
                 $this->db->set('bm_tax', $val['bm_tax']);
                 $this->db->set('ppn_tax', $val['ppn_tax']);
                 $this->db->set('pph_tax', $val['pph_tax']);
@@ -247,6 +248,7 @@ class Import_model extends CI_Model {
             'freight' => $val['freight'],
             'insurance' => $val['insurance'],
             'cif' => $val['cif'],
+            'free' => $val['freeIDR'],
             'bm_tax' => $val['pabeanIn'],
             'ppn_tax' => $val['ppn'],
             'pph_tax' => $val['pph'],
@@ -379,6 +381,35 @@ class Import_model extends CI_Model {
         $this->db->where('header_id', $header_id);
         $data['account'] = $this->db->get('import_account')->row();
 
+        // get sponsor
+        $this->db->select('name, address, phone, identity_number, location, reason');
+        $this->db->where('header_id', $header_id);
+        $data['sponsor'] = $this->db->get('import_sponsor')->row();
+
+        $this->db->where('header_id', $header_id);
+        $items = $this->db->get('import_items')->result_array();
+        // restructure data import
+        $items_array = array();
+        foreach ($items as $val) {
+            $pabean_value = round($val['cif'] * $val['kurs']);
+            $free = $val['free'];
+            // nilai pabean = nilai paben - pembebasan
+            $multiplier = $pabean_value - $free;
+        
+            $bmIdr = ceil(((($multiplier * $val['bm_tax']) / 100) / 1000) * 1000);
+            $ppnIdr = ceil((((($multiplier + $bmIdr) * $val['ppn_tax']) / 100) / 1000) * 1000);
+            $ppnbmIdr = ceil((((($multiplier + $bmIdr) * $val['ppnbm_tax']) / 100) / 1000) * 1000);
+            $pphIdr = ceil((((($multiplier + $bmIdr) * $val['pph_tax']) / 100) / 1000) * 1000);
+
+            $items_array[] = array(
+                'desc' => $val['quantity'] . ' ' . $val['name'],
+                'pabean_value' => setIDR($multiplier),
+                'hs' => 'BM: ' . $val['bm_tax'] . '%, PPn: ' . $val['ppn_tax'] . '%, PPnbm: ' . $val['ppnbm_tax'] . '%, PPh: ' . $val['pph_tax'] . '%',
+                'bmIdr' => setIDR($bmIdr), 'ppnIdr' => setIDR($ppnIdr), 'ppnbmIdr' => setIDR($ppnbmIdr), 'pphIdr' => setIDR($pphIdr),
+                'total' => setIDR($bmIdr + $ppnIdr + $ppnbmIdr + $pphIdr)
+            );
+        }
+        $data['items'] = $items_array;
         return $data;
     }  
 

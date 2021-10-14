@@ -108,7 +108,7 @@
                             <td>4.</td>
                             <td>Nama Lengkap</td>
                             <td>:</td>
-                            <td style="border-right: 1px solid;">&nbsp;</td>
+                            <td style="border-right: 1px solid;"><?=$sponsor->name;?></td>
                             <td colspan="4">&nbsp;</td>
                         </tr>
                         <tr>
@@ -116,7 +116,7 @@
                             <td >5.</td>
                             <td >Alamat di Indonesia</td>
                             <td >:</td>
-                            <td style="border-right: 1px solid;">&nbsp;</td>
+                            <td style="border-right: 1px solid;"><?=$sponsor->address;?></td>
                             <td style="vertical-align: top; border-top: 1px solid;">11.</td>
                             <td style="border-top: 1px solid;">Nama Sarana Pengangkut & No. Voy/Flight</td>
                             <td style="border-top: 1px solid;">:</td>
@@ -127,7 +127,7 @@
                             <td>6.</td>
                             <td>Nomor Telepon</td>
                             <td>:</td>
-                            <td style="border-right: 1px solid;">&nbsp;</td>
+                            <td style="border-right: 1px solid;"><?=$sponsor->phone;?></td>
                             <td style="vertical-align: top; border-top: 1px solid;">12.</td>
                             <td style="border-top: 1px solid;">Perkiraan Tanggal Keluar</td>
                             <td style="border-top: 1px solid;">:</td>
@@ -138,7 +138,7 @@
                             <td>7.</td>
                             <td>Nomor Identitas</td>
                             <td>:</td>
-                            <td style="border-right: 1px solid;"></td>
+                            <td style="border-right: 1px solid;"><?=$sponsor->identity_number;?></td>
                             <td colspan="4">&nbsp;</td>
                         </tr>
                         <tr>
@@ -154,7 +154,7 @@
                             <td>8.</td>
                             <td>Lokasi Penggunaan</td>
                             <td>:</td>
-                            <td style="border-right: 1px solid;">&nbsp;</td>
+                            <td style="border-right: 1px solid;"><?=$sponsor->location;?></td>
                             <td colspan="4">&nbsp;</td>
                         </tr>
                         <tr>
@@ -162,7 +162,7 @@
                             <td>9.</td>
                             <td>Tujuan Penggunaan</td>
                             <td>:</td>
-                            <td style="border-right: 1px solid;">&nbsp;</td>
+                            <td style="border-right: 1px solid;"><?=$sponsor->reason;?></td>
                             <td style="vertical-align: top; border-top: 1px solid;">14.</td>
                             <td style="border-top: 1px solid;">Pelabuhan Keluar</td>
                             <td style="border-top: 1px solid;">:</td>
@@ -280,26 +280,30 @@
                             <td width="15%" style="border-bottom: 1px solid; border-right: 1px solid;">- Pos Tarif / HS <br /> - Tarif BM, Cukai, PPn, PPh, PPnBM</td>
                             <td width="15%" style="border-bottom: 1px solid;">33. Dalam Rupiah (Rp)</td>
                         </tr>
+                        <?php
+                        $no = 1;
+                        foreach ($items as $val) {?> 
                         <tr>
-                            <td style="border-right: 1px solid;" rowspan="5"></td>
-                            <td style="border-right: 1px solid;" rowspan="5"></td>
-                            <td style="border-right: 1px solid;" rowspan="5"></td>
+                            <td style="border-right: 1px solid;" rowspan="5"><?= $no; ?></td>
+                            <td style="border-right: 1px solid;" rowspan="5"><?= $val['desc']; ?></td>
+                            <td style="border-right: 1px solid;" rowspan="5"><?= $val['pabean_value']; ?></td>
                             <td rowspan="5"></td>
-                            <td style="border-right: 1px solid;" rowspan="5"></td>
-                            <td style="border-bottom:1px solid;">33. BM :</td>
+                            <td style="border-right: 1px solid;" rowspan="5"><?= $val['hs']; ?></td>
+                            <td style="border-bottom:1px solid;">33. BM : <?= $val['bmIdr']; ?></td>
                         </tr>
                         <tr>
-                            <td style="border-bottom:1px solid;">34. PPN :</td>
+                            <td style="border-bottom:1px solid;">34. PPN : <?= $val['ppnIdr']; ?></td>
                         </tr>
                         <tr>
-                            <td style="border-bottom:1px solid;">35. PPnB :</td>
+                            <td style="border-bottom:1px solid;">35. PPnBM : <?= $val['ppnbmIdr']; ?></td>
                         </tr>
                         <tr>
-                            <td style="border-bottom:1px solid;">36. PPh :</td>
+                            <td style="border-bottom:1px solid;">36. PPh : <?= $val['pphIdr']; ?></td>
                         </tr>
                         <tr>
-                            <td style="border-bottom:1px solid;">37. Total :</td>
+                            <td style="border-bottom:1px solid;">37. Total : <?= $val['total']; ?></td>
                         </tr>
+                        <?php $no++; } ?>
                     </table>
                     <table class="my-table">
                         <tr>
@@ -313,7 +317,7 @@
                             <td width="50%" style="border-right: 1px solid;">
                                 Jakarta, Tgl <?= $new_date; ?><br />
                                 Pejabat Bea dan Cukai
-                                <br /><br />
+                                <br /><br /><br /><br />
                                 Nama&nbsp;&nbsp;&nbsp;: <?= $header->officer_name; ?><br />
                                 NIP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <?= $header->officer_nip; ?>
                             </td>
