@@ -397,6 +397,14 @@
             });
 
             $('button[name="confirmYes"]').on('click', function() {
+                // reset value
+                Import.params.bm = 0;
+                Import.params.ppn = 0;
+                Import.params.pph = 0;
+                Import.params.ppnbm = 0;
+                Import.params.total = 0;
+                Import.params.fine = 0;
+
                 // show previous page
                 $('#confirmModal').modal('hide');
                 $('#guaranteeModal').modal('hide');
@@ -464,7 +472,7 @@
                     ppnbm = $(this).find('[name="itemPpnbm"]').val(),
                     fine = $(this).find('[name="itemFine"]').val(),
                     free = $(this).find('[name="itemFree"]').val(),
-                    freeIDR = parseInt($(this).find('[name="itemFree"]').val());
+                    freeIDR = Import.unsetIdr($(this).find('[name="itemFreeIDR"]').val());
                     // console.log(itemPackage);
                     // return false;
                 var params = {
@@ -472,7 +480,7 @@
                     currency: itemCurrencyText, kurs: itemCurrency, description: itemDescription,
                     fob: fob, freight: freight, insurance: insurance,
                     cif: cif, pabeanIn: Import.unsetIdr(pabeanIn), ppn: Import.unsetIdr(ppn), pph: Import.unsetIdr(pph), ppnbm: Import.unsetIdr(ppnbm),
-                    freeIDR: Import.unsetIdr(freeIDR),
+                    freeIDR: freeIDR,
                     keyHeader: Import.params.keyHeaderPost, keyItem: Import.params.keyItemPost
                 };
                 
@@ -517,10 +525,10 @@
                         row.find('[view="imPabean"]').html(Import.setIdr(pabeanValue));
                         row.find('[view="imFree"]').html(free + ' USD');
                         // row.find('[view="imPackage"]').attr('im-value', itemPackage);
-                        var bmValue = Math.ceil((((pabeanValue - freeIDR) * parseFloat(pabeanIn)) / 100) / 1000) * 1000;
-                        var ppnValue = Math.ceil((((pabeanValue - freeIDR) * parseFloat(ppn)) / 100) / 1000) * 1000;
-                        var pphValue = Math.ceil((((pabeanValue - freeIDR) * parseFloat(pph)) / 100) / 1000) * 1000;
-                        var ppnbmValue = Math.ceil((((pabeanValue - freeIDR) * parseFloat(ppnbm)) / 100) / 1000) * 1000;
+                        var bmValue = Math.ceil((((pabeanValue - parseInt(freeIDR)) * parseFloat(pabeanIn)) / 100) / 1000) * 1000;
+                        var ppnValue = Math.ceil((((pabeanValue - parseInt(freeIDR) + bmValue) * parseFloat(ppn)) / 100) / 1000) * 1000;
+                        var pphValue = Math.ceil((((pabeanValue - parseInt(freeIDR) + bmValue) * parseFloat(pph)) / 100) / 1000) * 1000;
+                        var ppnbmValue = Math.ceil((((pabeanValue - parseInt(freeIDR) + bmValue) * parseFloat(ppnbm)) / 100) / 1000) * 1000;
                         var fineValue = (bmValue * fine) / 100;
                         var collect = 'BM: ' + Import.setIdr(bmValue) + '<br /> Ppn: ' + Import.setIdr(ppnValue) + '<br /> Pph: ' + Import.setIdr(pphValue) + '<br /> Ppnbm: ' + Import.setIdr(ppnbmValue) + '<br /> Denda: ' + Import.setIdr(fineValue);
                         row.find('[view="imCollect"]').html(collect);

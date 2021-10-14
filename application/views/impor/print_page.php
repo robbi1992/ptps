@@ -71,7 +71,7 @@
                     </table>
                 </td>
                 <td width="40%" class="center" style="border-right: 1px solid; font-size:16px;">
-                    <b>BUKTI PENERIMAAN JAMINAN<br /> NOMOR : <?= $header->doc_number; ?> </b>
+                    <b>BUKTI PENERIMAAN JAMINAN<br /> NOMOR : <?= $warrant->doc_number; ?> </b>
                 </td>
                 <td width="30%" style="font-size: 12px;">
                     <table>
@@ -122,12 +122,12 @@
             <tr>
                 <td>Nomor</td>
                 <td>:</td>
-                <td colspan="4">Nomor</td>
+                <td colspan="4"><?= $warrant->doc_number;?></td>
             </tr>
             <tr>
                 <td>Tanggal</td>
                 <td>:</td>
-                <td colspan="4">Tanggal</td>
+                <td colspan="4"><?= $new_date; ?></td>
             </tr>
             <tr>
                 <td>Penjamin</td>
@@ -175,13 +175,21 @@
                 <td width="45%"></td>
             </tr>
             <tr>
-                <td width="30%">&nbsp;</td>
-                <td width="5%">&nbsp;</td>
+                <td width="30%">
+                    - detail pungutan: <br />
+                    <?php 
+                    foreach ($items as $val) {
+                        echo $val['hs']; echo '<br />';
+                        echo $val['bmIdr'] . ' + ' . $val['ppnIdr'] . ' + ' . $val['ppnbmIdr'] . ' + ' . $val['pphIdr'] . ' = ' . $val['total'];
+                    }
+                    ?>
+                </td>
+                <td width="5%"></td>
                 <td width="20%" style="border-right: 1px solid;"></td>
                 <td width="45%">Jakarta, <?= $new_date; ?></td>
             </tr>
             <tr>
-                <td width="30%">&nbsp;</td>
+                <td width="30%">- Tanggal jatuh tempo: <?php echo date('d-m-Y', time($header->inv_date_out));?></td>
                 <td width="5%">&nbsp;</td>
                 <td width="20%" style="border-right: 1px solid;"></td>
                 <td width="45%">&nbsp;</td>
@@ -212,10 +220,10 @@
                 <td width="30%">&nbsp;</td>
                 <td width="5%">&nbsp;</td>
                 <td width="20%" style="border-right: 1px solid;"></td>
-                <td width="45%">&nbsp;</td>
+                <td width="45%">Nama <?= $warrant->treasurer_name; ?></td>
             </tr>
             <tr>
-                <td width="30%"><?= $warrant->treasurer_name; ?></td>
+                <td width="30%"><?= $warrant->name; ?></td>
                 <td width="5%">&nbsp;</td>
                 <td width="20%" style="border-right: 1px solid;"></td>
                 <td width="45%">NIP <?= $warrant->treasurer_nip; ?></td>

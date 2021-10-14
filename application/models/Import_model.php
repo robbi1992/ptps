@@ -159,6 +159,7 @@ class Import_model extends CI_Model {
         $this->db->insert('import_sponsor');
 
         // insert to table guarantee
+        $guarantee_number = $header_id . '/BPJ/KPU.03/' . date('Y');
         $guar = $params['guarantee'];
         $this->db->set('type', $guar['guaranteeType']);
         $this->db->set('name', $guar['guaranteeName']);
@@ -166,6 +167,7 @@ class Import_model extends CI_Model {
         $this->db->set('nominal', $guar['guaranteeNominal']);
         $this->db->set('treasurer_name', $guar['treasurerName']);
         $this->db->set('treasurer_nip', $guar['treasurerNip']);
+        $this->db->set('doc_number', $guarantee_number);
         $this->db->set('header_id', $header_id);
         $this->db->insert('import_guarantee');
 
@@ -363,7 +365,7 @@ class Import_model extends CI_Model {
     public function get_data_print($header_id) {
         $data = array();
         $this->db->select('A.doc_number, A.identity_type, A.doc_date, A.name, A.address, A.passport, A.officer_name, A.officer_nip,
-            A.carrier_info, B.name AS airport_in, C.name AS airport_out, A.return_type, A.created_at
+            A.carrier_info, B.name AS airport_in, C.name AS airport_out, A.return_type, A.created_at, A.inv_date_out
         ');
         $this->db->from('import A');
         $this->db->join('office B', 'A.airport_in = B.id');
@@ -372,7 +374,7 @@ class Import_model extends CI_Model {
         $data['header'] = $this->db->get()->row();
 
         // get guarantee
-        $this->db->select('type, name, address, nominal, treasurer_name, treasurer_nip');
+        $this->db->select('type, name, address, nominal, treasurer_name, treasurer_nip, doc_number');
         $this->db->where('header_id', $header_id);
         $data['warrant'] = $this->db->get('import_guarantee')->row();
         
@@ -395,11 +397,13 @@ class Import_model extends CI_Model {
             $free = $val['free'];
             // nilai pabean = nilai paben - pembebasan
             $multiplier = $pabean_value - $free;
+            
         
-            $bmIdr = ceil(((($multiplier * $val['bm_tax']) / 100) / 1000) * 1000);
-            $ppnIdr = ceil((((($multiplier + $bmIdr) * $val['ppn_tax']) / 100) / 1000) * 1000);
-            $ppnbmIdr = ceil((((($multiplier + $bmIdr) * $val['ppnbm_tax']) / 100) / 1000) * 1000);
-            $pphIdr = ceil((((($multiplier + $bmIdr) * $val['pph_tax']) / 100) / 1000) * 1000);
+            $bmIdr = ceil(((($multiplier * $val['bm_tax']) / 100) / 1000)) * 1000;
+            // echo $bmIdr; exit();
+            $ppnIdr = ceil((((($multiplier + $bmIdr) * $val['ppn_tax']) / 100) / 1000)) * 1000;
+            $ppnbmIdr = ceil((((($multiplier + $bmIdr) * $val['ppnbm_tax']) / 100) / 1000)) * 1000;
+            $pphIdr = ceil((((($multiplier + $bmIdr) * $val['pph_tax']) / 100) / 1000)) * 1000;
 
             $items_array[] = array(
                 'desc' => $val['quantity'] . ' ' . $val['name'],
