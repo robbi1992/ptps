@@ -48,7 +48,7 @@
                 <td width="5%">1.</td>
                 <td width="20%">Nomor BPJ/ST</td>
                 <td width="5%">:</td>
-                <td width="70%">Nomor Apa?</td>
+                <td width="70%"><?= $header['re_doc_number']; ?></td>
             </tr>
             <tr>
                 <td>&nbsp;</td>
@@ -111,7 +111,7 @@
             </tr>
             <tr>
                 <td width="10%">&nbsp;</td>
-                <td width="45%"><?= $header['name']; ?></td>
+                <td width="45%"><?= $header['re_name']; ?></td>
                 <td width="45%"><?= $header['officer_name']; ?></td>
             </tr>
         </table>

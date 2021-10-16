@@ -30,6 +30,24 @@
             newValue = value.split('.').join('');
             return newValue;
         },
+        resetForm: function() {
+            $(this).prop('checked', false);
+            var newForm = $('form[name="newForm"]');
+            newForm.find('input[type=text], textarea').val('');
+            // newForm.find('[name="identityType"], [name="returnGuarantee"]').prop('checked', false);
+            $('table[name="importTable"]').find('tbody').empty();
+            var guaranteeForm = $('form[name="guaranteeForm"]');
+            guaranteeForm.find('input, textarea').val('');
+            // guaranteeForm.find('[name="guaranteeType"]').prop('checked', false);
+
+            var summaryTable = $('table[name="importSummaryTable"]');
+            summaryTable.find('[view="summBM"]').html(Import.setIdr(Import.params.bm));
+            summaryTable.find('[view="summPpn"]').html(Import.setIdr(Import.params.ppn));
+            summaryTable.find('[view="summPph"]').html(Import.setIdr(Import.params.pph));
+            summaryTable.find('[view="summPpnbm"]').html(Import.setIdr(Import.params.ppnbm));
+            summaryTable.find('[view="summFine"]').html(Import.setIdr(Import.params.fine));
+            summaryTable.find('[view="summTotal"]').html(Import.setIdr(Import.params.total));
+        },
         enabled: function(formName, value) {
             if (value) $('form[name="'+formName+'"]').find('[name^="search"], button').removeAttr('disabled');
             else $('form[name="'+formName+'"]').find('[name^="search"], button').attr('disabled', 'disabled');
@@ -146,7 +164,15 @@
             
             var link = '/import/print_form/';
             if (value == '1') link = '/import/print_form_is/';
-            else if (value == '2') link = '/import/print_form_return/';
+            else if (value == '2') {
+                var valueStatus = row.find('[view="status"]').attr('value-status');
+                if (valueStatus != '3') {
+                    alert('Update Status Penyelesaian terlebih dahulu...');
+                    return false;
+                } else {
+                    link = '/import/print_form_return/';
+                }
+            } 
             
             var msg = myEncrypt(data);
             var base_url = window.location.origin + link + msg;
@@ -211,6 +237,7 @@
                 }
     
                 row.find('[view="status"]').html(status);
+                row.find('[view="status"]').attr('value-status', value.status);
                 row.find('[view="actionPrint"]').on('click', Import.printPage);
                 row.find('[view="actionPrintIS"]').on('click', Import.printPage);
                 row.find('[view="actionPrintReturn"]').on('click', Import.printPage);
@@ -591,6 +618,7 @@
                 var generator = Import.generateKey();
                 Import.params.keyHeaderPost = generator;
                 // console.log(Import.params.keyPost);
+                Import.resetForm();
                 $('#newModal').modal('show');
             });
 
@@ -628,9 +656,9 @@
             });
             
             // back function
-            $('button[name="btnBack"]').on('click', function() {
-                $('#newValasModalStep2').modal('hide');
-                $('#newValasModal').modal('show');
+            $('form[name="guaranteeForm"]').find('#prepPage').on('click', function() {
+                $('#guaranteeModal').modal('hide');
+                $('#newModal').modal('show');
             });
             
             $('button[name="confirmDelete"]').on('click', function() {
@@ -770,6 +798,7 @@
                     var notes = $(this).find('textarea[name="reNotes"]').val(),
                         office = ($(this).find('select[name="reOffice"]').val()) ? $(this).find('select[name="reOffice"]').val() : 143,
                         date = $(this).find('input[name="reDate"]').val(),
+                        name = $(this).find('input[name="reName"]').val(),
                         docNumber = $(this).find('input[name="reDocNumber"]').val(),
                         tabValue = 1;
 
@@ -787,7 +816,7 @@
                         Import.verifyAttach(fileData3);
                     }
 
-                    var params = { key: tabValue, notes: notes, office: office, date: date, number: docNumber, header: Import.params.headerID };
+                    var params = { key: tabValue, notes: notes, name: name, office: office, date: date, number: docNumber, header: Import.params.headerID };
                 }
 
                 // update data header
@@ -796,7 +825,26 @@
                 
                 return false;
             });
-        }
+
+            $('#invDateOut').on('change', function() {
+                 // To set two dates to two variables
+                var date1 = new Date();
+                var date2 = new Date($(this).val());
+                
+                // To calculate the time difference of two dates
+                var Difference_In_Time = date2.getTime() - date1.getTime();
+
+                // To calculate the no. of days between two dates
+                var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+                var days = Math.ceil(Difference_In_Days);
+
+                if (days > 90) {
+                    alert('Jangka waktu tidak boleh lebih dari 90 hari');
+                } else {
+                    $('#periode').val(days);
+                }
+            });
+        } //end init
     };
     
     Import.init();

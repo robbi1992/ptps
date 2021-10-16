@@ -793,6 +793,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Tutup</button>
+                        <button id="prepPage" type="button" class="btn btn-light-primary font-weight-bold">Sebelumnya</button>
                         <button type="submit" class="btn btn-primary font-weight-bold">Simpan</button>
                     </div>
                 </div>
@@ -1032,6 +1033,10 @@
                                         <div class="form-group">
                                             <label for="reDocNumber">Nomor Dokumen</label>
                                             <input id="reDocNumber" name="reDocNumber" class="form-control" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="reName">Nama Penerima</label>
+                                            <input id="reName" name="reName" class="form-control" />
                                         </div>
                                         <div class="form-group">
                                             <label for="reNotes">Catatan</label>

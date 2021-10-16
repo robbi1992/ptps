@@ -223,9 +223,10 @@ class Import_model extends CI_Model {
         // remove items from temp after inserted
         $this->db->where('key_header', $keys['header']);
         $this->db->delete('import_items_temp');
-
+        $re_doc_number = $header_id . '/BPJ/KPU.03/' . date('Y');
         $doc_number  = $header_id . '/IS/KPU.03/' . date('Y');
         $this->db->where('id', $header_id);
+        $this->db->set('re_doc_number', $re_doc_number);
         $this->db->set('doc_number', $doc_number);
         $this->db->update('import');
 
@@ -278,10 +279,11 @@ class Import_model extends CI_Model {
         $this->db->set('re_notes', $params['notes']);
         $this->db->set('re_status', $params['key']);
         if($params['key'] == 1) {
-            $re_doc_number = $params['header'] . '/BPJ/KPU.03/' . date('Y');
+            // $re_doc_number = $params['header'] . '/BPJ/KPU.03/' . date('Y');
             $this->db->set('re_office', $params['office']);
             $this->db->set('re_date', $params['date']);
-            $this->db->set('re_doc_number', $re_doc_number);
+            $this->db->set('re_name', $params['name']);
+            // $this->db->set('re_doc_number', $re_doc_number);
         }   
         $this->db->set('status', '3');
         $this->db->where('id', $params['header']);
@@ -419,7 +421,7 @@ class Import_model extends CI_Model {
 
     public function get_data_return($header_id) {
         $data = array();
-        $this->db->select('A.name, A.passport, B.nominal, A.officer_name');
+        $this->db->select('A.name, A.passport, B.nominal, A.officer_name, A.re_doc_number, A.re_name');
         $this->db->from('import A');
         $this->db->join('import_guarantee B', 'A.id = B.header_id');
         $this->db->where('A.id', $header_id);
