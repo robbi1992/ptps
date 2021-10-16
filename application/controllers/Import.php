@@ -143,6 +143,7 @@ class Import extends MY_Controller {
 	}
 
 	public function get_detail() {
+		$this->load->helper('my_helper');
 		$params = json_decode($this->input->raw_input_stream, TRUE);
 		$header_id = $this->my_decrypt($params['header_id']);
 		// echo $header_id; exit();

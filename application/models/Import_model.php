@@ -326,7 +326,9 @@ class Import_model extends CI_Model {
         $this->db->where('header_id', $header_id);
         $account = $this->db->get('import_account')->row_array();
 
-        $this->db->select('A.id AS item_id, A.name, A.quantity, A.bruto, A.description, B.name AS package');
+        $this->db->select('A.id AS item_id, A.name, A.quantity, A.bruto, A.description, B.name AS package, A.kurs, A.bm_tax,
+            A.cif, A.free, A.ppn_tax, A.pph_tax, A.ppnbm_tax, A.fob, A.freight, A.insurance
+        ');
         $this->db->from('import_items A');
         $this->db->join('quantity_type B', 'A.package_type = B.id');
         $this->db->where('A.header_id', $header_id);
@@ -334,6 +336,18 @@ class Import_model extends CI_Model {
         $items = array();
         $items_key = array();
         foreach ($data_items as $val) {
+            $pabean_value = round($val['cif'] * $val['kurs']);
+            $free = $val['free'];
+            // nilai pabean = nilai paben - pembebasan
+            $multiplier = $pabean_value - $free;
+            
+        
+            $bmIdr = ceil(((($multiplier * $val['bm_tax']) / 100) / 1000)) * 1000;
+            // echo $bmIdr; exit();
+            $ppnIdr = ceil((((($multiplier + $bmIdr) * $val['ppn_tax']) / 100) / 1000)) * 1000;
+            $ppnbmIdr = ceil((((($multiplier + $bmIdr) * $val['ppnbm_tax']) / 100) / 1000)) * 1000;
+            $pphIdr = ceil((((($multiplier + $bmIdr) * $val['pph_tax']) / 100) / 1000)) * 1000;
+            
             $items_key[] = $val['item_id'];
 
             $items[$val['item_id']] = array(
@@ -343,6 +357,9 @@ class Import_model extends CI_Model {
                 'bruto' => $val['bruto'],
                 'desc' => $val['description'],
                 'type' => $val['package'],
+                'hs' => 'BM: ' . $val['bm_tax'] . '%, PPn: ' . $val['ppn_tax'] . '%, PPnbm: ' . $val['ppnbm_tax'] . '%, PPh: ' . $val['pph_tax'] . '%',
+                'bmIdr' => setIDR($bmIdr), 'ppnIdr' => setIDR($ppnIdr), 'ppnbmIdr' => setIDR($ppnbmIdr), 'pphIdr' => setIDR($pphIdr),
+                'total' => setIDR($bmIdr + $ppnIdr + $ppnbmIdr + $pphIdr),
                 'attachments' => array()
             );
         }
@@ -367,7 +384,8 @@ class Import_model extends CI_Model {
     public function get_data_print($header_id) {
         $data = array();
         $this->db->select('A.doc_number, A.identity_type, A.doc_date, A.name, A.address, A.passport, A.officer_name, A.officer_nip,
-            A.carrier_info, B.name AS airport_in, C.name AS airport_out, A.return_type, A.created_at, A.inv_date_out
+            A.carrier_info, B.name AS airport_in, C.name AS airport_out, A.return_type, A.created_at, A.inv_date_out, A.re_doc_number,
+            A.periode
         ');
         $this->db->from('import A');
         $this->db->join('office B', 'A.airport_in = B.id');
@@ -394,7 +412,23 @@ class Import_model extends CI_Model {
         $items = $this->db->get('import_items')->result_array();
         // restructure data import
         $items_array = array();
-        foreach ($items as $val) {
+        $bpj = array();
+        $bm = 0;
+        $ppn = 0;
+        $ppnbm = 0;
+        $pph = 0;
+        $total = 0;
+        $bmtax = '';
+        $ppntax = '';
+        $ppnbmtax = '';
+        $pphtax = '';
+        $name = '';
+        $last = count($items);
+        $separator = ', ';
+        foreach ($items as $index => $val) {
+            if ($index == ($last - 1)) {
+                $separator = '';
+            }
             $pabean_value = round($val['cif'] * $val['kurs']);
             $free = $val['free'];
             // nilai pabean = nilai paben - pembebasan
@@ -406,6 +440,22 @@ class Import_model extends CI_Model {
             $ppnIdr = ceil((((($multiplier + $bmIdr) * $val['ppn_tax']) / 100) / 1000)) * 1000;
             $ppnbmIdr = ceil((((($multiplier + $bmIdr) * $val['ppnbm_tax']) / 100) / 1000)) * 1000;
             $pphIdr = ceil((((($multiplier + $bmIdr) * $val['pph_tax']) / 100) / 1000)) * 1000;
+            
+            $name .=  $val['name'] . $separator;
+            // set total
+            $bmtax .= $val['bm_tax'] . $separator;
+            $ppntax .= $val['ppn_tax'] . $separator;
+            $ppnbmtax .= $val['ppnbm_tax'] . $separator;
+            $pphtax .= $val['pph_tax'] . $separator;
+            $bm += $bmIdr;
+            $ppn += $ppnIdr;
+            $ppnbm += $ppnbmIdr;
+            $pph += $pphIdr;
+            $total += $bm + $ppn + $ppnbm + $pph; 
+            $bpj = array(
+                'desc' => $name, 'bmtax' => $bmtax, 'ppntax' => $ppntax, 'ppnbmtax' => $ppnbmtax, 'pphtax' => $pphtax,
+                'bm' => $bm, 'ppn' => $ppn, 'ppnbm' => $ppnbm, 'pph' => $pph, 'total' => $total
+            );
 
             $items_array[] = array(
                 'desc' => $val['quantity'] . ' ' . $val['name'],
@@ -416,6 +466,7 @@ class Import_model extends CI_Model {
             );
         }
         $data['items'] = $items_array;
+        $data['bpj'] = $bpj;
         return $data;
     }  
 

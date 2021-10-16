@@ -37,7 +37,7 @@
             // newForm.find('[name="identityType"], [name="returnGuarantee"]').prop('checked', false);
             $('table[name="importTable"]').find('tbody').empty();
             var guaranteeForm = $('form[name="guaranteeForm"]');
-            guaranteeForm.find('input, textarea').val('');
+            guaranteeForm.find('input[type=text], textarea').val('');
             // guaranteeForm.find('[name="guaranteeType"]').prop('checked', false);
 
             var summaryTable = $('table[name="importSummaryTable"]');
@@ -138,7 +138,10 @@
                     var table = $('table[name="reviewItems"]');
                     var template = table.find('[template="reviewItemsBody"]');
                     var tbody = table.find('tbody').empty();
+                    
                     $.each(result.items, function(index, value) {
+                        var theDesc = value.hs + "<br />" + value.bmIdr + ' + ' + value.ppnIdr + ' + ' + value.ppnbmIdr + ' + ' + value.pphIdr
+                        + ' = Rp. ' + value.total;
                         var row = template.clone().removeClass('d-none').removeAttr('template');
                         row.attr('id', value.item);
                         row.find('[view="number"]').html(index + 1);
@@ -146,7 +149,7 @@
                         row.find('[view="package"]').html(value.type);
                         row.find('[view="name"]').html(value.name);
                         row.find('[view="bruto"]').html(value.bruto);
-                        row.find('[view="desc"]').html(value.desc);
+                        row.find('[view="desc"]').html(theDesc);
                         Import.params.attachments = value.attachments;
                         row.find('[view="itemFile"]').on('click', Import.showAttachments);
                         row.appendTo(tbody);

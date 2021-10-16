@@ -177,11 +177,10 @@
             <tr>
                 <td width="30%">
                     - detail pungutan: <br />
-                    <?php 
-                    foreach ($items as $val) {
-                        echo $val['hs']; echo '<br />';
-                        echo $val['bmIdr'] . ' + ' . $val['ppnIdr'] . ' + ' . $val['ppnbmIdr'] . ' + ' . $val['pphIdr'] . ' = ' . $val['total'];
-                    }
+                    <?php
+                    echo 'Jenis Barang      :' . $bpj['desc'] . '<br />';
+                    echo 'BM : ' . $bpj['bmtax'] . ' %, ' . 'PPn : ' . $bpj['ppntax'] . ' %, ' . 'PPnbm : ' . $bpj['ppnbmtax'] . ' %, ' . 'PPh : ' . $bpj['pphtax'] . '%' . '<br />'; 
+                    echo setIdr($bpj['bm']) . ' + ' . setIdr($bpj['ppn']) . ' + ' . setIdr($bpj['ppnbm']) . ' + ' . setIdr($bpj['pph']) . ' = Rp. ' . setIdr($bpj['total']);
                     ?>
                 </td>
                 <td width="5%"></td>

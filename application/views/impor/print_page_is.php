@@ -282,34 +282,40 @@
                         </tr>
                         <?php
                         $no = 1;
-                        foreach ($items as $val) {?> 
+                        $last = count($items);
+                        $bottom = 'border-bottom:1px solid;';
+                        foreach ($items as $index => $val) {
+                        if ($index == ($last - 1)) {
+                            $bottom = '';
+                        }
+                        ?>
                         <tr>
-                            <td style="border-right: 1px solid;" rowspan="5"><?= $no; ?></td>
-                            <td style="border-right: 1px solid;" rowspan="5"><?= $val['desc']; ?></td>
-                            <td style="border-right: 1px solid;" rowspan="5"><?= $val['pabean_value']; ?></td>
-                            <td rowspan="5"></td>
-                            <td style="border-right: 1px solid;" rowspan="5"><?= $val['hs']; ?></td>
-                            <td style="border-bottom:1px solid;">33. BM : <?= $val['bmIdr']; ?></td>
+                            <td style="border-right: 1px solid; <?=$bottom;?> text-align: center;" rowspan="5"><?= $no; ?></td>
+                            <td style="border-right: 1px solid; <?=$bottom;?>" rowspan="5"><?= $val['desc']; ?></td>
+                            <td style="border-right: 1px solid; <?=$bottom;?>" rowspan="5"><?= $val['pabean_value']; ?></td>
+                            <td rowspan="5" style="<?=$bottom;?>"></td>
+                            <td style="border-right: 1px solid; <?=$bottom;?>" rowspan="5"><?= $val['hs']; ?></td>
+                            <td style="<?=$bottom;?>">33. BM : <?= $val['bmIdr']; ?></td>
                         </tr>
                         <tr>
-                            <td style="border-bottom:1px solid;">34. PPN : <?= $val['ppnIdr']; ?></td>
+                            <td style="<?=$bottom;?>">34. PPN : <?= $val['ppnIdr']; ?></td>
                         </tr>
                         <tr>
-                            <td style="border-bottom:1px solid;">35. PPnBM : <?= $val['ppnbmIdr']; ?></td>
+                            <td style="<?=$bottom;?>">35. PPnBM : <?= $val['ppnbmIdr']; ?></td>
                         </tr>
                         <tr>
-                            <td style="border-bottom:1px solid;">36. PPh : <?= $val['pphIdr']; ?></td>
+                            <td style="<?=$bottom;?>">36. PPh : <?= $val['pphIdr']; ?></td>
                         </tr>
                         <tr>
-                            <td style="border-bottom:1px solid;">37. Total : <?= $val['total']; ?></td>
+                            <td style="<?=$bottom;?>">37. Total : <?= $val['total']; ?></td>
                         </tr>
                         <?php $no++; } ?>
                     </table>
                     <table class="my-table">
                         <tr>
-                            <td widht="30%" style="border-right: 1px solid;">38. Bukti Penerimaan Jaminan (BPJ) No. :</td>
-                            <td widht="15%" style="border-right: 1px solid;">Tanggal :</td>
-                            <td widht="50%">39. Jangka Waktu Izin Impor Sementara</td>
+                            <td widht="30%" style="border-right: 1px solid;">38. Bukti Penerimaan Jaminan (BPJ) No. : <?= $header->re_doc_number; ?></td>
+                            <td widht="15%" style="border-right: 1px solid;">Tanggal : <?= $new_date; ?></td>
+                            <td widht="50%">39. Jangka Waktu Izin Impor Sementara : <?= $header->periode; ?> Hari</td>
                         </tr>
                     </table>
                     <table class="my-table">
