@@ -257,7 +257,8 @@ class Import_model extends CI_Model {
             'pph_tax' => $val['pph'],
             'ppnbm_tax' => $val['ppnbm'],
             'key_header' => $val['keyHeader'],
-            'key_item' => $val['keyItem']
+            'key_item' => $val['keyItem'],
+            'description' => $val['description']
         );
 
         return $this->db->insert('import_items_temp', $dataItems);
@@ -385,7 +386,7 @@ class Import_model extends CI_Model {
         $data = array();
         $this->db->select('A.doc_number, A.identity_type, A.doc_date, A.name, A.address, A.passport, A.officer_name, A.officer_nip,
             A.carrier_info, B.name AS airport_in, C.name AS airport_out, A.return_type, A.created_at, A.inv_date_out, A.re_doc_number,
-            A.periode
+            A.periode, A.inv_number, A.inv_date, A.inv_date_out
         ');
         $this->db->from('import A');
         $this->db->join('office B', 'A.airport_in = B.id');
@@ -408,8 +409,11 @@ class Import_model extends CI_Model {
         $this->db->where('header_id', $header_id);
         $data['sponsor'] = $this->db->get('import_sponsor')->row();
 
-        $this->db->where('header_id', $header_id);
-        $items = $this->db->get('import_items')->result_array();
+        $this->db->select('A.*, B.name AS package_name');
+        $this->db->from('import_items A');
+        $this->db->join('quantity_type B', 'A.package_type =  B.id');
+        $this->db->where('A.header_id', $header_id);
+        $items = $this->db->get()->result_array();
         // restructure data import
         $items_array = array();
         $bpj = array();
@@ -459,6 +463,14 @@ class Import_model extends CI_Model {
 
             $items_array[] = array(
                 'desc' => $val['quantity'] . ' ' . $val['name'],
+                'quantity' => $val['quantity'],
+                'package' => $val['package_name'],
+                'name' => $val['name'],
+                'description' => $val['description'],
+                'kurs' => $val['kurs'],
+                'fob' => $val['fob'],
+                'freight' => $val['freight'],
+                'insurance' => $val['insurance'],
                 'pabean_value' => setIDR($multiplier),
                 'hs' => 'BM: ' . $val['bm_tax'] . '%, PPn: ' . $val['ppn_tax'] . '%, PPnbm: ' . $val['ppnbm_tax'] . '%, PPh: ' . $val['pph_tax'] . '%',
                 'bmIdr' => setIDR($bmIdr), 'ppnIdr' => setIDR($ppnIdr), 'ppnbmIdr' => setIDR($ppnbmIdr), 'pphIdr' => setIDR($pphIdr),

@@ -100,8 +100,8 @@
                             <td style="border-top: 1px solid; border-right: 1px solid;" colspan="4">DATA SPONSOR</td>
                             <td style="border-top: 1px solid;">10.</td>
                             <td style="border-top: 1px solid;">Invoice No</td>
-                            <td style="border-top: 1px solid;">:</td>
-                            <td style="border-top: 1px solid; text-align: center;">Tgl.</td>
+                            <td style="border-top: 1px solid;">: <?= $header->inv_number; ?></td>
+                            <td style="border-top: 1px solid; text-align: center;">Tgl. <?= date('d-m-Y', time($header->inv_date)); ?></td>
                         </tr>
                         <tr>
                             <td>&nbsp;</td>
@@ -131,7 +131,7 @@
                             <td style="vertical-align: top; border-top: 1px solid;">12.</td>
                             <td style="border-top: 1px solid;">Perkiraan Tanggal Keluar</td>
                             <td style="border-top: 1px solid;">:</td>
-                            <td style="border-top: 1px solid;" colspan="2">Tanggal Keluar</td>
+                            <td style="border-top: 1px solid;" colspan="2"><?= date('d-m-Y', time($header->inv_date_out)); ?></td>
                         </tr>
                         <tr>
                             <td>&nbsp;</td>
@@ -215,59 +215,84 @@
                             <td colspan="5" style="border-bottom: 1px solid;">E. DATA BARANG</td>
                         </tr>
                         <tr>
-                            <td>17. No</td>
-                            <td>18. Uraian Barang</td>
-                            <td>19. Spesifikasi / Identitas Barang</td>
-                            <td>20. Jumlah dan Jenis Satuan</td>
+                            <td style="border-right: 1px solid;">17. No</td>
+                            <td style="border-right: 1px solid;">18. Uraian Barang</td>
+                            <td style="border-right: 1px solid;">19. Spesifikasi / Identitas Barang</td>
+                            <td style="border-right: 1px solid;">20. Jumlah dan Jenis Satuan</td>
                             <td>21. Perkiraan Nilai Barang (CIF)</td>
                         </tr>
-                    </table>
-                    <?php
-                    $created = explode(' ', $header->created_at);
-                    $time = time($created[0]);
-                    $created_date = date('d-m-Y', $time);
-                    $array_date = explode('-', $created_date);
-                    $new_date = $array_date[0] . ' ' . get_month($array_date[1]) . ' ' . $array_date[2];
-                    ?>
-                    <table class="my-table">
-                        <tr>
-                            <td width="5%" style="vertical-align: top;" rowspan="4">F.</td>
-                            <td width="45%" class="center" rowspan="4" style="border-right: 1px solid;">Dengan ini saya menyatakan bertanggung jawab atas
-                                kebenaran hal-hal yang diberitahukan dalam dokumen ini <br />
-                                Jakarta, Tgl <?= $new_date; ?><br />
-                                Pemohon <br /><br />
+                        <?php
+                        $created = explode(' ', $header->created_at);
+                        $time = time($created[0]);
+                        $created_date = date('d-m-Y', $time);
+                        $array_date = explode('-', $created_date);
+                        $new_date = $array_date[0] . ' ' . get_month($array_date[1]) . ' ' . $array_date[2];
 
-                                (<?= $header->name; ?>)
-                            </td>
-                            <td style="border-bottom: 1px solid;" width="10%">22. Valuta</td>
-                            <td style="border-bottom: 1px solid;" width="5%">:</td>
-                            <td style="border-bottom: 1px solid;" width="10%" style="border-right: 1px solid;"></td>
-                            <td style="border-bottom: 1px solid;" width="10%">23. NDPBM</td>
-                            <td style="border-bottom: 1px solid;" width="5%">:</td>
-                            <td style="border-bottom: 1px solid;" width="10%" style="border-right: 1px solid;"></td>
-                        </tr>
-                        <tr>
-                            <td style="border-bottom: 1px solid;" width="10%">24. FOB</td>
-                            <td style="border-bottom: 1px solid;" width="5%">:</td>
-                            <td style="border-bottom: 1px solid;" width="10%" style="border-right: 1px solid;"></td>
-                            <td style="border-bottom: 1px solid;" width="10%">25. Freight</td>
-                            <td style="border-bottom: 1px solid;" width="5%">:</td>
-                            <td style="border-bottom: 1px solid;" width="10%" style="border-right: 1px solid;"></td>
-                        </tr>
-                        <tr>
-                            <td style="border-bottom: 1px solid;" width="10%">26. Asuransi</td>
-                            <td style="border-bottom: 1px solid;" width="5%">:</td>
-                            <td style="border-bottom: 1px solid;" width="10%" style="border-right: 1px solid;"></td>
-                            <td style="border-bottom: 1px solid;" width="10%">27. CIF</td>
-                            <td style="border-bottom: 1px solid;" width="5%">:</td>
-                            <td style="border-bottom: 1px solid;" width="10%" style="border-right: 1px solid;"></td>
-                        </tr>
-                        <tr>
-                            <td width="10%">28. Rp</td>
-                            <td width="5%">:</td>
-                            <td width="35%" colspan="4"></td>
-                        </tr>
-                    </table>
+                        $num_items = count($items);
+                        $next_page = false;
+                        if ($num_items >= 2) $next_page = true;
+                        $no_items = 1;
+                        foreach ($items as $val) {
+                            if ($num_items > 1) { ?>
+                            <tr>    
+                                <td colspan="5" class="center" style="border-top: 1px solid;"><?= $num_items . ' (' . terbilang($num_items) .')';?> jenis barang, lihat lembar lanjutan</td>
+                            </tr>
+                            </table>
+                            <?php
+                            } else { ?>
+                                <tr>    
+                                    <td class="center" style="border-right: 1px solid; border-top: 1px solid;"><?= $no_items; ?></td>
+                                    <td class="center" style="border-right: 1px solid; border-top: 1px solid;"><?= $val['name']; ?></td>
+                                    <td class="center" style="border-right: 1px solid; border-top: 1px solid;"><?= $val['description']; ?></td>
+                                    <td class="center" style="border-right: 1px solid; border-top: 1px solid;"><?= $val['quantity'] . ' ' . $val['package']; ?></td>
+                                    <td class="center" style="border-top: 1px solid;"><?= $val['pabean_value']; ?></td>
+                                </tr>
+                                </table>
+                                <table class="my-table">
+                                    <tr>
+                                        <td width="5%" style="vertical-align: top;" rowspan="4">F.</td>
+                                        <td width="45%" class="center" rowspan="4" style="border-right: 1px solid;">Dengan ini saya menyatakan bertanggung jawab atas
+                                            kebenaran hal-hal yang diberitahukan dalam dokumen ini <br />
+                                            Jakarta, Tgl <?= $new_date; ?><br />
+                                            Pemohon <br /><br />
+
+                                            (<?= $header->name; ?>)
+                                        </td>
+                                        <td style="border-bottom: 1px solid;" width="10%">22. Valuta</td>
+                                        <td style="border-bottom: 1px solid;" width="5%">:</td>
+                                        <td style="border-bottom: 1px solid;" width="10%" style="border-right: 1px solid;"><?= setIdr(ceil($val['kurs'])); ?></td>
+                                        <td style="border-bottom: 1px solid;" width="10%">23. NDPBM</td>
+                                        <td style="border-bottom: 1px solid;" width="5%">:</td>
+                                        <td style="border-bottom: 1px solid;" width="10%" style="border-right: 1px solid;"><?= $val['pabean_value']; ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border-bottom: 1px solid;" width="10%">24. FOB</td>
+                                        <td style="border-bottom: 1px solid;" width="5%">:</td>
+                                        <td style="border-bottom: 1px solid;" width="10%" style="border-right: 1px solid;"><?= $val['fob']; ?></td>
+                                        <td style="border-bottom: 1px solid;" width="10%">25. Freight</td>
+                                        <td style="border-bottom: 1px solid;" width="5%">:</td>
+                                        <td style="border-bottom: 1px solid;" width="10%" style="border-right: 1px solid;"><?= $val['freight']; ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border-bottom: 1px solid;" width="10%">26. Asuransi</td>
+                                        <td style="border-bottom: 1px solid;" width="5%">:</td>
+                                        <td style="border-bottom: 1px solid;" width="10%" style="border-right: 1px solid;"><?= $val['insurance']; ?></td>
+                                        <td style="border-bottom: 1px solid;" width="10%">27. CIF</td>
+                                        <td style="border-bottom: 1px solid;" width="5%">:</td>
+                                        <td style="border-bottom: 1px solid;" width="10%" style="border-right: 1px solid;"><?= $val['pabean_value']; ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="10%">28. Rp</td>
+                                        <td width="5%">:</td>
+                                        <td width="35%" colspan="4"><?= $val['total']; ?></td>
+                                    </tr>
+                                </table>
+                                <?php
+                            }
+                            break;
+                        }
+                        ?>
+                    
                     <table class="my-table">
                         <tr>
                             <td colspan="6" style="border-bottom: 1px solid;">H. HASIL PEMERIKSAAN/PENETAPAN PEJABAT BEA DAN CUKAI PELABUHAN PEMASUKAN</td>
@@ -282,34 +307,43 @@
                         </tr>
                         <?php
                         $no = 1;
-                        $last = count($items);
                         $bottom = 'border-bottom:1px solid;';
                         foreach ($items as $index => $val) {
-                        if ($index == ($last - 1)) {
-                            $bottom = '';
-                        }
+                        if ($num_items > 1) { ?>
+                            <tr>    
+                                <td colspan="6" class="center"><?= $num_items . ' (' . terbilang($num_items) .')';?> jenis barang, lihat lembar lanjutan</td>
+                            </tr>
+                            <?php
+                        } else { 
+                            if ($index == ($num_items - 1)) {
+                                $bottom = '';
+                            }
                         ?>
-                        <tr>
-                            <td style="border-right: 1px solid; <?=$bottom;?> text-align: center;" rowspan="5"><?= $no; ?></td>
-                            <td style="border-right: 1px solid; <?=$bottom;?>" rowspan="5"><?= $val['desc']; ?></td>
-                            <td style="border-right: 1px solid; <?=$bottom;?>" rowspan="5"><?= $val['pabean_value']; ?></td>
-                            <td rowspan="5" style="<?=$bottom;?>"></td>
-                            <td style="border-right: 1px solid; <?=$bottom;?>" rowspan="5"><?= $val['hs']; ?></td>
-                            <td style="<?=$bottom;?>">33. BM : <?= $val['bmIdr']; ?></td>
-                        </tr>
-                        <tr>
-                            <td style="<?=$bottom;?>">34. PPN : <?= $val['ppnIdr']; ?></td>
-                        </tr>
-                        <tr>
-                            <td style="<?=$bottom;?>">35. PPnBM : <?= $val['ppnbmIdr']; ?></td>
-                        </tr>
-                        <tr>
-                            <td style="<?=$bottom;?>">36. PPh : <?= $val['pphIdr']; ?></td>
-                        </tr>
-                        <tr>
-                            <td style="<?=$bottom;?>">37. Total : <?= $val['total']; ?></td>
-                        </tr>
-                        <?php $no++; } ?>
+                            <tr>
+                                <td style="border-right: 1px solid; <?=$bottom;?> text-align: center;" rowspan="5"><?= $no; ?></td>
+                                <td style="border-right: 1px solid; <?=$bottom;?>" rowspan="5"><?= $val['desc']; ?></td>
+                                <td style="border-right: 1px solid; <?=$bottom;?>" rowspan="5"><?= $val['pabean_value']; ?></td>
+                                <td rowspan="5" style="<?=$bottom;?>"></td>
+                                <td style="border-right: 1px solid; <?=$bottom;?>" rowspan="5"><?= $val['hs']; ?></td>
+                                <td style="<?=$bottom;?>">33. BM : <?= $val['bmIdr']; ?></td>
+                            </tr>
+                            <tr>
+                                <td style="<?=$bottom;?>">34. PPN : <?= $val['ppnIdr']; ?></td>
+                            </tr>
+                            <tr>
+                                <td style="<?=$bottom;?>">35. PPnBM : <?= $val['ppnbmIdr']; ?></td>
+                            </tr>
+                            <tr>
+                                <td style="<?=$bottom;?>">36. PPh : <?= $val['pphIdr']; ?></td>
+                            </tr>
+                            <tr>
+                                <td style="<?=$bottom;?>">37. Total : <?= $val['total']; ?></td>
+                            </tr>
+                        <?php
+                        }
+                        $no++;
+                        break; 
+                        } ?>
                     </table>
                     <table class="my-table">
                         <tr>
@@ -385,5 +419,178 @@
                 </td>
             </tr>
         </table>
+
+        <?php
+            /**
+             * if avail next page
+             */
+        if ($next_page) { ?>
+        <div class="pagebreak"></div>
+        <table style="font-size: 14px; width: 100%;">
+            <tr>
+                <td colspan="2">&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2" style="font-size: 12px; text-align: center;"><b>LEMBAR LANJUTAN<br />
+                    FORMULIR IMPOR SEMENTARA<br />
+                    BARANG PRIBADI PENUMPANG DAN BARANG PRIBADI AWAK SARANA PENGANGKUT
+                    </b>
+                </td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                    <table class="my-table" style="border-top: 1px solid;">
+                        <tr>
+                            <td colspan="3" style="text-align: right">Halaman ... dari ...</td>
+                        </tr>
+                        <tr>
+                            <td width="15%">Kantor Pabean Masuk</td>
+                            <td width="5%">:</td>
+                            <td width="80%"><?=$header->airport_in;?></td>
+                        </tr>
+                        <tr>
+                            <td>Nomor</td>
+                            <td>:</td>
+                            <td><?=$header->doc_number;?></td>
+                        </tr>
+                    </table>
+
+                    <table class="my-table">
+                        <tr>
+                            <td colspan="5" style="border-bottom: 1px solid;">E. DATA BARANG</td>
+                        </tr>
+                        <tr>
+                            <td width="5%" style="border-right: 1px solid;">17. No</td>
+                            <td width="25%" style="border-right: 1px solid;">18. Uraian Barang</td>
+                            <td width="25%" style="border-right: 1px solid;">19. Spesifikasi / Identitas Barang</td>
+                            <td width="25%" style="border-right: 1px solid;">20. Jumlah dan Jenis Satuan</td>
+                            <td width="20%">21. Perkiraan Nilai Barang (CIF)</td>
+                        </tr>
+                    </table>
+                        <?php
+                        $no_items = 1;
+                        foreach ($items as $val) { ?>
+                        <table class="my-table">
+                            <tr>    
+                                <td width="5%" class="center" style="border-right: 1px solid;"><?= $no_items; ?></td>
+                                <td width="25%" class="center" style="border-right: 1px solid;"><?= $val['name']; ?></td>
+                                <td width="25%" class="center" style="border-right: 1px solid;"><?= $val['description']; ?></td>
+                                <td width="25%" class="center" style="border-right: 1px solid;"><?= $val['quantity'] . ' ' . $val['package']; ?></td>
+                                <td width="20%" class="center"><?= $val['pabean_value']; ?></td>
+                            </tr>
+                        </table>
+                            <table class="my-table">
+                                <tr>
+                                    <td width="55%" style="border-right: 1px solid;">&nbsp;</td>
+                                    <td style="border-bottom: 1px solid;" width="5%">22. Valuta</td>
+                                    <td style="border-bottom: 1px solid;" width="5%">:</td>
+                                    <td style="border-bottom: 1px solid;" width="10%" style="border-right: 1px solid;"><?= setIdr(ceil($val['kurs'])); ?></td>
+                                    <td style="border-bottom: 1px solid;" width="10%">23. NDPBM</td>
+                                    <td style="border-bottom: 1px solid;" width="5%">:</td>
+                                    <td style="border-bottom: 1px solid;" width="10%" style="border-right: 1px solid;"><?= $val['pabean_value']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="55%" style="border-right: 1px solid;">&nbsp;</td>
+                                    <td style="border-bottom: 1px solid;">24. FOB</td>
+                                    <td style="border-bottom: 1px solid;">:</td>
+                                    <td style="border-bottom: 1px solid;" style="border-right: 1px solid;"><?= $val['fob']; ?></td>
+                                    <td style="border-bottom: 1px solid;">25. Freight</td>
+                                    <td style="border-bottom: 1px solid;">:</td>
+                                    <td style="border-bottom: 1px solid;" style="border-right: 1px solid;"><?= $val['freight']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="55%" style="border-right: 1px solid;">&nbsp;</td>
+                                    <td style="border-bottom: 1px solid;">26. Asuransi</td>
+                                    <td style="border-bottom: 1px solid;">:</td>
+                                    <td style="border-bottom: 1px solid;" style="border-right: 1px solid;"><?= $val['insurance']; ?></td>
+                                    <td style="border-bottom: 1px solid;">27. CIF</td>
+                                    <td style="border-bottom: 1px solid;">:</td>
+                                    <td style="border-bottom: 1px solid;" style="border-right: 1px solid;"><?= $val['pabean_value']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="55%" style="border-right: 1px solid;">&nbsp;</td>
+                                    <td width="10%">28. Rp</td>
+                                    <td width="5%">:</td>
+                                    <td width="35%" colspan="4"><?= $val['total']; ?></td>
+                                </tr>
+                            </table>
+                        <?php $no_items++; } ?>
+                        <table class="my-table">
+                            <tr>
+                                <td width="50%">&nbsp;</td>
+                                <td width="50%" class="center">
+                                        Dengan ini saya menyatakan bertanggung jawab atas
+                                        kebenaran hal-hal yang diberitahukan dalam dokumen ini <br />
+                                        Jakarta, Tgl <?= $new_date; ?><br />
+                                        Pemohon <br /><br /><br /><br />
+
+                                        (<?= $header->name; ?>)
+                                </td>
+                            </tr>
+                        </table>
+
+                    <table class="my-table">
+                        <tr>
+                            <td colspan="6" style="border-bottom: 1px solid;">H. HASIL PEMERIKSAAN/PENETAPAN PEJABAT BEA DAN CUKAI PELABUHAN PEMASUKAN</td>
+                        </tr>
+                        <tr>
+                            <td width="5%" style="border-bottom: 1px solid; border-right: 1px solid;">29. No</td>
+                            <td width="45%" style="border-bottom: 1px solid; border-right: 1px solid;">30. Uraian barang secara lengkap meliputi jenis,jumlah, merek, tipe, ukuran, dan spesifikasi lainnya</td>
+                            <td width="15%" style="border-bottom: 1px solid; border-right: 1px solid;">31. Nilai Pabean</td>
+                            <td width="5%" style="border-bottom: 1px solid;">32.</td>
+                            <td width="15%" style="border-bottom: 1px solid; border-right: 1px solid;">- Pos Tarif / HS <br /> - Tarif BM, Cukai, PPn, PPh, PPnBM</td>
+                            <td width="15%" style="border-bottom: 1px solid;">33. Dalam Rupiah (Rp)</td>
+                        </tr>
+                        <?php
+                        $no = 1;
+                        $bottom = 'border-bottom:1px solid;';
+                        foreach ($items as $index => $val) { 
+                            if ($index == ($num_items - 1)) {
+                                $bottom = '';
+                            }
+                        ?>
+                            <tr>
+                                <td style="border-right: 1px solid; <?=$bottom;?> text-align: center;" rowspan="5"><?= $no; ?></td>
+                                <td style="border-right: 1px solid; <?=$bottom;?>" rowspan="5"><?= $val['desc']; ?></td>
+                                <td style="border-right: 1px solid; <?=$bottom;?>" rowspan="5"><?= $val['pabean_value']; ?></td>
+                                <td rowspan="5" style="<?=$bottom;?>"></td>
+                                <td style="border-right: 1px solid; <?=$bottom;?>" rowspan="5"><?= $val['hs']; ?></td>
+                                <td style="<?=$bottom;?>">33. BM : <?= $val['bmIdr']; ?></td>
+                            </tr>
+                            <tr>
+                                <td style="<?=$bottom;?>">34. PPN : <?= $val['ppnIdr']; ?></td>
+                            </tr>
+                            <tr>
+                                <td style="<?=$bottom;?>">35. PPnBM : <?= $val['ppnbmIdr']; ?></td>
+                            </tr>
+                            <tr>
+                                <td style="<?=$bottom;?>">36. PPh : <?= $val['pphIdr']; ?></td>
+                            </tr>
+                            <tr>
+                                <td style="<?=$bottom;?>">37. Total : <?= $val['total']; ?></td>
+                            </tr>
+                        <?php
+                        $no++;
+                        }
+                        ?>
+                    </table>
+
+                    <table class="my-table">
+                        <tr>
+                            <td width="50%">&nbsp;</td>
+                            <td width="50%">
+                                    Jakarta, Tanggal <?= $new_date; ?><br />
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pejabat Bea dan cukai<br /><br /><br /><br /><br />
+                                    Nama&nbsp;&nbsp;&nbsp;: <?= $header->officer_name; ?><br />
+                                    NIP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <?= $header->officer_nip; ?>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <?php } ?>
+        <!-- end next page -->
     </body>
 </html>
