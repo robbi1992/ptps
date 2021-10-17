@@ -915,18 +915,16 @@
                                     <thead>
                                         <tr>
                                             <td>No</td>
+                                            <td>Deskripsi barang</td>
                                             <td>Jumlah</td>
-                                            <td>Kemasan</td>
-                                            <td>Bruto(Kg)</td>
-                                            <td>Deskripsi</td>
+                                            <td>Bea Masuk PDRI yang dijaminkan</td>
                                             <td>Lampiran</td>
                                         </tr>
                                         <tr class="d-none" template="reviewItemsBody">
                                             <td view="number"></td>
-                                            <td view="qty"></td>
-                                            <td view="package"></td>
-                                            <td view="bruto"></td>
                                             <td view="desc"></td>
+                                            <td view="qty"></td>
+                                            <td view="total"></td>
                                             <td view="attach">
                                                 <button view="itemFile" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i></button>
                                             </td>

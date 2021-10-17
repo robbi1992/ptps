@@ -138,22 +138,23 @@
                     var table = $('table[name="reviewItems"]');
                     var template = table.find('[template="reviewItemsBody"]');
                     var tbody = table.find('tbody').empty();
-                    
+                    var theTotal = 0;
                     $.each(result.items, function(index, value) {
                         var theDesc = value.hs + "<br />" + value.bmIdr + ' + ' + value.ppnIdr + ' + ' + value.ppnbmIdr + ' + ' + value.pphIdr
                         + ' = Rp. ' + value.total;
                         var row = template.clone().removeClass('d-none').removeAttr('template');
                         row.attr('id', value.item);
                         row.find('[view="number"]').html(index + 1);
-                        row.find('[view="qty"]').html(value.qty);
-                        row.find('[view="package"]').html(value.type);
-                        row.find('[view="name"]').html(value.name);
-                        row.find('[view="bruto"]').html(value.bruto);
-                        row.find('[view="desc"]').html(theDesc);
+                        row.find('[view="qty"]').html(value.qty + ' ' + value.type);
+                        row.find('[view="desc"]').html(value.desc);
+                        row.find('[view="total"]').html(theDesc);
                         Import.params.attachments = value.attachments;
                         row.find('[view="itemFile"]').on('click', Import.showAttachments);
                         row.appendTo(tbody);
+                        theTotal += parseInt(value.total.replace('.', ''));
                     });
+                    var total = '<tr><td colspan="3">Total</td><td colspan="2">Rp. '+Import.setIdr(theTotal)+'</td></tr>';
+                    tbody.append(total);
                     modal.modal('show');
                 }
             }).fail(function() {
