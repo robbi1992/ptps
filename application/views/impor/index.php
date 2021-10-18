@@ -787,6 +787,10 @@
                                     <input type="text" name="sourceNumber" class="form-control" id="sourceNumber" />
                                 </div>
                                 <div class="form-group">
+                                    <label for="sourceDate">Tanggal</label>
+                                    <input type="text" name="sourceDate" class="form-control bc-date" id="sourceDate" />
+                                </div>
+                                <div class="form-group">
                                     <label for="treasurerName">Nama Bendahara</label>
                                     <input type="text" name="treasurerName" class="form-control" id="treasurerName" />
                                 </div>

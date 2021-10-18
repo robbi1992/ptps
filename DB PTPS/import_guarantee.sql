@@ -11,7 +11,7 @@
  Target Server Version : 100119
  File Encoding         : 65001
 
- Date: 18/10/2021 10:13:04
+ Date: 18/10/2021 22:58:46
 */
 
 SET NAMES utf8mb4;
@@ -29,6 +29,7 @@ CREATE TABLE `import_guarantee` (
   `nominal` bigint(255) NOT NULL,
   `source` varchar(128) NOT NULL,
   `source_number` varchar(32) NOT NULL,
+  `source_date` date NOT NULL,
   `treasurer_name` varchar(128) NOT NULL,
   `treasurer_nip` varchar(32) NOT NULL,
   `doc_number` varchar(32) NOT NULL,
@@ -36,6 +37,6 @@ CREATE TABLE `import_guarantee` (
   PRIMARY KEY (`id`),
   KEY `im_guarantee_header_id_fk_import_id` (`header_id`),
   CONSTRAINT `im_guarantee_header_id_fk_import_id` FOREIGN KEY (`header_id`) REFERENCES `import` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
 
 SET FOREIGN_KEY_CHECKS = 1;

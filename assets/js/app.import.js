@@ -416,6 +416,7 @@
                     guaranteeNominal: $(this).find('input[name=guaranteeNominal]').val(),
                     source: $(this).find('input[name=source]').val(),
                     sourceNumber: $(this).find('input[name=sourceNumber]').val(),
+                    sourceDate: $(this).find('input[name=sourceDate]').val(),
                     treasurerName: $(this).find('input[name=treasurerName]').val(),
                     treasurerNip: $(this).find('input[name=treasurerNip]').val()
                 };

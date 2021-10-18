@@ -112,7 +112,7 @@
             <tr>
                 <td width="10%">&nbsp;</td>
                 <td width="45%"><?= $header['re_name']; ?></td>
-                <td width="45%"><?= $header['officer_name']; ?></td>
+                <td width="45%"><?= $_SESSION['users']['name']; ?></td>
             </tr>
         </table>
         <div class="full-width dashed-border"></div>

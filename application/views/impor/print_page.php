@@ -161,10 +161,14 @@
                 <td>:</td>
                 <td><?= $warrant->source_number; ?></td>
             </tr>
+            <?php
+            $source_date = explode('-', $warrant->source_date);
+            $sourceDate = $source_date[2] . ' ' . get_month($source_date[1]) . ' ' . $source_date[0];
+            ?>
             <tr>
                 <td>Tanggal</td>
                 <td>:</td>
-                <td><?= $new_date; ?></td>
+                <td><?= $sourceDate; ?></td>
             </tr>
         </table>
         <table class="my-table">

@@ -73,8 +73,8 @@
                             <td width="20%" style="border-right: 1px solid;"><?= $header->name;?></td>
                             <td width="5%">&nbsp;</td>
                             <td width="10%">Nomor</td>
-                            <td width="5%">:</td>
-                            <td width="30%"><?= $header->doc_number;?></td>
+                            <td width="2%">:</td>
+                            <td width="33%"><?= $header->doc_number;?></td>
                         </tr>
                         <tr>
                             <td>&nbsp;</td>
@@ -100,8 +100,9 @@
                             <td style="border-top: 1px solid; border-right: 1px solid;" colspan="4">DATA SPONSOR</td>
                             <td style="border-top: 1px solid;">10.</td>
                             <td style="border-top: 1px solid;">Invoice No</td>
-                            <td style="border-top: 1px solid;">: <?= $header->inv_number; ?></td>
-                            <td style="border-top: 1px solid; text-align: center;">Tgl. <?= date('d-m-Y', time($header->inv_date)); ?></td>
+                            <td style="border-top: 1px solid;">:</td>
+                            <td style="border-top: 1px solid;"> <?= $header->inv_number; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tgl. <?= date('d-m-Y', strtotime($header->inv_date)); ?></td>
                         </tr>
                         <tr>
                             <td>&nbsp;</td>
@@ -131,7 +132,7 @@
                             <td style="vertical-align: top; border-top: 1px solid;">12.</td>
                             <td style="border-top: 1px solid;">Perkiraan Tanggal Keluar</td>
                             <td style="border-top: 1px solid;">:</td>
-                            <td style="border-top: 1px solid;" colspan="2"><?= date('d-m-Y', time($header->inv_date_out)); ?></td>
+                            <td style="border-top: 1px solid;" colspan="2"><?= date('d-m-Y', strtotime($header->inv_date_out)); ?></td>
                         </tr>
                         <tr>
                             <td>&nbsp;</td>
@@ -179,35 +180,35 @@
                         <tr>
                             <td width="5%">&nbsp;</td>
                             <td width="5%">15.</td>
-                            <td width="15%">Melalui : </td>
+                            <td width="10%">Melalui : </td>
                             <td width="5%" class="center" style="border: 1px solid;"><?=$header->return_type;?></td>
-                            <td width="20%" style="border-right: 1px solid;">1. Diambil Sendiri</td>
+                            <td width="25%" style="border-right: 1px solid;">1. Diambil Sendiri</td>
                             <td width="5%">&nbsp;</td>
                             <td width="10%">Nomor</td>
                             <td width="5%">:</td>
                             <td width="30%"><?=$account->number;?></td>
                         </tr>
                         <tr>
-                            <td width="5%">&nbsp;</td>
-                            <td width="5%">&nbsp;</td>
-                            <td width="15%">&nbsp;</td>
-                            <td width="5%">&nbsp;</td>
-                            <td width="20%" style="border-right: 1px solid;">2. Sponsor</td>
-                            <td width="5%">&nbsp;</td>
-                            <td width="10%">Atas Nama</td>
-                            <td width="5%">:</td>
-                            <td width="30%"><?=$account->name;?></td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td style="border-right: 1px solid;">2. Sponsor</t>
+                            <td>&nbsp;</td>
+                            <td>Atas Nama</td>
+                            <td>:</td>
+                            <td><?=$account->name;?></td>
                         </tr>
                         <tr>
-                            <td width="5%">&nbsp;</td>
-                            <td width="5%">&nbsp;</td>
-                            <td width="15%">&nbsp;</td>
-                            <td width="5%">&nbsp;</td>
-                            <td width="20%" style="border-right: 1px solid;">3. Transfer Rekening</td>
-                            <td width="5%">&nbsp;</td>
-                            <td width="10%">Bank</td>
-                            <td width="5%">:</td>
-                            <td width="30%"><?=$account->bank;?></td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td style="border-right: 1px solid;">3. Transfer Rekening</td>
+                            <td>&nbsp;</td>
+                            <td>Bank</td>
+                            <td>:</td>
+                            <td><?=$account->bank;?></td>
                         </tr>
                     </table>
                     <table class="my-table">
@@ -215,11 +216,11 @@
                             <td colspan="5" style="border-bottom: 1px solid;">E. DATA BARANG</td>
                         </tr>
                         <tr>
-                            <td style="border-right: 1px solid;">17. No</td>
-                            <td style="border-right: 1px solid;">18. Uraian Barang</td>
-                            <td style="border-right: 1px solid;">19. Spesifikasi / Identitas Barang</td>
-                            <td style="border-right: 1px solid;">20. Jumlah dan Jenis Satuan</td>
-                            <td>21. Perkiraan Nilai Barang (CIF)</td>
+                            <td width="5%" style="border-right: 1px solid;">17. No</td>
+                            <td width="45%" style="border-right: 1px solid;">18. Uraian Barang</td>
+                            <td width="20%" style="border-right: 1px solid;">19. Spesifikasi / Identitas Barang</td>
+                            <td width="20%" style="border-right: 1px solid;">20. Jumlah dan Jenis Satuan</td>
+                            <td width="10%">21. Perkiraan Nilai Barang (CIF)</td>
                         </tr>
                         <?php
                         $created = explode(' ', $header->created_at);
@@ -377,18 +378,18 @@
                             <td width="45%">CATATAN PEJABAT BEA DAN CUKAI</td>
                         </tr>
                         <tr>
-                            <td width="5%">41.</td>
-                            <td width="10%">Nomor</td>
-                            <td width="5%">:</td>
-                            <td width="30%" style="border-right: 1px solid;">&nbsp;</td>
-                            <td width="50%" colspan="2">&nbsp;</td>
+                            <td>41.</td>
+                            <td>Nomor</td>
+                            <td>:</td>
+                            <td style="border-right: 1px solid;">&nbsp;</td>
+                            <td colspan="2">&nbsp;</td>
                         </tr>
                         <tr>
-                            <td style="border-bottom: 1px solid;" width="5%">42.</td>
-                            <td style="border-bottom: 1px solid;" width="10%">Tanggal</td>
-                            <td style="border-bottom: 1px solid;" width="5%">:</td>
+                            <td style="border-bottom: 1px solid;">42.</td>
+                            <td style="border-bottom: 1px solid;">Tanggal</td>
+                            <td style="border-bottom: 1px solid;">:</td>
                             <td style="border-bottom: 1px solid; border-right: 1px solid;" width="30%">&nbsp;</td>
-                            <td width="50%" colspan="2">&nbsp;</td>
+                            <td colspan="2">&nbsp;</td>
                         </tr>
                         <tr>
                             <td colspan="3">Jakarta, Tgl <?= $new_date; ?></td>
@@ -536,15 +537,16 @@
                         </tr>
                         <tr>
                             <td width="5%" style="border-bottom: 1px solid; border-right: 1px solid;">29. No</td>
-                            <td width="45%" style="border-bottom: 1px solid; border-right: 1px solid;">30. Uraian barang secara lengkap meliputi jenis,jumlah, merek, tipe, ukuran, dan spesifikasi lainnya</td>
+                            <td width="40%" style="border-bottom: 1px solid; border-right: 1px solid;">30. Uraian barang secara lengkap meliputi jenis,jumlah, merek, tipe, ukuran, dan spesifikasi lainnya</td>
                             <td width="15%" style="border-bottom: 1px solid; border-right: 1px solid;">31. Nilai Pabean</td>
                             <td width="5%" style="border-bottom: 1px solid;">32.</td>
                             <td width="15%" style="border-bottom: 1px solid; border-right: 1px solid;">- Pos Tarif / HS <br /> - Tarif BM, Cukai, PPn, PPh, PPnBM</td>
-                            <td width="15%" style="border-bottom: 1px solid;">33. Dalam Rupiah (Rp)</td>
+                            <td width="20%" style="border-bottom: 1px solid;">33. Dalam Rupiah (Rp)</td>
                         </tr>
                         <?php
                         $no = 1;
                         $bottom = 'border-bottom:1px solid;';
+                        $total = 0;
                         foreach ($items as $index => $val) { 
                             if ($index == ($num_items - 1)) {
                                 $bottom = '';
@@ -572,8 +574,13 @@
                             </tr>
                         <?php
                         $no++;
+                        $total += str_replace('.', '', $val['total']);
                         }
                         ?>
+                        <tr>
+                            <td style="border-top: 1px solid; border-right: 1px solid;" colspan="5">Total</td>
+                            <td style="border-top: 1px solid;"><?= setIdr($total); ?></td>
+                        </tr>
                     </table>
 
                     <table class="my-table">

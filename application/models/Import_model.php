@@ -41,6 +41,7 @@ class Import_model extends CI_Model {
     public function change_status($header_id) {
         $this->db->set('status', 2);
         $this->db->where('id', $header_id);
+        $this->db->where('status !=', 3);
         $this->db->update('import');
     }
 
@@ -167,6 +168,7 @@ class Import_model extends CI_Model {
         $this->db->set('nominal', $guar['guaranteeNominal']);
         $this->db->set('source', $guar['source']);
         $this->db->set('source_number', $guar['sourceNumber']);
+        $this->db->set('source_date', $guar['sourceDate']);
         $this->db->set('treasurer_name', $guar['treasurerName']);
         $this->db->set('treasurer_nip', $guar['treasurerNip']);
         $this->db->set('doc_number', $guarantee_number);
@@ -388,7 +390,7 @@ class Import_model extends CI_Model {
         $data = array();
         $this->db->select('A.doc_number, A.identity_type, A.doc_date, A.name, A.address, A.passport, A.officer_name, A.officer_nip,
             A.carrier_info, B.name AS airport_in, C.name AS airport_out, A.return_type, A.created_at, A.inv_date_out, A.re_doc_number,
-            A.periode, A.inv_number, A.inv_date, A.inv_date_out
+            A.periode, A.inv_number, A.inv_date
         ');
         $this->db->from('import A');
         $this->db->join('office B', 'A.airport_in = B.id');
@@ -397,7 +399,7 @@ class Import_model extends CI_Model {
         $data['header'] = $this->db->get()->row();
 
         // get guarantee
-        $this->db->select('type, name, address, nominal, treasurer_name, treasurer_nip, doc_number, source, source_number');
+        $this->db->select('type, name, address, nominal, treasurer_name, treasurer_nip, doc_number, source, source_number, source_date');
         $this->db->where('header_id', $header_id);
         $data['warrant'] = $this->db->get('import_guarantee')->row();
         
@@ -457,7 +459,7 @@ class Import_model extends CI_Model {
             $ppn += $ppnIdr;
             $ppnbm += $ppnbmIdr;
             $pph += $pphIdr;
-            $total += $bm + $ppn + $ppnbm + $pph; 
+            $total = $bm + $ppn + $ppnbm + $pph; 
             $bpj = array(
                 'desc' => $name, 'bmtax' => $bmtax, 'ppntax' => $ppntax, 'ppnbmtax' => $ppnbmtax, 'pphtax' => $pphtax,
                 'bm' => $bm, 'ppn' => $ppn, 'ppnbm' => $ppnbm, 'pph' => $pph, 'total' => $total
