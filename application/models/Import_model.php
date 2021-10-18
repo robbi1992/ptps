@@ -165,6 +165,8 @@ class Import_model extends CI_Model {
         $this->db->set('name', $guar['guaranteeName']);
         $this->db->set('address', $guar['guaranteeAddress']);
         $this->db->set('nominal', $guar['guaranteeNominal']);
+        $this->db->set('source', $guar['source']);
+        $this->db->set('source_number', $guar['sourceNumber']);
         $this->db->set('treasurer_name', $guar['treasurerName']);
         $this->db->set('treasurer_nip', $guar['treasurerNip']);
         $this->db->set('doc_number', $guarantee_number);
@@ -395,7 +397,7 @@ class Import_model extends CI_Model {
         $data['header'] = $this->db->get()->row();
 
         // get guarantee
-        $this->db->select('type, name, address, nominal, treasurer_name, treasurer_nip, doc_number');
+        $this->db->select('type, name, address, nominal, treasurer_name, treasurer_nip, doc_number, source, source_number');
         $this->db->where('header_id', $header_id);
         $data['warrant'] = $this->db->get('import_guarantee')->row();
         

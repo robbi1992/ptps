@@ -154,12 +154,12 @@
             <tr>
                 <td width="20%">Dokumen sumber penyerahan jaminan</td>
                 <td width="5%">:</td>
-                <td width="75%">&nbsp;</td>
+                <td width="75%"><?= $warrant->source; ?></td>
             </tr>
             <tr>
                 <td>Nomor</td>
                 <td>:</td>
-                <td>&nbsp;</td>
+                <td><?= $warrant->source_number; ?></td>
             </tr>
             <tr>
                 <td>Tanggal</td>

@@ -779,6 +779,14 @@
                                 </div>
                                  -->
                                 <div class="form-group">
+                                    <label for="source">Dokumen Sumber Penyerahan Jaminan 	</label>
+                                    <input type="text" name="source" class="form-control" id="source" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="sourceNumber">Nomor</label>
+                                    <input type="text" name="sourceNumber" class="form-control" id="sourceNumber" />
+                                </div>
+                                <div class="form-group">
                                     <label for="treasurerName">Nama Bendahara</label>
                                     <input type="text" name="treasurerName" class="form-control" id="treasurerName" />
                                 </div>
