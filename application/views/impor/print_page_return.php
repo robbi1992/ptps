@@ -80,8 +80,8 @@
             </tr>
             <tr>
                 <td>&nbsp;</td>
-                <td>5.</td>
-                <td>Jenis Barang</td>
+                <td>6.</td>
+                <td>Jumlah Barang</td>
                 <td>:</td>
                 <td><?= $items['bruto']; ?> KG</td>
             </tr>

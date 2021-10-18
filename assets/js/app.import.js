@@ -151,8 +151,9 @@
                         Import.params.attachments = value.attachments;
                         row.find('[view="itemFile"]').on('click', Import.showAttachments);
                         row.appendTo(tbody);
-                        theTotal += parseInt(value.total.replace('.', ''));
+                        theTotal += parseInt(value.total.replace(/\./g, ''));
                     });
+                    // console.log(theTotal);
                     var total = '<tr><td colspan="3">Total</td><td colspan="2">Rp. '+Import.setIdr(theTotal)+'</td></tr>';
                     tbody.append(total);
                     modal.modal('show');
@@ -510,7 +511,7 @@
                     name: itemName, quantity : itemTotal, package: itemPackage, category: itemCategory, bruto: itemBruto,
                     currency: itemCurrencyText, kurs: itemCurrency, description: itemDescription,
                     fob: fob, freight: freight, insurance: insurance,
-                    cif: cif, pabeanIn: Import.unsetIdr(pabeanIn), ppn: Import.unsetIdr(ppn), pph: Import.unsetIdr(pph), ppnbm: Import.unsetIdr(ppnbm),
+                    cif: cif, pabeanIn: Import.unsetIdr(pabeanIn), ppn: Import.unsetIdr(ppn), pph: pph, ppnbm: Import.unsetIdr(ppnbm),
                     freeIDR: freeIDR,
                     keyHeader: Import.params.keyHeaderPost, keyItem: Import.params.keyItemPost
                 };

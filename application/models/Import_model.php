@@ -470,6 +470,7 @@ class Import_model extends CI_Model {
                 'kurs' => $val['kurs'],
                 'fob' => $val['fob'],
                 'freight' => $val['freight'],
+                'currency' => $val['currency'],
                 'insurance' => $val['insurance'],
                 'pabean_value' => setIDR($multiplier),
                 'hs' => 'BM: ' . $val['bm_tax'] . '%, PPn: ' . $val['ppn_tax'] . '%, PPnbm: ' . $val['ppnbm_tax'] . '%, PPh: ' . $val['pph_tax'] . '%',

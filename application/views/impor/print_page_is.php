@@ -72,9 +72,9 @@
                             <td width="5%">:</td>
                             <td width="20%" style="border-right: 1px solid;"><?= $header->name;?></td>
                             <td width="5%">&nbsp;</td>
-                            <td width="15%">Nomor</td>
+                            <td width="10%">Nomor</td>
                             <td width="5%">:</td>
-                            <td width="25%"><?= $header->doc_number;?></td>
+                            <td width="30%"><?= $header->doc_number;?></td>
                         </tr>
                         <tr>
                             <td>&nbsp;</td>
@@ -183,9 +183,9 @@
                             <td width="5%" class="center" style="border: 1px solid;"><?=$header->return_type;?></td>
                             <td width="20%" style="border-right: 1px solid;">1. Diambil Sendiri</td>
                             <td width="5%">&nbsp;</td>
-                            <td width="15%">Nomor</td>
+                            <td width="10%">Nomor</td>
                             <td width="5%">:</td>
-                            <td width="25%"><?=$account->number;?></td>
+                            <td width="30%"><?=$account->number;?></td>
                         </tr>
                         <tr>
                             <td width="5%">&nbsp;</td>
@@ -194,9 +194,9 @@
                             <td width="5%">&nbsp;</td>
                             <td width="20%" style="border-right: 1px solid;">2. Sponsor</td>
                             <td width="5%">&nbsp;</td>
-                            <td width="15%">Atas Nama</td>
+                            <td width="10%">Atas Nama</td>
                             <td width="5%">:</td>
-                            <td width="25%"><?=$account->name;?></td>
+                            <td width="30%"><?=$account->name;?></td>
                         </tr>
                         <tr>
                             <td width="5%">&nbsp;</td>
@@ -205,9 +205,9 @@
                             <td width="5%">&nbsp;</td>
                             <td width="20%" style="border-right: 1px solid;">3. Transfer Rekening</td>
                             <td width="5%">&nbsp;</td>
-                            <td width="15%">Bank</td>
+                            <td width="10%">Bank</td>
                             <td width="5%">:</td>
-                            <td width="25%"><?=$account->bank;?></td>
+                            <td width="30%"><?=$account->bank;?></td>
                         </tr>
                     </table>
                     <table class="my-table">
@@ -245,7 +245,7 @@
                                     <td class="center" style="border-right: 1px solid; border-top: 1px solid;"><?= $val['name']; ?></td>
                                     <td class="center" style="border-right: 1px solid; border-top: 1px solid;"><?= $val['description']; ?></td>
                                     <td class="center" style="border-right: 1px solid; border-top: 1px solid;"><?= $val['quantity'] . ' ' . $val['package']; ?></td>
-                                    <td class="center" style="border-top: 1px solid;"><?= $val['pabean_value']; ?></td>
+                                    <td class="center" style="border-top: 1px solid;"><?= $val['fob']; ?></td>
                                 </tr>
                                 </table>
                                 <table class="my-table">
@@ -260,10 +260,10 @@
                                         </td>
                                         <td style="border-bottom: 1px solid;" width="10%">22. Valuta</td>
                                         <td style="border-bottom: 1px solid;" width="5%">:</td>
-                                        <td style="border-bottom: 1px solid;" width="10%" style="border-right: 1px solid;"><?= setIdr(ceil($val['kurs'])); ?></td>
+                                        <td style="border-bottom: 1px solid;" width="10%" style="border-right: 1px solid;"><?= $val['currency']; ?></td>
                                         <td style="border-bottom: 1px solid;" width="10%">23. NDPBM</td>
                                         <td style="border-bottom: 1px solid;" width="5%">:</td>
-                                        <td style="border-bottom: 1px solid;" width="10%" style="border-right: 1px solid;"><?= $val['pabean_value']; ?></td>
+                                        <td style="border-bottom: 1px solid;" width="10%" style="border-right: 1px solid;"><?= $val['kurs']; ?></td>
                                     </tr>
                                     <tr>
                                         <td style="border-bottom: 1px solid;" width="10%">24. FOB</td>
@@ -279,12 +279,12 @@
                                         <td style="border-bottom: 1px solid;" width="10%" style="border-right: 1px solid;"><?= $val['insurance']; ?></td>
                                         <td style="border-bottom: 1px solid;" width="10%">27. CIF</td>
                                         <td style="border-bottom: 1px solid;" width="5%">:</td>
-                                        <td style="border-bottom: 1px solid;" width="10%" style="border-right: 1px solid;"><?= $val['pabean_value']; ?></td>
+                                        <td style="border-bottom: 1px solid;" width="10%" style="border-right: 1px solid;"><?= $val['fob'] + $val['freight'] + $val['insurance'] ; ?></td>
                                     </tr>
                                     <tr>
                                         <td width="10%">28. Rp</td>
                                         <td width="5%">:</td>
-                                        <td width="35%" colspan="4"><?= $val['total']; ?></td>
+                                        <td width="35%" colspan="4"><?= $val['pabean_value']; ?></td>
                                     </tr>
                                 </table>
                                 <?php
@@ -477,7 +477,7 @@
                                 <td width="25%" class="center" style="border-right: 1px solid;"><?= $val['name']; ?></td>
                                 <td width="25%" class="center" style="border-right: 1px solid;"><?= $val['description']; ?></td>
                                 <td width="25%" class="center" style="border-right: 1px solid;"><?= $val['quantity'] . ' ' . $val['package']; ?></td>
-                                <td width="20%" class="center"><?= $val['pabean_value']; ?></td>
+                                <td width="20%" class="center"><?= $val['fob']; ?></td>
                             </tr>
                         </table>
                             <table class="my-table">
@@ -485,10 +485,10 @@
                                     <td width="55%" style="border-right: 1px solid;">&nbsp;</td>
                                     <td style="border-bottom: 1px solid;" width="5%">22. Valuta</td>
                                     <td style="border-bottom: 1px solid;" width="5%">:</td>
-                                    <td style="border-bottom: 1px solid;" width="10%" style="border-right: 1px solid;"><?= setIdr(ceil($val['kurs'])); ?></td>
+                                    <td style="border-bottom: 1px solid;" width="10%" style="border-right: 1px solid;"><?= $val['currency']; ?></td>
                                     <td style="border-bottom: 1px solid;" width="10%">23. NDPBM</td>
                                     <td style="border-bottom: 1px solid;" width="5%">:</td>
-                                    <td style="border-bottom: 1px solid;" width="10%" style="border-right: 1px solid;"><?= $val['pabean_value']; ?></td>
+                                    <td style="border-bottom: 1px solid;" width="10%" style="border-right: 1px solid;"><?= $val['kurs']; ?></td>
                                 </tr>
                                 <tr>
                                     <td width="55%" style="border-right: 1px solid;">&nbsp;</td>
@@ -506,13 +506,13 @@
                                     <td style="border-bottom: 1px solid;" style="border-right: 1px solid;"><?= $val['insurance']; ?></td>
                                     <td style="border-bottom: 1px solid;">27. CIF</td>
                                     <td style="border-bottom: 1px solid;">:</td>
-                                    <td style="border-bottom: 1px solid;" style="border-right: 1px solid;"><?= $val['pabean_value']; ?></td>
+                                    <td style="border-bottom: 1px solid;" style="border-right: 1px solid;"><?= $val['fob'] + $val['freight'] + $val['insurance']; ?></td>
                                 </tr>
                                 <tr>
                                     <td width="55%" style="border-right: 1px solid;">&nbsp;</td>
                                     <td width="10%">28. Rp</td>
                                     <td width="5%">:</td>
-                                    <td width="35%" colspan="4"><?= $val['total']; ?></td>
+                                    <td width="35%" colspan="4"><?= $val['pabean_value']; ?></td>
                                 </tr>
                             </table>
                         <?php $no_items++; } ?>
