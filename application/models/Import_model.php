@@ -299,11 +299,12 @@ class Import_model extends CI_Model {
         $result = array(
             'header' => array(),
             'items' => array(),
-            'account' => array()
+            'account' => array(),
+            'sponsor' => array()
         );
         
         $this->db->select('A.doc_number, A.identity_type, A.doc_date, A.name, A.address, A.passport, A.periode, A.inv_number,
-            A.return_type, B.name AS airport_in, C.name AS airport_out, A.inv_date, A.carrier_info, A.periode
+            A.return_type, B.name AS airport_in, C.name AS airport_out, A.inv_date, A.carrier_info, A.periode, A.inv_date_out
         ');
         $this->db->from('import A');
         $this->db->join('office B', 'A.airport_in = B.id');
@@ -324,7 +325,8 @@ class Import_model extends CI_Model {
             'inv_number' => $data_header['inv_number'],
             'inv_date' => $data_header['inv_date'],
             'carrier' => $data_header['carrier_info'],
-            'periode' => $data_header['periode']
+            'periode' => $data_header['periode'],
+            'date_out' => date('d M Y', strtotime($data_header['inv_date_out']))
         );
         // account
         $this->db->select('name, number, bank');
@@ -384,9 +386,16 @@ class Import_model extends CI_Model {
             }
         }
 
+        // get sponsor
+        $this->db->select('location, reason');
+        $this->db->where('header_id', $header_id);
+        $sponsor = $this->db->get('import_sponsor')->row_array();
+
+
         $result['header'] = $header;
         $result['items'] = array_values($items);
         $result['account'] = $account;
+        $result['sponsor'] = $sponsor;
         return $result;
     }
 

@@ -875,6 +875,26 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                                <h5>Data Sponsor</h5><hr />
+                                <table class="table table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <td>Lokasi Penggunaan</td>
+                                            <td class="text-center">:</td>
+                                            <td><span view="use_location"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tujuan Penggunaan</td>
+                                            <td class="text-center">:</td>
+                                            <td><span view="use_reason"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tamggal Perkiraan Keluar</td>
+                                            <td class="text-center">:</td>
+                                            <td><span view="date_out"></span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                             <!-- end col md 6 -->
                             <div class="col-md-6">

@@ -134,6 +134,10 @@
                     modal.find('[view="account_name"]').html(result.account.name);
                     modal.find('[view="account_bank"]').html(result.account.bank);
 
+                    modal.find('[view="use_location"]').html(result.sponsor.location);
+                    modal.find('[view="use_reason"]').html(result.sponsor.reason);
+                    modal.find('[view="date_out"]').html(result.header.date_out);
+
                     // items
                     var table = $('table[name="reviewItems"]');
                     var template = table.find('[template="reviewItemsBody"]');
