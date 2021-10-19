@@ -24,9 +24,10 @@ class Import extends MY_Controller {
 		 // Close request to clear up some resources
 		 curl_close($curl);
 	 
-		 $kurs= json_decode($resp);
-		//  exit();
-		return $kurs->data;
+		$data = json_decode($resp);
+		if ($data) $kurs = $kurs->data;
+
+		return $kurs;
 	}
 
 	private function change_status_import($header) {

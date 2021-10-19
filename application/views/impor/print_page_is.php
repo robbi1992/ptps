@@ -348,9 +348,9 @@
                     </table>
                     <table class="my-table">
                         <tr>
-                            <td widht="30%" style="border-right: 1px solid;">38. Bukti Penerimaan Jaminan (BPJ) No. : <?= $header->re_doc_number; ?></td>
-                            <td widht="15%" style="border-right: 1px solid;">Tanggal : <?= $new_date; ?></td>
-                            <td widht="50%">39. Jangka Waktu Izin Impor Sementara : <?= $header->periode; ?> Hari</td>
+                            <td style="border-right: 1px solid; width: 30%;">38. Bukti Penerimaan Jaminan (BPJ) No. : <?= $header->re_doc_number; ?></td>
+                            <td style="border-right: 1px solid; width: 20%;">Tanggal : <?= $new_date; ?></td>
+                            <td>39. Jangka Waktu Izin Impor Sementara : <?= $header->periode; ?> Hari</td>
                         </tr>
                     </table>
                     <table class="my-table">

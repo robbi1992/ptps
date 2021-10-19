@@ -146,7 +146,8 @@
                         row.attr('id', value.item);
                         row.find('[view="number"]').html(index + 1);
                         row.find('[view="qty"]').html(value.qty + ' ' + value.type);
-                        row.find('[view="desc"]').html(value.desc);
+                        row.find('[view="desc"]').html(value.name + ' ' + value.desc);
+                        row.find('[view="itemValue"]').html(value.cif + ' ' + value.currency + ' / Rp. ' + value.itemValue);
                         row.find('[view="total"]').html(theDesc);
                         Import.params.attachments = value.attachments;
                         row.find('[view="itemFile"]').on('click', Import.showAttachments);
@@ -154,7 +155,7 @@
                         theTotal += parseInt(value.total.replace(/\./g, ''));
                     });
                     // console.log(theTotal);
-                    var total = '<tr><td colspan="3">Total</td><td colspan="2">Rp. '+Import.setIdr(theTotal)+'</td></tr>';
+                    var total = '<tr><td colspan="4">Total</td><td colspan="2">Rp. '+Import.setIdr(theTotal)+'</td></tr>';
                     tbody.append(total);
                     modal.modal('show');
                 }
@@ -507,6 +508,7 @@
                     ppnbm = $(this).find('[name="itemPpnbm"]').val(),
                     fine = $(this).find('[name="itemFine"]').val(),
                     free = $(this).find('[name="itemFree"]').val(),
+                    freeCurrency = $(this).find('[name="itemFreeCurrency"]').val(),
                     freeIDR = Import.unsetIdr($(this).find('[name="itemFreeIDR"]').val());
                     // console.log(itemPackage);
                     // return false;
@@ -558,7 +560,7 @@
                         var pabeanValue = parseInt(itemCurrency) * parseInt(cif);
                         row.find('[view="imHscode"]').html(hscode);
                         row.find('[view="imPabean"]').html(Import.setIdr(pabeanValue));
-                        row.find('[view="imFree"]').html(free + ' USD');
+                        row.find('[view="imFree"]').html(free + ' ' + freeCurrency);
                         // row.find('[view="imPackage"]').attr('im-value', itemPackage);
                         var bmValue = Math.ceil((((pabeanValue - parseInt(freeIDR)) * parseFloat(pabeanIn)) / 100) / 1000) * 1000;
                         var ppnValue = Math.ceil((((pabeanValue - parseInt(freeIDR) + bmValue) * parseFloat(ppn)) / 100) / 1000) * 1000;
@@ -764,7 +766,9 @@
                 insurance = parseInt($('#itemInsurance').val()),
                 kurs = parseFloat($('#itemKurs').val()),
                 free = parseInt($('#itemFree').val()),
-                usd = parseFloat($('#itemFree').attr('value-kurs')),
+                // currency by selector not attr anymoe
+                // usd = parseFloat($('#itemFree').attr('value-kurs')),
+                usd = parseFloat($('#itemFreeCurrency').val()),
                 freeIDR = free * usd;
 
                 var cif = fob + freight + insurance;

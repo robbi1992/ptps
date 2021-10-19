@@ -192,7 +192,7 @@
                 <td width="45%">Jakarta, <?= $new_date; ?></td>
             </tr>
             <tr>
-                <td width="30%">- Tanggal jatuh tempo: <?php echo date('d-m-Y', time($header->inv_date_out));?></td>
+                <td width="30%">- Tanggal jatuh tempo: <?php echo date('d-m-Y', strtotime($header->inv_date_out));?></td>
                 <td width="5%">&nbsp;</td>
                 <td width="20%" style="border-right: 1px solid;"></td>
                 <td width="45%">&nbsp;</td>

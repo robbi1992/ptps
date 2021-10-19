@@ -332,7 +332,7 @@ class Import_model extends CI_Model {
         $account = $this->db->get('import_account')->row_array();
 
         $this->db->select('A.id AS item_id, A.name, A.quantity, A.bruto, A.description, B.name AS package, A.kurs, A.bm_tax,
-            A.cif, A.free, A.ppn_tax, A.pph_tax, A.ppnbm_tax, A.fob, A.freight, A.insurance
+            A.cif, A.free, A.ppn_tax, A.pph_tax, A.ppnbm_tax, A.fob, A.freight, A.insurance, A.currency
         ');
         $this->db->from('import_items A');
         $this->db->join('quantity_type B', 'A.package_type = B.id');
@@ -341,6 +341,7 @@ class Import_model extends CI_Model {
         $items = array();
         $items_key = array();
         foreach ($data_items as $val) {
+            // nilai barang is cif * kurs
             $pabean_value = round($val['cif'] * $val['kurs']);
             $free = $val['free'];
             // nilai pabean = nilai paben - pembebasan
@@ -362,6 +363,9 @@ class Import_model extends CI_Model {
                 'bruto' => $val['bruto'],
                 'desc' => $val['description'],
                 'type' => $val['package'],
+                'itemValue' => setIdr($pabean_value),
+                'cif' => $val['cif'],
+                'currency' => $val['currency'],
                 'hs' => 'BM: ' . $val['bm_tax'] . '%, PPn: ' . $val['ppn_tax'] . '%, PPnbm: ' . $val['ppnbm_tax'] . '%, PPh: ' . $val['pph_tax'] . '%',
                 'bmIdr' => setIDR($bmIdr), 'ppnIdr' => setIDR($ppnIdr), 'ppnbmIdr' => setIDR($ppnbmIdr), 'pphIdr' => setIDR($pphIdr),
                 'total' => setIDR($bmIdr + $ppnIdr + $ppnbmIdr + $pphIdr),

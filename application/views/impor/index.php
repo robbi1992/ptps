@@ -584,15 +584,30 @@
                                     <input type="text" name="itemKurs" class="form-control" id="itemKurs" value="0" readonly />
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
-                                            <label for="itemFree">Pembebasan (USD)</label>
+                                            <label for="itemFreeCurrency">Mata Uang</label>
+                                            <select name="itemFreeCurrency" id="itemFreeCurrency" class="form-control selectpicker" data-size="7" data-live-search="true">
+                                                <option value="">-- Pilih --</option>
+                                                <?php
+                                                foreach ($kurs as $val) {
+                                                ?>
+                                                    <option value="<?=$val->kurs_idr;?>"><?=$val->kode_valas;?></option>
+                                                <?php
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="itemFree">Pembebasan</label>
                                             <input type="text" name="itemFree" class="form-control" id="itemFree" value-kurs="<?= $kurs_usd; ?>" value="0" />
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                    <div class="form-group">
-                                            <label for="itemFreeIDR">Pembebasan (IDR)</label>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="itemFreeIDR">IDR</label>
                                             <input type="text" name="itemFreeIDR" class="form-control" id="itemFreeIDR" value="0" readonly />
                                         </div>
                                     </div>
@@ -929,6 +944,7 @@
                                             <td>No</td>
                                             <td>Deskripsi barang</td>
                                             <td>Jumlah</td>
+                                            <td>Nilai Barang</td>
                                             <td>Bea Masuk PDRI yang dijaminkan</td>
                                             <td>Lampiran</td>
                                         </tr>
@@ -936,6 +952,7 @@
                                             <td view="number"></td>
                                             <td view="desc"></td>
                                             <td view="qty"></td>
+                                            <td view="itemValue"></td>
                                             <td view="total"></td>
                                             <td view="attach">
                                                 <button view="itemFile" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i></button>

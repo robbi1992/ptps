@@ -104,7 +104,7 @@
                                         <i class="menu-bullet menu-bullet-dot">
                                             <span></span>
                                         </i>
-                                        <span class="menu-text">Temporary Import</span>
+                                        <span class="menu-text">Impor Sementara</span>
                                     </a>
                                 </li>
                             </ul>
