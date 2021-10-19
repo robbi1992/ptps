@@ -13,19 +13,19 @@ class Import extends MY_Controller {
 		if (empty($id)) $host = 'https://api-patops.bcsoetta.org/kurs?number=150';
 		else $host = 'https://api-patops.bcsoetta.org/kurs?id=1131';
 		 // Get cURL resource
-		 $curl = curl_init();
+		$curl = curl_init();
 		 // Set some options - we are passing in a useragent too here
-		 curl_setopt_array($curl, array(
-			 CURLOPT_RETURNTRANSFER => 1,
-			 CURLOPT_URL => $host
-		 ));
+		curl_setopt_array($curl, array(
+			CURLOPT_RETURNTRANSFER => 1,
+			CURLOPT_URL => $host
+		));
 		 // Send the request & save response to $resp
-		 $resp = curl_exec($curl);
+		$resp = curl_exec($curl);
 		 // Close request to clear up some resources
-		 curl_close($curl);
+		curl_close($curl);
 	 
 		$data = json_decode($resp);
-		if ($data) $kurs = $kurs->data;
+		if ($data) $kurs = $data->data;
 
 		return $kurs;
 	}
