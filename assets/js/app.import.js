@@ -56,6 +56,74 @@
             var salt = 100*99*98*1*2*3;
             return salt * data;
         },
+        renderItemTemp: function(data) {
+            Import.params.bm = 0;
+            Import.params.ppn = 0;
+            Import.params.pph = 0;
+            Import.params.ppnbm = 0;
+            Import.params.fine = 0;
+            Import.params.total = 0;
+            
+            var importTable = $('table[name="importTable"]'),
+                template = importTable.find('[template="importTableBody"]'),
+                rows = importTable.find('tbody').empty();
+            $.each(data, function(index, value) {
+                var row = template.clone().removeClass('d-none').removeAttr('template');
+                row.attr('id', value.id);
+                row.find('[view="imName"]').html(value.name);
+                row.find('[view="imQty"]').html(value.quantity);
+                var hscode = 'BM: ' + value.bm_tax + '%<br /> Ppn: ' + value.ppn_tax + '%<br /> Pph: ' + value.pph_tax + '%<br /> Ppnbm: ' + value.ppnbm_tax + '%<br /> Denda: ' +  value.fine_tax + '%';
+                row.find('[view="imHscode"]').html(hscode);
+                var pabeanValue = Math.round(value.kurs * value.cif);
+                row.find('[view="imPabean"]').html(Import.setIdr(pabeanValue));
+                row.find('[view="imFree"]').html(value.free_value + ' ' + value.free_currency);
+                var bmValue = Math.ceil((((pabeanValue - value.free) * value.bm_tax) / 100) / 1000) * 1000;
+                var ppnValue = Math.ceil((((pabeanValue - value.free + bmValue) * value.ppn_tax) / 100) / 1000) * 1000;
+                var pphValue = Math.ceil((((pabeanValue - value.free + bmValue) * value.pph_tax) / 100) / 1000) * 1000;
+                var ppnbmValue = Math.ceil((((pabeanValue - value.free + bmValue) * value.ppnbm_tax) / 100) / 1000) * 1000;
+                var fineValue = (bmValue * value.fine_tax) / 100;
+                var collect = 'BM: ' + Import.setIdr(bmValue) + '<br /> Ppn: ' + Import.setIdr(ppnValue) + '<br /> Pph: ' + Import.setIdr(pphValue) + '<br /> Ppnbm: ' + Import.setIdr(ppnbmValue) + '<br /> Denda: ' + Import.setIdr(fineValue);
+                row.find('[view="imCollect"]').html(collect);
+                row.find('[view="actionItemDelete"]').on('click', Import.removeItemTemp);
+
+                row.appendTo(rows);
+
+                Import.params.bm += bmValue;
+                Import.params.ppn += ppnValue;
+                Import.params.pph += pphValue;
+                Import.params.ppnbm += ppnbmValue;
+                Import.params.fine += fineValue;
+                var totalValue = Import.params.bm + Import.params.ppn + Import.params.pph + Import.params.ppnbm + Import.params.fine;
+                Import.params.total = totalValue;
+            });
+
+            var summaryTable = $('table[name="importSummaryTable"]');
+            summaryTable.find('[view="summBM"]').html(Import.setIdr(Import.params.bm));
+            summaryTable.find('[view="summPpn"]').html(Import.setIdr(Import.params.ppn));
+            summaryTable.find('[view="summPph"]').html(Import.setIdr(Import.params.pph));
+            summaryTable.find('[view="summPpnbm"]').html(Import.setIdr(Import.params.ppnbm));
+            summaryTable.find('[view="summFine"]').html(Import.setIdr(Import.params.fine));
+            summaryTable.find('[view="summTotal"]').html(Import.setIdr(Import.params.total));
+            $('form[name="guaranteeForm"]').find('input[name=guaranteeNominal]').val(Import.params.total);
+        },
+        removeItemTemp: function() {
+            var row = $(this).closest('tr'),
+            data = row.attr('id');
+            var params = { params: {
+                itemID: data, keyHeader: Import.params.keyHeaderPost
+            }};
+
+            $.ajax({
+                url: '/import/delete_item_temp',
+                type: 'post',
+                dataType: 'json',
+                data: JSON.stringify(params)
+            }).done(function(result) {
+                Import.renderItemTemp(result.data);
+            }).fail(function() {
+                alert('terjadi kesalahan, coba lagi nanti..');
+            });
+        },
         deleteData: function() {
             var row = $(this).closest('tr'),
             data = row.attr('id'),
@@ -340,7 +408,9 @@
                 data: formData,
                 type: 'post'
             }).done(function (result) {
-                    
+                if (!result.status) {
+                    alert(result.error_msg);
+                }
             }).always(function() {
                 // $('form[name="addItemForm"]').find('button').removeAttr('disabled');
             });
@@ -513,6 +583,7 @@
                     fine = $(this).find('[name="itemFine"]').val(),
                     free = $(this).find('[name="itemFree"]').val(),
                     freeCurrency = $(this).find('[name="itemFreeCurrency"]').val(),
+                    freeCurrencyText = $(this).find('[name="itemFreeCurrency"] option:selected').text(),
                     freeIDR = Import.unsetIdr($(this).find('[name="itemFreeIDR"]').val());
                     // console.log(itemPackage);
                     // return false;
@@ -520,8 +591,8 @@
                     name: itemName, quantity : itemTotal, package: itemPackage, category: itemCategory, bruto: itemBruto,
                     currency: itemCurrencyText, kurs: itemCurrency, description: itemDescription,
                     fob: fob, freight: freight, insurance: insurance,
-                    cif: cif, pabeanIn: Import.unsetIdr(pabeanIn), ppn: Import.unsetIdr(ppn), pph: pph, ppnbm: Import.unsetIdr(ppnbm),
-                    freeIDR: freeIDR,
+                    cif: cif, pabeanIn: pabeanIn, ppn: ppn, pph: pph, ppnbm: ppnbm, fine: fine,
+                    freeIDR: freeIDR, free_value: free, free_currency: freeCurrencyText,
                     keyHeader: Import.params.keyHeaderPost, keyItem: Import.params.keyItemPost
                 };
                 
@@ -551,46 +622,9 @@
                             Import.verifyUpload(fileData3);
                         }
 
-                        // show to table
-                        var result = $('table[name="importTable"]'),
-                            template = result.find('[template="importTableBody"]'),
-                            rows = result.find('tbody');
-                        
-                        var row = template.clone().removeClass('d-none').removeAttr('template');
-                        row.find('[view="imName"]').html(itemName);
-                        row.find('[view="imQty"]').html(itemTotal);
-                        // hscode view = bm, ppn, pph
-                        var hscode = 'BM: ' + pabeanIn + '%<br /> Ppn: ' + ppn + '%<br /> Pph: ' + pph + '%<br /> Ppnbm: ' + ppnbm + '%<br /> Denda: ' +  fine + '%';
-                        var pabeanValue = parseInt(itemCurrency) * parseInt(cif);
-                        row.find('[view="imHscode"]').html(hscode);
-                        row.find('[view="imPabean"]').html(Import.setIdr(pabeanValue));
-                        row.find('[view="imFree"]').html(free + ' ' + freeCurrency);
-                        // row.find('[view="imPackage"]').attr('im-value', itemPackage);
-                        var bmValue = Math.ceil((((pabeanValue - parseInt(freeIDR)) * parseFloat(pabeanIn)) / 100) / 1000) * 1000;
-                        var ppnValue = Math.ceil((((pabeanValue - parseInt(freeIDR) + bmValue) * parseFloat(ppn)) / 100) / 1000) * 1000;
-                        var pphValue = Math.ceil((((pabeanValue - parseInt(freeIDR) + bmValue) * parseFloat(pph)) / 100) / 1000) * 1000;
-                        var ppnbmValue = Math.ceil((((pabeanValue - parseInt(freeIDR) + bmValue) * parseFloat(ppnbm)) / 100) / 1000) * 1000;
-                        var fineValue = (bmValue * fine) / 100;
-                        var collect = 'BM: ' + Import.setIdr(bmValue) + '<br /> Ppn: ' + Import.setIdr(ppnValue) + '<br /> Pph: ' + Import.setIdr(pphValue) + '<br /> Ppnbm: ' + Import.setIdr(ppnbmValue) + '<br /> Denda: ' + Import.setIdr(fineValue);
-                        row.find('[view="imCollect"]').html(collect);
-                        Import.params.bm += bmValue;
-                        Import.params.ppn += ppnValue;
-                        Import.params.pph += pphValue;
-                        Import.params.ppnbm += ppnbmValue;
-                        Import.params.fine += fineValue;
-                        var totalValue = Import.params.bm + Import.params.ppn + Import.params.pph + Import.params.ppnbm + Import.params.fine;
-                        Import.params.total = totalValue;
-                        row.appendTo(rows);
+                        // get data from server then render it
+                        Import.renderItemTemp(result.data);
 
-                        var summaryTable = $('table[name="importSummaryTable"]');
-                        summaryTable.find('[view="summBM"]').html(Import.setIdr(Import.params.bm));
-                        summaryTable.find('[view="summPpn"]').html(Import.setIdr(Import.params.ppn));
-                        summaryTable.find('[view="summPph"]').html(Import.setIdr(Import.params.pph));
-                        summaryTable.find('[view="summPpnbm"]').html(Import.setIdr(Import.params.ppnbm));
-                        summaryTable.find('[view="summFine"]').html(Import.setIdr(Import.params.fine));
-                        summaryTable.find('[view="summTotal"]').html(Import.setIdr(Import.params.total));
-                        
-                        $('form[name="guaranteeForm"]').find('input[name=guaranteeNominal]').val(Import.params.total);
                         $('#addItemModal').modal('hide');
                     }
                 }).fail(function() {
@@ -773,7 +807,7 @@
                 // currency by selector not attr anymoe
                 // usd = parseFloat($('#itemFree').attr('value-kurs')),
                 usd = parseFloat($('#itemFreeCurrency').val()),
-                freeIDR = free * usd;
+                freeIDR = Math.round(free * usd);
 
                 var cif = fob + freight + insurance;
                 $('#itemCif').val(cif);

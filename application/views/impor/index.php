@@ -417,6 +417,7 @@
                                                 <th>Nilai Pabean (CIF)</th>
                                                 <th>Pembebasan</th>
                                                 <th>Jml BM PDRI</th>
+                                                <th>Aksi</th>
                                             </tr>
                                             <tr class="d-none" template="importTableBody">
                                                 <!-- <td view="imNumber"></td> -->
@@ -426,6 +427,9 @@
                                                 <td view="imPabean"></td>
                                                 <td view="imFree"></td>
                                                 <td view="imCollect"></td>
+                                                <td>
+                                                    <button view="actionItemDelete" class="btn btn-sm btn-danger"><i class="fa fa-minus"></i></button>
+                                                </td>
                                             </tr>
                                         </thead>
                                         <tbody><!-- Appended by Ajax --></tbody>

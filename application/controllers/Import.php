@@ -185,4 +185,13 @@ class Import extends MY_Controller {
 		// print_r($data); exit();
 		$this->load->view('impor/print_page_return', $data);
 	}
+
+	public function delete_item_temp() {
+		$params = json_decode($this->input->raw_input_stream, TRUE);
+		$delete_data =  $this->import_model->delete_item_temp($params['params']);
+		
+		$this->output
+			->set_content_type('application/json')
+			->set_output(json_encode($delete_data));
+	}
 }

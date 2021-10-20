@@ -193,6 +193,9 @@ class Import_model extends CI_Model {
                 $this->db->set('insurance', $val['insurance']);
                 $this->db->set('cif', $val['cif']);
                 $this->db->set('free', $val['free']);
+                $this->db->set('fine_tax', $val['fine_tax']);
+                $this->db->set('free_value', $val['free_value']);
+                $this->db->set('free_currency', $val['free_currency']);
                 $this->db->set('bm_tax', $val['bm_tax']);
                 $this->db->set('ppn_tax', $val['ppn_tax']);
                 $this->db->set('pph_tax', $val['pph_tax']);
@@ -243,7 +246,20 @@ class Import_model extends CI_Model {
         return $return_status;
     }
 
+    public function delete_item_temp($params) {
+        $return = array();
+        $this->db->where('id', $params['itemID']);
+        $is_deleted = $this->db->delete('import_items_temp');
+
+        if ($is_deleted) {
+            $this->db->where('key_header', $params['keyHeader']);
+            $return['data'] = $this->db->get('import_items_temp')->result_array();
+        }
+        return $return;
+    }
+
     public function save_item_temp($val) {
+        $result = array();
         $dataItems = array(
             'name' => $val['name'],
             'quantity' => $val['quantity'],
@@ -260,12 +276,21 @@ class Import_model extends CI_Model {
             'ppn_tax' => $val['ppn'],
             'pph_tax' => $val['pph'],
             'ppnbm_tax' => $val['ppnbm'],
+            'fine_tax' => $val['fine'],
+            'free_value' => $val['free_value'],
+            'free_currency' => $val['free_currency'],
             'key_header' => $val['keyHeader'],
             'key_item' => $val['keyItem'],
             'description' => $val['description']
         );
+        $insert = $this->db->insert('import_items_temp', $dataItems);
 
-        return $this->db->insert('import_items_temp', $dataItems);
+        if ($insert) {
+            $this->db->where('key_header', $val['keyHeader']);
+            $result['data'] = $this->db->get('import_items_temp')->result_array();
+        }
+        
+        return $result;
     }
 
     public function save_item_attachment_temp($fileName, $key) {
