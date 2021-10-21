@@ -18,3 +18,4 @@ application/logs/*
 
 #custom rules
 assets/custom/*
+application/libraries/*

@@ -412,7 +412,7 @@
                 <td width="85%"><?= date('Y-m-d'); ?></td>
             </tr>
             <tr>
-                <td width="15%"><br /><br /><br />Tanda Tangan<br /><i>Signature</i></td>
+                <td width="15%"><br /><br /><?= $header->officer_name; ?><br /><?= $header->officer_nip; ?><br />Tanda Tangan<br /><i>Signature</i></td>
                 <td width="85%">&nbsp;</td>
             </tr>
         </table>

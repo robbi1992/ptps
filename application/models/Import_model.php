@@ -41,6 +41,7 @@ class Import_model extends CI_Model {
     public function change_status($header_id) {
         $this->db->set('status', 2);
         $this->db->where('id', $header_id);
+        $this->db->where('status !=', 3);
         $this->db->update('import');
     }
 
@@ -159,11 +160,18 @@ class Import_model extends CI_Model {
         $this->db->insert('import_sponsor');
 
         // insert to table guarantee
+        $guarantee_number = $header_id . '/BPJ/KPU.03/' . date('Y');
         $guar = $params['guarantee'];
         $this->db->set('type', $guar['guaranteeType']);
         $this->db->set('name', $guar['guaranteeName']);
         $this->db->set('address', $guar['guaranteeAddress']);
         $this->db->set('nominal', $guar['guaranteeNominal']);
+        $this->db->set('source', $guar['source']);
+        $this->db->set('source_number', $guar['sourceNumber']);
+        $this->db->set('source_date', $guar['sourceDate']);
+        $this->db->set('treasurer_name', $guar['treasurerName']);
+        $this->db->set('treasurer_nip', $guar['treasurerNip']);
+        $this->db->set('doc_number', $guarantee_number);
         $this->db->set('header_id', $header_id);
         $this->db->insert('import_guarantee');
 
@@ -184,6 +192,10 @@ class Import_model extends CI_Model {
                 $this->db->set('freight', $val['freight']);
                 $this->db->set('insurance', $val['insurance']);
                 $this->db->set('cif', $val['cif']);
+                $this->db->set('free', $val['free']);
+                $this->db->set('fine_tax', $val['fine_tax']);
+                $this->db->set('free_value', $val['free_value']);
+                $this->db->set('free_currency', $val['free_currency']);
                 $this->db->set('bm_tax', $val['bm_tax']);
                 $this->db->set('ppn_tax', $val['ppn_tax']);
                 $this->db->set('pph_tax', $val['pph_tax']);
@@ -218,9 +230,10 @@ class Import_model extends CI_Model {
         // remove items from temp after inserted
         $this->db->where('key_header', $keys['header']);
         $this->db->delete('import_items_temp');
-
-        $doc_number  = $header_id . '/IS/T/KPU.03/' . date('Y');
+        $re_doc_number = $header_id . '/BPJ/KPU.03/' . date('Y');
+        $doc_number  = $header_id . '/IS/KPU.03/' . date('Y');
         $this->db->where('id', $header_id);
+        $this->db->set('re_doc_number', $re_doc_number);
         $this->db->set('doc_number', $doc_number);
         $this->db->update('import');
 
@@ -233,7 +246,20 @@ class Import_model extends CI_Model {
         return $return_status;
     }
 
+    public function delete_item_temp($params) {
+        $return = array();
+        $this->db->where('id', $params['itemID']);
+        $is_deleted = $this->db->delete('import_items_temp');
+
+        if ($is_deleted) {
+            $this->db->where('key_header', $params['keyHeader']);
+            $return['data'] = $this->db->get('import_items_temp')->result_array();
+        }
+        return $return;
+    }
+
     public function save_item_temp($val) {
+        $result = array();
         $dataItems = array(
             'name' => $val['name'],
             'quantity' => $val['quantity'],
@@ -245,15 +271,26 @@ class Import_model extends CI_Model {
             'freight' => $val['freight'],
             'insurance' => $val['insurance'],
             'cif' => $val['cif'],
+            'free' => $val['freeIDR'],
             'bm_tax' => $val['pabeanIn'],
             'ppn_tax' => $val['ppn'],
             'pph_tax' => $val['pph'],
             'ppnbm_tax' => $val['ppnbm'],
+            'fine_tax' => $val['fine'],
+            'free_value' => $val['free_value'],
+            'free_currency' => $val['free_currency'],
             'key_header' => $val['keyHeader'],
-            'key_item' => $val['keyItem']
+            'key_item' => $val['keyItem'],
+            'description' => $val['description']
         );
+        $insert = $this->db->insert('import_items_temp', $dataItems);
 
-        return $this->db->insert('import_items_temp', $dataItems);
+        if ($insert) {
+            $this->db->where('key_header', $val['keyHeader']);
+            $result['data'] = $this->db->get('import_items_temp')->result_array();
+        }
+        
+        return $result;
     }
 
     public function save_item_attachment_temp($fileName, $key) {
@@ -269,13 +306,19 @@ class Import_model extends CI_Model {
     }
 
     public function update_header($params) {
+        // 0 = tidak sesuai, 1 = sesuai, 2 = jatuh tempo
         $this->db->set('re_notes', $params['notes']);
         $this->db->set('re_status', $params['key']);
         if($params['key'] == 1) {
+            // $re_doc_number = $params['header'] . '/BPJ/KPU.03/' . date('Y');
             $this->db->set('re_office', $params['office']);
             $this->db->set('re_date', $params['date']);
-            $this->db->set('re_doc_number', $params['notes']);
-        }   
+            $this->db->set('re_name', $params['name']);
+            // $this->db->set('re_doc_number', $re_doc_number);
+        }  elseif($params['key'] == 2) {
+            $this->db->set('re_date', $params['date']);
+        }
+        
         $this->db->set('status', '3');
         $this->db->where('id', $params['header']);
         return $this->db->update('import');
@@ -285,11 +328,12 @@ class Import_model extends CI_Model {
         $result = array(
             'header' => array(),
             'items' => array(),
-            'account' => array()
+            'account' => array(),
+            'sponsor' => array()
         );
         
         $this->db->select('A.doc_number, A.identity_type, A.doc_date, A.name, A.address, A.passport, A.periode, A.inv_number,
-            A.return_type, B.name AS airport_in, C.name AS airport_out, A.inv_date, A.carrier_info, A.periode
+            A.return_type, B.name AS airport_in, C.name AS airport_out, A.inv_date, A.carrier_info, A.periode, A.inv_date_out
         ');
         $this->db->from('import A');
         $this->db->join('office B', 'A.airport_in = B.id');
@@ -310,14 +354,17 @@ class Import_model extends CI_Model {
             'inv_number' => $data_header['inv_number'],
             'inv_date' => $data_header['inv_date'],
             'carrier' => $data_header['carrier_info'],
-            'periode' => $data_header['periode']
+            'periode' => $data_header['periode'],
+            'date_out' => date('d M Y', strtotime($data_header['inv_date_out']))
         );
         // account
         $this->db->select('name, number, bank');
         $this->db->where('header_id', $header_id);
         $account = $this->db->get('import_account')->row_array();
 
-        $this->db->select('A.id AS item_id, A.name, A.quantity, A.bruto, A.description, B.name AS package');
+        $this->db->select('A.id AS item_id, A.name, A.quantity, A.bruto, A.description, B.name AS package, A.kurs, A.bm_tax,
+            A.cif, A.free, A.ppn_tax, A.pph_tax, A.ppnbm_tax, A.fob, A.freight, A.insurance, A.currency
+        ');
         $this->db->from('import_items A');
         $this->db->join('quantity_type B', 'A.package_type = B.id');
         $this->db->where('A.header_id', $header_id);
@@ -325,6 +372,19 @@ class Import_model extends CI_Model {
         $items = array();
         $items_key = array();
         foreach ($data_items as $val) {
+            // nilai barang is cif * kurs
+            $pabean_value = round($val['cif'] * $val['kurs']);
+            $free = $val['free'];
+            // nilai pabean = nilai paben - pembebasan
+            $multiplier = $pabean_value - $free;
+            
+        
+            $bmIdr = ceil(((($multiplier * $val['bm_tax']) / 100) / 1000)) * 1000;
+            // echo $bmIdr; exit();
+            $ppnIdr = ceil((((($multiplier + $bmIdr) * $val['ppn_tax']) / 100) / 1000)) * 1000;
+            $ppnbmIdr = ceil((((($multiplier + $bmIdr) * $val['ppnbm_tax']) / 100) / 1000)) * 1000;
+            $pphIdr = ceil((((($multiplier + $bmIdr) * $val['pph_tax']) / 100) / 1000)) * 1000;
+            
             $items_key[] = $val['item_id'];
 
             $items[$val['item_id']] = array(
@@ -334,6 +394,12 @@ class Import_model extends CI_Model {
                 'bruto' => $val['bruto'],
                 'desc' => $val['description'],
                 'type' => $val['package'],
+                'itemValue' => setIdr($pabean_value),
+                'cif' => $val['cif'],
+                'currency' => $val['currency'],
+                'hs' => 'BM: ' . $val['bm_tax'] . '%, PPn: ' . $val['ppn_tax'] . '%, PPnbm: ' . $val['ppnbm_tax'] . '%, PPh: ' . $val['pph_tax'] . '%',
+                'bmIdr' => setIDR($bmIdr), 'ppnIdr' => setIDR($ppnIdr), 'ppnbmIdr' => setIDR($ppnbmIdr), 'pphIdr' => setIDR($pphIdr),
+                'total' => setIDR($bmIdr + $ppnIdr + $ppnbmIdr + $pphIdr),
                 'attachments' => array()
             );
         }
@@ -349,16 +415,24 @@ class Import_model extends CI_Model {
             }
         }
 
+        // get sponsor
+        $this->db->select('location, reason');
+        $this->db->where('header_id', $header_id);
+        $sponsor = $this->db->get('import_sponsor')->row_array();
+
+
         $result['header'] = $header;
         $result['items'] = array_values($items);
         $result['account'] = $account;
+        $result['sponsor'] = $sponsor;
         return $result;
     }
 
     public function get_data_print($header_id) {
         $data = array();
         $this->db->select('A.doc_number, A.identity_type, A.doc_date, A.name, A.address, A.passport, A.officer_name, A.officer_nip,
-            A.carrier_info, B.name AS airport_in, C.name AS airport_out, A.return_type
+            A.carrier_info, B.name AS airport_in, C.name AS airport_out, A.return_type, A.created_at, A.inv_date_out, A.re_doc_number,
+            A.periode, A.inv_number, A.inv_date
         ');
         $this->db->from('import A');
         $this->db->join('office B', 'A.airport_in = B.id');
@@ -367,7 +441,7 @@ class Import_model extends CI_Model {
         $data['header'] = $this->db->get()->row();
 
         // get guarantee
-        $this->db->select('type, name, address, nominal');
+        $this->db->select('type, name, address, nominal, treasurer_name, treasurer_nip, doc_number, source, source_number, source_date');
         $this->db->where('header_id', $header_id);
         $data['warrant'] = $this->db->get('import_guarantee')->row();
         
@@ -376,12 +450,88 @@ class Import_model extends CI_Model {
         $this->db->where('header_id', $header_id);
         $data['account'] = $this->db->get('import_account')->row();
 
+        // get sponsor
+        $this->db->select('name, address, phone, identity_number, location, reason');
+        $this->db->where('header_id', $header_id);
+        $data['sponsor'] = $this->db->get('import_sponsor')->row();
+
+        $this->db->select('A.*, B.name AS package_name');
+        $this->db->from('import_items A');
+        $this->db->join('quantity_type B', 'A.package_type =  B.id');
+        $this->db->where('A.header_id', $header_id);
+        $items = $this->db->get()->result_array();
+        // restructure data import
+        $items_array = array();
+        $bpj = array();
+        $bm = 0;
+        $ppn = 0;
+        $ppnbm = 0;
+        $pph = 0;
+        $total = 0;
+        $bmtax = '';
+        $ppntax = '';
+        $ppnbmtax = '';
+        $pphtax = '';
+        $name = '';
+        $last = count($items);
+        $separator = ', ';
+        foreach ($items as $index => $val) {
+            if ($index == ($last - 1)) {
+                $separator = '';
+            }
+            $pabean_value = round($val['cif'] * $val['kurs']);
+            $free = $val['free'];
+            // nilai pabean = nilai paben - pembebasan
+            $multiplier = $pabean_value - $free;
+            
+        
+            $bmIdr = ceil(((($multiplier * $val['bm_tax']) / 100) / 1000)) * 1000;
+            // echo $bmIdr; exit();
+            $ppnIdr = ceil((((($multiplier + $bmIdr) * $val['ppn_tax']) / 100) / 1000)) * 1000;
+            $ppnbmIdr = ceil((((($multiplier + $bmIdr) * $val['ppnbm_tax']) / 100) / 1000)) * 1000;
+            $pphIdr = ceil((((($multiplier + $bmIdr) * $val['pph_tax']) / 100) / 1000)) * 1000;
+            
+            $name .=  $val['name'] . $separator;
+            // set total
+            $bmtax .= $val['bm_tax'] . $separator;
+            $ppntax .= $val['ppn_tax'] . $separator;
+            $ppnbmtax .= $val['ppnbm_tax'] . $separator;
+            $pphtax .= $val['pph_tax'] . $separator;
+            $bm += $bmIdr;
+            $ppn += $ppnIdr;
+            $ppnbm += $ppnbmIdr;
+            $pph += $pphIdr;
+            $total = $bm + $ppn + $ppnbm + $pph; 
+            $bpj = array(
+                'desc' => $name, 'bmtax' => $bmtax, 'ppntax' => $ppntax, 'ppnbmtax' => $ppnbmtax, 'pphtax' => $pphtax,
+                'bm' => $bm, 'ppn' => $ppn, 'ppnbm' => $ppnbm, 'pph' => $pph, 'total' => $total
+            );
+
+            $items_array[] = array(
+                'desc' => $val['quantity'] . ' ' . $val['name'],
+                'quantity' => $val['quantity'],
+                'package' => $val['package_name'],
+                'name' => $val['name'],
+                'description' => $val['description'],
+                'kurs' => $val['kurs'],
+                'fob' => $val['fob'],
+                'freight' => $val['freight'],
+                'currency' => $val['currency'],
+                'insurance' => $val['insurance'],
+                'pabean_value' => setIDR($multiplier),
+                'hs' => 'BM: ' . $val['bm_tax'] . '%, PPn: ' . $val['ppn_tax'] . '%, PPnbm: ' . $val['ppnbm_tax'] . '%, PPh: ' . $val['pph_tax'] . '%',
+                'bmIdr' => setIDR($bmIdr), 'ppnIdr' => setIDR($ppnIdr), 'ppnbmIdr' => setIDR($ppnbmIdr), 'pphIdr' => setIDR($pphIdr),
+                'total' => setIDR($bmIdr + $ppnIdr + $ppnbmIdr + $pphIdr)
+            );
+        }
+        $data['items'] = $items_array;
+        $data['bpj'] = $bpj;
         return $data;
     }  
 
     public function get_data_return($header_id) {
         $data = array();
-        $this->db->select('A.name, A.passport, B.nominal');
+        $this->db->select('A.name, A.passport, B.nominal, A.officer_name, A.re_doc_number, A.re_name');
         $this->db->from('import A');
         $this->db->join('import_guarantee B', 'A.id = B.header_id');
         $this->db->where('A.id', $header_id);

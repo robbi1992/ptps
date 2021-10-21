@@ -177,8 +177,8 @@
                                                                     <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
                                                                         <ul class="nav nav-hoverable flex-column">
                                                                             <li class="nav-item"><a class="nav-link" view="actionDetail" style="cursor: pointer;"><i class="nav-icon la la-eye"></i><span class="nav-text">Review</span></a></li>
-                                                                            <li class="nav-item"><a class="nav-link" view="actionPrint" value="0" style="cursor: pointer;"><i class="nav-icon la la-print"></i><span class="nav-text">Form Jaminan</span></a></li>
                                                                             <li class="nav-item"><a class="nav-link" view="actionPrintIS" value="1" style="cursor: pointer;"><i class="nav-icon la la-print"></i><span class="nav-text">Form IS</span></a></li>
+                                                                            <li class="nav-item"><a class="nav-link" view="actionPrint" value="0" style="cursor: pointer;"><i class="nav-icon la la-print"></i><span class="nav-text">Form Jaminan</span></a></li>
                                                                             <li class="nav-item"><a class="nav-link" view="actionPrintReturn" value="2" style="cursor: pointer;"><i class="nav-icon la la-print"></i><span class="nav-text">Form Pengembalian</span></a></li>
                                                                             <li class="nav-item"><a class="nav-link" view="actionConfirm" style="cursor: pointer;"><i class="nav-icon la la-edit"></i><span class="nav-text">Status</span></a></li>
                                                                             <li class="nav-item"><a class="nav-link" view="actionDelete" style="cursor: pointer;"><i class="nav-icon la la-remove"></i><span class="nav-text">Hapus</span></a></li>
@@ -413,22 +413,57 @@
                                                 <!-- <th>No.</th> -->
                                                 <th>Nama Barang</th>
                                                 <th>Jumlah</th>
-                                                <th>Kemasan</th>
-                                                <th>Bruto (Kg)</th>
-                                                <th>Kategori</th>
-                                                <th>Pungutan</th>
+                                                <th>HS Code & Tarif</th>
+                                                <th>Nilai Pabean (CIF)</th>
+                                                <th>Pembebasan</th>
+                                                <th>Jml BM PDRI</th>
+                                                <th>Aksi</th>
                                             </tr>
                                             <tr class="d-none" template="importTableBody">
                                                 <!-- <td view="imNumber"></td> -->
                                                 <td view="imName"></td>
-                                                <td view="imTotal"></td>
-                                                <td view="imPackage"></td>
-                                                <td view="imBruto"></td>
-                                                <td view="imCat"></td>
+                                                <td view="imQty"></td>
+                                                <td view="imHscode"></td>
+                                                <td view="imPabean"></td>
+                                                <td view="imFree"></td>
                                                 <td view="imCollect"></td>
+                                                <td>
+                                                    <button view="actionItemDelete" class="btn btn-sm btn-danger"><i class="fa fa-minus"></i></button>
+                                                </td>
                                             </tr>
                                         </thead>
                                         <tbody><!-- Appended by Ajax --></tbody>
+                                    </table>
+                                    <table name="importSummaryTable" class="table table-striped table-hover table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="2">Summary</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total Bea Masuk</td>
+                                                <td view="summBM"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total Ppn</td>
+                                                <td view="summPpn"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total Pph Impor</td>
+                                                <td view="summPph"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total Ppnbm Impor</td>
+                                                <td view="summPpnbm"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total Denda Impor</td>
+                                                <td view="summFine"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total Bea Masuk dan Pajak</td>
+                                                <td view="summTotal"></td>
+                                            </tr>
+                                        </tbody>
                                     </table>
                                 </div>
                                 <!-- end col -->
@@ -512,7 +547,13 @@
                                     <select name="itemCurrency" id="itemCurrency" class="form-control selectpicker" data-size="7" data-live-search="true">
                                         <option value="">-- Pilih --</option>
                                         <?php
-                                        foreach ($kurs as $val) {?>
+                                        $kurs_usd = 0;
+                                        foreach ($kurs as $val) {
+                                            if ($val->kode_valas == 'USD') {
+                                                $kurs_usd = $val->kurs_idr;
+                                            }
+                                        ?>
+                                            
                                             <option value="<?=$val->kurs_idr;?>"><?=$val->kode_valas;?></option>
                                         <?php
                                         }
@@ -546,9 +587,34 @@
                                     <label for="itemKurs">Kurs / NDPBM</label>
                                     <input type="text" name="itemKurs" class="form-control" id="itemKurs" value="0" readonly />
                                 </div>
-                                <div class="form-group">
-                                    <label for="itemFree">Pembebasan</label>
-                                    <input type="text" name="itemFree" class="form-control" id="itemFree" placeholder="pembebasan" />
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="itemFreeCurrency">Mata Uang</label>
+                                            <select name="itemFreeCurrency" id="itemFreeCurrency" class="form-control selectpicker" data-size="7" data-live-search="true">
+                                                <option value="">-- Pilih --</option>
+                                                <?php
+                                                foreach ($kurs as $val) {
+                                                ?>
+                                                    <option value="<?=$val->kurs_idr;?>"><?=$val->kode_valas;?></option>
+                                                <?php
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="itemFree">Pembebasan</label>
+                                            <input type="text" name="itemFree" class="form-control" id="itemFree" value-kurs="<?= $kurs_usd; ?>" value="0" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="itemFreeIDR">IDR</label>
+                                            <input type="text" name="itemFreeIDR" class="form-control" id="itemFreeIDR" value="0" readonly />
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="itemValue">Nilai Pabean (Rp)</label>
@@ -567,29 +633,81 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="itemPabeanIn">Bea masuk (<span view="bm_label"></span>%)</label>
+                                            <label for="itemPabeanIn">Bea masuk (%)</label>
                                             <input type="text" name="itemPabeanIn" class="form-control" id="itemPabeanIn" value="0" />
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="itemPpn">Ppn Impor (<span view="ppn_label"></span>%)</label>
+                                            <label for="itemPabeanInIDR">IDR</label>
+                                            <input type="text" name="itemPabeanInIDR" class="form-control" id="itemPabeanInIDR" value="0" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="itemPpn">Ppn Impor (%)</label>
                                             <input type="text" name="itemPpn" class="form-control" id="itemPpn" value="0" />
                                         </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="itemPpnIDR">IDR</label>
+                                            <input type="text" name="itemPpnIDR" class="form-control" id="itemPpnIDR" value="0" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="itemPph">Pph Impor (%)</label>
                                             <input type="text" name="itemPph" class="form-control" id="itemPph" value="0" />
                                         </div>
+                                    </div>
+                                    <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="itemPpnbm">PpnBM Impor (<span view="ppnbm_label"></span>%)</label>
+                                            <label for="itemPphIDR">IDR</label>
+                                            <input type="text" name="itemPphIDR" class="form-control" id="itemPphIDR" value="0" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="itemPpnbm">PpnBM Impor (%)</label>
                                             <input type="text" name="itemPpnbm" class="form-control" id="itemPpnbm" value="0" />
                                         </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="itemPpnbmIDR">IDR</label>
+                                            <input type="text" name="itemPpnbmIDR" class="form-control" id="itemPpnbmIDR" value="0" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="itemFine">Denda (%)</label>
+                                            <input type="text" name="itemFine" class="form-control" id="itemFine" value="0" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="itemFineIDR">IDR</label>
+                                            <input type="text" name="itemFineIDR" class="form-control" id="itemFineIDR" value="0" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- 
                                         <div class="form-group">
                                             <label for="itemFine">Denda (%)</label>
                                             <input type="text" name="itemFine" class="form-control" id="itemFine" value="0" />
                                         </div>
                                     </div>
                                 </div>
+                                 -->
                                 <!-- end row in col -->
                                 <div class="form-group">
                                     <label for="itemTotalCollect">Total Pungutan</label>
@@ -671,13 +789,34 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="guaranteeNominal">Jumlah Jaminan</label>
-                                    <input type="text" name="guaranteeNominal" class="form-control" id="guaranteeNominal" />
+                                    <input type="text" name="guaranteeNominal" class="form-control" id="guaranteeNominal" readonly />
                                 </div>
+                                <!-- 
                                 <div class="form-group">
                                     <label for="guaranteeNominalSpelling">Dengan Huruf</label>
                                     <textarea type="text" name="guaranteeNominalSpelling" class="form-control" id="guaranteeNominalSpelling"></textarea>
                                 </div>
-                                
+                                 -->
+                                <div class="form-group">
+                                    <label for="source">Dokumen Sumber Penyerahan Jaminan 	</label>
+                                    <input type="text" name="source" class="form-control" id="source" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="sourceNumber">Nomor</label>
+                                    <input type="text" name="sourceNumber" class="form-control" id="sourceNumber" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="sourceDate">Tanggal</label>
+                                    <input type="text" name="sourceDate" class="form-control bc-date" id="sourceDate" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="treasurerName">Nama Bendahara</label>
+                                    <input type="text" name="treasurerName" class="form-control" id="treasurerName" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="treasurerNip">NIP</label>
+                                    <input type="text" name="treasurerNip" class="form-control" id="treasurerNip" />
+                                </div>
                             </div>
                             <!-- end col -->
                         </div>
@@ -685,6 +824,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Tutup</button>
+                        <button id="prepPage" type="button" class="btn btn-light-primary font-weight-bold">Sebelumnya</button>
                         <button type="submit" class="btn btn-primary font-weight-bold">Simpan</button>
                     </div>
                 </div>
@@ -736,6 +876,26 @@
                                             <td>Pengembalian</td>
                                             <td class="text-center">:</td>
                                             <td><span view="return_type"></span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <h5>Data Sponsor</h5><hr />
+                                <table class="table table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <td>Lokasi Penggunaan</td>
+                                            <td class="text-center">:</td>
+                                            <td><span view="use_location"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tujuan Penggunaan</td>
+                                            <td class="text-center">:</td>
+                                            <td><span view="use_reason"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tamggal Perkiraan Keluar</td>
+                                            <td class="text-center">:</td>
+                                            <td><span view="date_out"></span></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -806,18 +966,18 @@
                                     <thead>
                                         <tr>
                                             <td>No</td>
+                                            <td>Deskripsi barang</td>
                                             <td>Jumlah</td>
-                                            <td>Kemasan</td>
-                                            <td>Bruto(Kg)</td>
-                                            <td>Deskripsi</td>
+                                            <td>Nilai Barang</td>
+                                            <td>Bea Masuk PDRI yang dijaminkan</td>
                                             <td>Lampiran</td>
                                         </tr>
                                         <tr class="d-none" template="reviewItemsBody">
                                             <td view="number"></td>
-                                            <td view="qty"></td>
-                                            <td view="package"></td>
-                                            <td view="bruto"></td>
                                             <td view="desc"></td>
+                                            <td view="qty"></td>
+                                            <td view="itemValue"></td>
+                                            <td view="total"></td>
                                             <td view="attach">
                                                 <button view="itemFile" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i></button>
                                             </td>
@@ -899,6 +1059,12 @@
                                     <span class="nav-text">TIDAK SESUAI</span>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_3_4">
+                                    <span class="nav-icon"><i class="fa fa-exclamation-circle"></i></span>
+                                    <span class="nav-text">LEWAT JATUH TEMPO</span>
+                                </a>
+                            </li>
                         </ul>
             
                         <div class="tab-content">
@@ -924,6 +1090,10 @@
                                         <div class="form-group">
                                             <label for="reDocNumber">Nomor Dokumen</label>
                                             <input id="reDocNumber" name="reDocNumber" class="form-control" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="reName">Nama Penerima</label>
+                                            <input id="reName" name="reName" class="form-control" />
                                         </div>
                                         <div class="form-group">
                                             <label for="reNotes">Catatan</label>
@@ -953,6 +1123,30 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="tab-pane fade" id="kt_tab_pane_3_4" role="tabpanel" aria-labelledby="kt_tab_pane_3_4">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="reDateLTJ">Tanggal Re-ekspor</label>
+                                            <input id="reDateLTJ" name="reDateLTJ" class="form-control bc-date" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="reDocNumberLJT">Nomor Dokumen</label>
+                                            <input id="reDocNumberLJT" name="reDocNumberLJT" class="form-control" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="reNotesLJT">Catatan</label>
+                                            <textarea id="reNotesLJT" name="reNotesLJT" class="form-control"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="reAttachLJT1">Lampiran</label>
+                                            <input type="file" class="form-control" name="reAttachLJT1" id="reAttachLJT1" accept="image/png, image/gif, image/jpeg" />
+                                            <input type="file" class="form-control" name="reAttachLJT2" id="reAttachLJT2" accept="image/png, image/gif, image/jpeg" />
+                                            <input type="file" class="form-control" name="reAttachLJT3" id="reAttachLJT3" accept="image/png, image/gif, image/jpeg" />
+                                        </div>
+                                    </div>
+                                </div> 
                             </div>
                         </div>
                         <!-- end tab content -->

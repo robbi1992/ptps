@@ -14,7 +14,13 @@
             keyHeaderPost: '',
             keyItemPost: '',
             headerID: '',
-            attachments: []
+            attachments: [],
+            bm: 0,
+            ppn: 0,
+            pph: 0,
+            ppnbm: 0,
+            fine: 0,
+            total: 0
         },
         setIdr: function(value) {
             var output = value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
@@ -24,6 +30,24 @@
             newValue = value.split('.').join('');
             return newValue;
         },
+        resetForm: function() {
+            $(this).prop('checked', false);
+            var newForm = $('form[name="newForm"]');
+            newForm.find('input[type=text], textarea').val('');
+            // newForm.find('[name="identityType"], [name="returnGuarantee"]').prop('checked', false);
+            $('table[name="importTable"]').find('tbody').empty();
+            var guaranteeForm = $('form[name="guaranteeForm"]');
+            guaranteeForm.find('input[type=text], textarea').val('');
+            // guaranteeForm.find('[name="guaranteeType"]').prop('checked', false);
+
+            var summaryTable = $('table[name="importSummaryTable"]');
+            summaryTable.find('[view="summBM"]').html(Import.setIdr(Import.params.bm));
+            summaryTable.find('[view="summPpn"]').html(Import.setIdr(Import.params.ppn));
+            summaryTable.find('[view="summPph"]').html(Import.setIdr(Import.params.pph));
+            summaryTable.find('[view="summPpnbm"]').html(Import.setIdr(Import.params.ppnbm));
+            summaryTable.find('[view="summFine"]').html(Import.setIdr(Import.params.fine));
+            summaryTable.find('[view="summTotal"]').html(Import.setIdr(Import.params.total));
+        },
         enabled: function(formName, value) {
             if (value) $('form[name="'+formName+'"]').find('[name^="search"], button').removeAttr('disabled');
             else $('form[name="'+formName+'"]').find('[name^="search"], button').attr('disabled', 'disabled');
@@ -31,6 +55,74 @@
         myEncrypt: function(data) {
             var salt = 100*99*98*1*2*3;
             return salt * data;
+        },
+        renderItemTemp: function(data) {
+            Import.params.bm = 0;
+            Import.params.ppn = 0;
+            Import.params.pph = 0;
+            Import.params.ppnbm = 0;
+            Import.params.fine = 0;
+            Import.params.total = 0;
+            
+            var importTable = $('table[name="importTable"]'),
+                template = importTable.find('[template="importTableBody"]'),
+                rows = importTable.find('tbody').empty();
+            $.each(data, function(index, value) {
+                var row = template.clone().removeClass('d-none').removeAttr('template');
+                row.attr('id', value.id);
+                row.find('[view="imName"]').html(value.name);
+                row.find('[view="imQty"]').html(value.quantity);
+                var hscode = 'BM: ' + value.bm_tax + '%<br /> Ppn: ' + value.ppn_tax + '%<br /> Pph: ' + value.pph_tax + '%<br /> Ppnbm: ' + value.ppnbm_tax + '%<br /> Denda: ' +  value.fine_tax + '%';
+                row.find('[view="imHscode"]').html(hscode);
+                var pabeanValue = Math.round(value.kurs * value.cif);
+                row.find('[view="imPabean"]').html(Import.setIdr(pabeanValue));
+                row.find('[view="imFree"]').html(value.free_value + ' ' + value.free_currency);
+                var bmValue = Math.ceil((((pabeanValue - value.free) * value.bm_tax) / 100) / 1000) * 1000;
+                var ppnValue = Math.ceil((((pabeanValue - value.free + bmValue) * value.ppn_tax) / 100) / 1000) * 1000;
+                var pphValue = Math.ceil((((pabeanValue - value.free + bmValue) * value.pph_tax) / 100) / 1000) * 1000;
+                var ppnbmValue = Math.ceil((((pabeanValue - value.free + bmValue) * value.ppnbm_tax) / 100) / 1000) * 1000;
+                var fineValue = (bmValue * value.fine_tax) / 100;
+                var collect = 'BM: ' + Import.setIdr(bmValue) + '<br /> Ppn: ' + Import.setIdr(ppnValue) + '<br /> Pph: ' + Import.setIdr(pphValue) + '<br /> Ppnbm: ' + Import.setIdr(ppnbmValue) + '<br /> Denda: ' + Import.setIdr(fineValue);
+                row.find('[view="imCollect"]').html(collect);
+                row.find('[view="actionItemDelete"]').on('click', Import.removeItemTemp);
+
+                row.appendTo(rows);
+
+                Import.params.bm += bmValue;
+                Import.params.ppn += ppnValue;
+                Import.params.pph += pphValue;
+                Import.params.ppnbm += ppnbmValue;
+                Import.params.fine += fineValue;
+                var totalValue = Import.params.bm + Import.params.ppn + Import.params.pph + Import.params.ppnbm + Import.params.fine;
+                Import.params.total = totalValue;
+            });
+
+            var summaryTable = $('table[name="importSummaryTable"]');
+            summaryTable.find('[view="summBM"]').html(Import.setIdr(Import.params.bm));
+            summaryTable.find('[view="summPpn"]').html(Import.setIdr(Import.params.ppn));
+            summaryTable.find('[view="summPph"]').html(Import.setIdr(Import.params.pph));
+            summaryTable.find('[view="summPpnbm"]').html(Import.setIdr(Import.params.ppnbm));
+            summaryTable.find('[view="summFine"]').html(Import.setIdr(Import.params.fine));
+            summaryTable.find('[view="summTotal"]').html(Import.setIdr(Import.params.total));
+            $('form[name="guaranteeForm"]').find('input[name=guaranteeNominal]').val(Import.params.total);
+        },
+        removeItemTemp: function() {
+            var row = $(this).closest('tr'),
+            data = row.attr('id');
+            var params = { params: {
+                itemID: data, keyHeader: Import.params.keyHeaderPost
+            }};
+
+            $.ajax({
+                url: '/import/delete_item_temp',
+                type: 'post',
+                dataType: 'json',
+                data: JSON.stringify(params)
+            }).done(function(result) {
+                Import.renderItemTemp(result.data);
+            }).fail(function() {
+                alert('terjadi kesalahan, coba lagi nanti..');
+            });
         },
         deleteData: function() {
             var row = $(this).closest('tr'),
@@ -110,23 +202,33 @@
                     modal.find('[view="account_name"]').html(result.account.name);
                     modal.find('[view="account_bank"]').html(result.account.bank);
 
+                    modal.find('[view="use_location"]').html(result.sponsor.location);
+                    modal.find('[view="use_reason"]').html(result.sponsor.reason);
+                    modal.find('[view="date_out"]').html(result.header.date_out);
+
                     // items
                     var table = $('table[name="reviewItems"]');
                     var template = table.find('[template="reviewItemsBody"]');
                     var tbody = table.find('tbody').empty();
+                    var theTotal = 0;
                     $.each(result.items, function(index, value) {
+                        var theDesc = value.hs + "<br />" + value.bmIdr + ' + ' + value.ppnIdr + ' + ' + value.ppnbmIdr + ' + ' + value.pphIdr
+                        + ' = Rp. ' + value.total;
                         var row = template.clone().removeClass('d-none').removeAttr('template');
                         row.attr('id', value.item);
                         row.find('[view="number"]').html(index + 1);
-                        row.find('[view="qty"]').html(value.qty);
-                        row.find('[view="package"]').html(value.type);
-                        row.find('[view="name"]').html(value.name);
-                        row.find('[view="bruto"]').html(value.bruto);
-                        row.find('[view="desc"]').html(value.desc);
+                        row.find('[view="qty"]').html(value.qty + ' ' + value.type);
+                        row.find('[view="desc"]').html(value.name + ' ' + value.desc);
+                        row.find('[view="itemValue"]').html(value.cif + ' ' + value.currency + ' / Rp. ' + value.itemValue);
+                        row.find('[view="total"]').html(theDesc);
                         Import.params.attachments = value.attachments;
                         row.find('[view="itemFile"]').on('click', Import.showAttachments);
                         row.appendTo(tbody);
+                        theTotal += parseInt(value.total.replace(/\./g, ''));
                     });
+                    // console.log(theTotal);
+                    var total = '<tr><td colspan="4">Total</td><td colspan="2">Rp. '+Import.setIdr(theTotal)+'</td></tr>';
+                    tbody.append(total);
                     modal.modal('show');
                 }
             }).fail(function() {
@@ -140,7 +242,15 @@
             
             var link = '/import/print_form/';
             if (value == '1') link = '/import/print_form_is/';
-            else if (value == '2') link = '/import/print_form_return/';
+            else if (value == '2') {
+                var valueStatus = row.find('[view="status"]').attr('value-status');
+                if (valueStatus != '3') {
+                    alert('Update Status Penyelesaian terlebih dahulu...');
+                    return false;
+                } else {
+                    link = '/import/print_form_return/';
+                }
+            } 
             
             var msg = myEncrypt(data);
             var base_url = window.location.origin + link + msg;
@@ -205,6 +315,7 @@
                 }
     
                 row.find('[view="status"]').html(status);
+                row.find('[view="status"]').attr('value-status', value.status);
                 row.find('[view="actionPrint"]').on('click', Import.printPage);
                 row.find('[view="actionPrintIS"]').on('click', Import.printPage);
                 row.find('[view="actionPrintReturn"]').on('click', Import.printPage);
@@ -297,7 +408,9 @@
                 data: formData,
                 type: 'post'
             }).done(function (result) {
-                    
+                if (!result.status) {
+                    alert(result.error_msg);
+                }
             }).always(function() {
                 // $('form[name="addItemForm"]').find('button').removeAttr('disabled');
             });
@@ -368,14 +481,21 @@
             Import.doSearch();
 
             $('form[name="guaranteeForm"]').on('submit', function() {
+                // $(this).find('input[name=guaranteeNominal]' ).val(Import.params.total);
+            
                 // mapping data
                 var guarantee = {
-                    guaranteeType: $(this).find('input[name=guaranteeType]:checked' ).val(),
-                    guaranteeName: $(this).find('input[name=guaranteeName]' ).val(),
+                    guaranteeType: $(this).find('input[name=guaranteeType]:checked').val(),
+                    guaranteeName: $(this).find('input[name=guaranteeName]').val(),
                     guaranteeAddress: $(this).find('textarea[name=guaranteeAddress]' ).val(),
-                    guaranteeNominal: $(this).find('input[name=guaranteeNominal]' ).val()
+                    guaranteeNominal: $(this).find('input[name=guaranteeNominal]').val(),
+                    source: $(this).find('input[name=source]').val(),
+                    sourceNumber: $(this).find('input[name=sourceNumber]').val(),
+                    sourceDate: $(this).find('input[name=sourceDate]').val(),
+                    treasurerName: $(this).find('input[name=treasurerName]').val(),
+                    treasurerNip: $(this).find('input[name=treasurerNip]').val()
                 };
-
+                // console.log(guarantee); return false;
                 Import.params.dataPost.guarantee = guarantee;
                 // confirm first then create
                 if (Import.params.confirmSave == 0) {
@@ -387,6 +507,14 @@
             });
 
             $('button[name="confirmYes"]').on('click', function() {
+                // reset value
+                Import.params.bm = 0;
+                Import.params.ppn = 0;
+                Import.params.pph = 0;
+                Import.params.ppnbm = 0;
+                Import.params.total = 0;
+                Import.params.fine = 0;
+
                 // show previous page
                 $('#confirmModal').modal('hide');
                 $('#guaranteeModal').modal('hide');
@@ -451,14 +579,20 @@
                     pabeanIn = $(this).find('[name="itemPabeanIn"]').val(),
                     ppn = $(this).find('[name="itemPpn"]').val(),
                     pph = $(this).find('[name="itemPph"]').val(),
-                    ppnbm = $(this).find('[name="itemPpnbm"]').val();
+                    ppnbm = $(this).find('[name="itemPpnbm"]').val(),
+                    fine = $(this).find('[name="itemFine"]').val(),
+                    free = $(this).find('[name="itemFree"]').val(),
+                    freeCurrency = $(this).find('[name="itemFreeCurrency"]').val(),
+                    freeCurrencyText = $(this).find('[name="itemFreeCurrency"] option:selected').text(),
+                    freeIDR = Import.unsetIdr($(this).find('[name="itemFreeIDR"]').val());
                     // console.log(itemPackage);
                     // return false;
                 var params = {
                     name: itemName, quantity : itemTotal, package: itemPackage, category: itemCategory, bruto: itemBruto,
                     currency: itemCurrencyText, kurs: itemCurrency, description: itemDescription,
                     fob: fob, freight: freight, insurance: insurance,
-                    cif: cif, pabeanIn: Import.unsetIdr(pabeanIn), ppn: Import.unsetIdr(ppn), pph: Import.unsetIdr(pph), ppnbm: Import.unsetIdr(ppnbm),
+                    cif: cif, pabeanIn: pabeanIn, ppn: ppn, pph: pph, ppnbm: ppnbm, fine: fine,
+                    freeIDR: freeIDR, free_value: free, free_currency: freeCurrencyText,
                     keyHeader: Import.params.keyHeaderPost, keyItem: Import.params.keyItemPost
                 };
                 
@@ -488,22 +622,8 @@
                             Import.verifyUpload(fileData3);
                         }
 
-                        // show to table
-                        var result = $('table[name="importTable"]'),
-                            template = result.find('[template="importTableBody"]'),
-                            rows = result.find('tbody');
-                        
-                        var row = template.clone().removeClass('d-none').removeAttr('template');
-                        row.find('[view="imName"]').html(itemName);
-                        row.find('[view="imTotal"]').html(itemTotal);
-                        row.find('[view="imPackage"]').html(itemPackageText);
-                        row.find('[view="imPackage"]').attr('im-value', itemPackage);
-                        row.find('[view="imCat"]').html(itemCategoryText);
-                        row.find('[view="imCat"]').attr('im-value', itemCategory);
-                        row.find('[view="imBruto"]').html(itemBruto);
-                        // row.find('[view="imCat"]').html('');
-                        row.find('[view="imCollect"]').html(itemCollect);
-                        row.appendTo(rows);
+                        // get data from server then render it
+                        Import.renderItemTemp(result.data);
 
                         $('#addItemModal').modal('hide');
                     }
@@ -546,6 +666,7 @@
                 var generator = Import.generateKey();
                 Import.params.keyHeaderPost = generator;
                 // console.log(Import.params.keyPost);
+                Import.resetForm();
                 $('#newModal').modal('show');
             });
 
@@ -583,9 +704,9 @@
             });
             
             // back function
-            $('button[name="btnBack"]').on('click', function() {
-                $('#newValasModalStep2').modal('hide');
-                $('#newValasModal').modal('show');
+            $('form[name="guaranteeForm"]').find('#prepPage').on('click', function() {
+                $('#guaranteeModal').modal('hide');
+                $('#newModal').modal('show');
             });
             
             $('button[name="confirmDelete"]').on('click', function() {
@@ -626,69 +747,112 @@
             });
 
             $('#itemCode').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) { 
+                // pabean value = nilai pabean - pembebasan
                 var bm = $('#itemCode option:selected').attr('bm_tarif'),
                 ppn = $('#itemCode option:selected').attr('ppn_tarif'),
                 ppnbm = $('#itemCode option:selected').attr('ppnbm_tarif'),
-                pabean_value = Import.unsetIdr($('#itemValue').val()),
-                pph = parseFloat($('#itemPph').val());
+                pabean_value = parseFloat(Import.unsetIdr($('#itemValue').val()));
+                // pph = parseFloat($('#itemPph').val());
                 
                 // set label from server
-                $('span[view="bm_label"]').html(bm);
-                $('span[view="ppn_label"]').html(ppn);
-                $('span[view="ppnbm_label"]').html(ppnbm);
-
-                // set value * idr (pabean value)
-                // formula bmvalue ok
-                // ppnValue = ((pabean value + bm) * ppn_tarif) / 100
-                var bmValue = Math.ceil((parseFloat(bm) * parseFloat(pabean_value)) / 100);
-                // var ppnValue = (parseFloat(ppn) * parseFloat(pabean_value)) / 100;
-                var ppnValue = Math.ceil(((bmValue + parseFloat(pabean_value)) * parseFloat(ppn)) / 100);
-                var ppnbmValue = Math.ceil((parseFloat(ppnbm) * parseFloat(pabean_value)) / 100);
-                var totalCollect = parseFloat(pabean_value) + bmValue + ppnValue + ppnbmValue + pph;
-
-                $('#itemPabeanIn').val(Import.setIdr(bmValue));
-                $('#itemPpn').val(Import.setIdr(ppnValue));
-                $('#itemPpnbm').val(Import.setIdr(ppnbmValue));
+                $('#itemPabeanIn').val(bm);
+                $('#itemPpn').val(ppn);
+                // convert idr
+                var roundUpBea = Math.ceil(((bm * parseInt(pabean_value)) / 100)/1000);
+                var beaIDR = roundUpBea * 1000;
+                $('#itemPabeanInIDR').val(Import.setIdr(beaIDR));
+                var roundUpPpn = Math.ceil((((pabean_value + beaIDR) * ppn) / 100) / 1000);
+                var ppnIDR = roundUpPpn * 1000;
+                // console.log(pabean_value + beaIDR);
+                $('#itemPpnIDR').val(Import.setIdr(ppnIDR));
+                var roundUpPpnbm = Math.ceil((((pabean_value + beaIDR) * ppnbm) / 100) / 1000);
+                var ppnbmIDR = roundUpPpnbm * 1000;
+                $('#itemPpnbmIDR').val(Import.setIdr(ppnbmIDR));
+                
+                var totalCollect = beaIDR + ppnIDR + ppnbmIDR;
                 $('#itemTotalCollect').val(Import.setIdr(totalCollect));
             });
 
-            $('#itemPph, #itemPabeanIn').on('keyup', function(){
-                var bm = parseFloat($('#itemPabeanIn').val()),
-                ppn = parseFloat($('#itemPpn').val()),
+            $('#itemPph, #itemFine, #itemPpnbm').on('keyup', function(){
+                var bm = parseInt(Import.unsetIdr($('#itemPabeanInIDR').val())),
+                ppn = parseInt(Import.unsetIdr($('#itemPpnIDR').val())),
                 ppnbm = parseFloat($('#itemPpnbm').val()),
                 pabean_value = parseFloat(Import.unsetIdr($('#itemValue').val())),
-                pph = parseFloat($('#itemPph').val());
+                pph = parseFloat($('#itemPph').val()),
+                fine = parseFloat($('#itemFine').val());
+                
+                var roundUpPph = Math.ceil((((pabean_value + bm) * pph) / 100) / 1000);
+                var pphIDR = roundUpPph * 1000;
+                $('#itemPphIDR').val(Import.setIdr(pphIDR));
 
-                var totalCollect = pabean_value + bm + ppn + ppnbm + pph;
+                var roundUpPpnbm = Math.ceil((((pabean_value + bm) * ppnbm) / 100) / 1000);
+                var ppnbmIDR = roundUpPpnbm * 1000;
+                $('#itemPpnbmIDR').val(Import.setIdr(ppnbmIDR));
+
+                var fineValue = ((bm * fine) / 100); //+ bm;
+                $('#itemFineIDR').val(Import.setIdr(fineValue));
+                
+                var totalCollect = bm + ppn + ppnbm + pphIDR + fineValue;
                 $('#itemTotalCollect').val(Import.setIdr(totalCollect));
             });
 
             // set cif automaticly
             // cif = fob + freight + insurance
-            $('#itemFob, #itemFreight, #itemInsurance').on('keyup', function() {
+            $('#itemFob, #itemFreight, #itemInsurance, #itemFree').on('keyup', function() {
                 var fob = parseInt($('#itemFob').val()),
                 freight = parseInt($('#itemFreight').val()),
                 insurance = parseInt($('#itemInsurance').val()),
-                kurs = parseFloat($('#itemKurs').val());
+                kurs = parseFloat($('#itemKurs').val()),
+                free = parseInt($('#itemFree').val()),
+                // currency by selector not attr anymoe
+                // usd = parseFloat($('#itemFree').attr('value-kurs')),
+                usd = parseFloat($('#itemFreeCurrency').val()),
+                freeIDR = Math.round(free * usd);
 
                 var cif = fob + freight + insurance;
                 $('#itemCif').val(cif);
                 // set nilai pabean
                 // cif * kurs
-                var pabean_value = cif * kurs;
-                // set to idr
-                var newPabeanValue = Import.setIdr(Math.ceil(pabean_value));
-                $('#itemValue').val(newPabeanValue);
+                // new formula (cif * kurs) - freeidr
+                // set item freeidr
+                $('#itemFreeIDR').val(Import.setIdr(freeIDR));
+                var pabean_value = Math.round((cif * kurs) - freeIDR);
+                $('#itemValue').val(Import.setIdr(pabean_value));
             });
 
             $('form[name="statusForm"]').on('submit', function(){
-                // var tab1 = $('#kt_tab_pane_1_4').hasClass('active');
+                var tab1 = $('#kt_tab_pane_1_4').hasClass('active');
                 var tab2 = $('#kt_tab_pane_2_4').hasClass('active');
+                var tab3 = $('#kt_tab_pane_3_4').hasClass('active');
                 // tab sesuai = 1
-                
+                if (tab1) {
+                    var notes = $(this).find('textarea[name="reNotes"]').val(),
+                        office = ($(this).find('select[name="reOffice"]').val()) ? $(this).find('select[name="reOffice"]').val() : 143,
+                        date = $(this).find('input[name="reDate"]').val(),
+                        name = $(this).find('input[name="reName"]').val(),
+                        docNumber = $(this).find('input[name="reDocNumber"]').val(),
+                        tabValue = '1';
+
+                    var fileData = $(this).find('#reAttach1').prop('files')[0],
+                        fileData2 = $(this).find('#reAttach2').prop('files')[0],
+                        fileData3 = $(this).find('#reAttach3').prop('files')[0];
+                        
+                    if (fileData) {
+                        Import.verifyAttach(fileData);
+                    }
+                    if (fileData2) {
+                        Import.verifyAttach(fileData2);
+                    }
+                    if (fileData3) {
+                        Import.verifyAttach(fileData3);
+                    }
+
+                    var params = { key: tabValue, notes: notes, name: name, office: office, date: date, number: docNumber, header: Import.params.headerID };
+                }
+
                 if (tab2) {
                     var notes = $(this).find('textarea[name=reNotesNOK]').val();
-                    tabValue = 0;
+                    tabValue = '0';
                     // save images
                     var fileData = $(this).find('#reAttachNOK1').prop('files')[0],
                         fileData2 = $(this).find('#reAttachNOK2').prop('files')[0],
@@ -705,16 +869,17 @@
                     }
                     
                     var params = { key: tabValue, notes: notes, header: Import.params.headerID };
-                } else {
-                    var notes = $(this).find('textarea[name="reNotes"]').val(),
-                        office = ($(this).find('select[name="reOffice"]').val()) ? $(this).find('select[name="reOffice"]').val() : 143,
-                        date = $(this).find('input[name="reDate"]').val(),
-                        docNumber = $(this).find('input[name="reDocNumber"]').val(),
-                        tabValue = 1;
+                }
 
-                    var fileData = $(this).find('#reAttach1').prop('files')[0],
-                        fileData2 = $(this).find('#reAttach2').prop('files')[0],
-                        fileData3 = $(this).find('#reAttach3').prop('files')[0];
+                if (tab3) {
+                    var notes = $(this).find('textarea[name="reNotesLJT"]').val(),
+                        date = $(this).find('input[name="reDateLTJ"]').val(),
+                        docNumber = $(this).find('input[name="reDocNumberLJT"]').val(),
+                        tabValue = '2';
+
+                    var fileData = $(this).find('#reAttachLJT1').prop('files')[0],
+                        fileData2 = $(this).find('#reAttachLJT2').prop('files')[0],
+                        fileData3 = $(this).find('#reAttachLJT3').prop('files')[0];
                         
                     if (fileData) {
                         Import.verifyAttach(fileData);
@@ -726,7 +891,7 @@
                         Import.verifyAttach(fileData3);
                     }
 
-                    var params = { key: tabValue, notes: notes, office: office, date: date, number: docNumber, header: Import.params.headerID };
+                    var params = { key: tabValue, notes: notes, date: date, number: docNumber, header: Import.params.headerID };
                 }
 
                 // update data header
@@ -735,7 +900,26 @@
                 
                 return false;
             });
-        }
+
+            $('#invDateOut').on('change', function() {
+                 // To set two dates to two variables
+                var date1 = new Date();
+                var date2 = new Date($(this).val());
+                
+                // To calculate the time difference of two dates
+                var Difference_In_Time = date2.getTime() - date1.getTime();
+
+                // To calculate the no. of days between two dates
+                var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+                var days = Math.ceil(Difference_In_Days);
+
+                if (days > 90) {
+                    alert('Jangka waktu tidak boleh lebih dari 90 hari');
+                } else {
+                    $('#periode').val(days);
+                }
+            });
+        } //end init
     };
     
     Import.init();

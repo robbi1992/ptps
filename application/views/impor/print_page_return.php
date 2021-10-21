@@ -39,7 +39,7 @@
         <div class="full-width text-center med-font-size">
             <b><u>TANDA TERIMA PENGEMBALIAN JAMINAN / BARANG TITIPAN</u></b>
         </div>
-        <p class="med-font-size">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pada hari ini tanggal <?= date('d'); ?> bulan <?= date('M'); ?> <?= date('Y'); ?>
+        <p class="med-font-size">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pada hari ini tanggal <?= date('d'); ?> bulan <?= get_month(date('m')); ?> tahun <?= date('Y'); ?>
             telah diterima kembali jaminan / barang titipan dengan rincian:
         </p>
         <table class="full-width med-font-size">
@@ -48,7 +48,7 @@
                 <td width="5%">1.</td>
                 <td width="20%">Nomor BPJ/ST</td>
                 <td width="5%">:</td>
-                <td width="70%">Nomor Apa?</td>
+                <td width="70%"><?= $header['re_doc_number']; ?></td>
             </tr>
             <tr>
                 <td>&nbsp;</td>
@@ -69,7 +69,7 @@
                 <td>4.</td>
                 <td>Jumlah Jaminan</td>
                 <td>:</td>
-                <td><?= $header['nominal']; ?></td>
+                <td>Rp. <?= setIDR($header['nominal']); ?></td>
             </tr>
             <tr>
                 <td>&nbsp;</td>
@@ -80,8 +80,8 @@
             </tr>
             <tr>
                 <td>&nbsp;</td>
-                <td>5.</td>
-                <td>Jenis Barang</td>
+                <td>6.</td>
+                <td>Jumlah Barang</td>
                 <td>:</td>
                 <td><?= $items['bruto']; ?> KG</td>
             </tr>
@@ -90,7 +90,7 @@
         <table class="full-width med-font-size">
             <tr>
                 <td width="10%">&nbsp;</td>
-                <td width="45%" colspan="2">Cengkareng, <?= date('d M Y')?></td>
+                <td width="45%" colspan="2">Cengkareng, <?= date('d') . ' ' . get_month(date('m')) . ' ' . date('Y'); ?></td>
             </tr>
             <tr>
                 <td width="10%">&nbsp;</td>
@@ -111,8 +111,8 @@
             </tr>
             <tr>
                 <td width="10%">&nbsp;</td>
-                <td width="45%">Nama Petugas?</td>
-                <td width="45%">Name Siapa?</td>
+                <td width="45%"><?= $header['re_name']; ?></td>
+                <td width="45%"><?= $_SESSION['users']['name']; ?></td>
             </tr>
         </table>
         <div class="full-width dashed-border"></div>

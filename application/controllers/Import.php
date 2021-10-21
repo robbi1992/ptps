@@ -8,24 +8,26 @@ class Import extends MY_Controller {
 		$this->load->model('import_model');
 	}
 
-	private function get_kurs(){
+	private function get_kurs($id = false){
 		$kurs = array();
-		$host = 'https://api-patops.bcsoetta.org/kurs?number=150';
+		if (empty($id)) $host = 'https://api-patops.bcsoetta.org/kurs?number=150';
+		else $host = 'https://api-patops.bcsoetta.org/kurs?id=1131';
 		 // Get cURL resource
-		 $curl = curl_init();
+		$curl = curl_init();
 		 // Set some options - we are passing in a useragent too here
-		 curl_setopt_array($curl, array(
-			 CURLOPT_RETURNTRANSFER => 1,
-			 CURLOPT_URL => $host
-		 ));
+		curl_setopt_array($curl, array(
+			CURLOPT_RETURNTRANSFER => 1,
+			CURLOPT_URL => $host
+		));
 		 // Send the request & save response to $resp
-		 $resp = curl_exec($curl);
+		$resp = curl_exec($curl);
 		 // Close request to clear up some resources
-		 curl_close($curl);
+		curl_close($curl);
 	 
-		 $kurs= json_decode($resp);
-		//  exit();
-		return $kurs->data;
+		$data = json_decode($resp);
+		if ($data) $kurs = $data->data;
+
+		return $kurs;
 	}
 
 	private function change_status_import($header) {
@@ -39,6 +41,7 @@ class Import extends MY_Controller {
 		$data['packages'] = $this->import_model->get_package();	
 		$data['categories'] = $this->import_model->get_categories();	
 		$data['kurs'] = $this->get_kurs();
+		// $data['usd'] = $this->get_kurs(true);
 		$this->page->template('impor/index');	
 		$this->page->view('impor/index',$data);
 	}
@@ -141,6 +144,7 @@ class Import extends MY_Controller {
 	}
 
 	public function get_detail() {
+		$this->load->helper('my_helper');
 		$params = json_decode($this->input->raw_input_stream, TRUE);
 		$header_id = $this->my_decrypt($params['header_id']);
 		// echo $header_id; exit();
@@ -180,5 +184,14 @@ class Import extends MY_Controller {
 		$data =  $this->import_model->get_data_return($header);
 		// print_r($data); exit();
 		$this->load->view('impor/print_page_return', $data);
+	}
+
+	public function delete_item_temp() {
+		$params = json_decode($this->input->raw_input_stream, TRUE);
+		$delete_data =  $this->import_model->delete_item_temp($params['params']);
+		
+		$this->output
+			->set_content_type('application/json')
+			->set_output(json_encode($delete_data));
 	}
 }
