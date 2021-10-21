@@ -60,21 +60,21 @@
                     </table>
                     <table class="my-table">
                         <tr>
-                            <td width="5%">A.</td>
-                            <td width="45%" colspan="4" style="border-right: 1px solid;">DATA PEMBERITAHU</td>
-                            <td width="5%">G.</td>
-                            <td width="45%" colspan="3">KOLOM KHUSUS BEA DAN CUKAI</td>
+                            <td width="2%">A.</td>
+                            <td width="48%" colspan="4" style="border-right: 1px solid;">DATA PEMBERITAHU</td>
+                            <td width="2%">G.</td>
+                            <td width="48%" colspan="3">KOLOM KHUSUS BEA DAN CUKAI</td>
                         </tr>
                         <tr>
-                            <td width="5%">&nbsp;</td>
+                            <td width="2%">&nbsp;</td>
                             <td width="5%">1.</td>
-                            <td width="15%">Nama Lengkap</td>
+                            <td width="18%">Nama Lengkap</td>
                             <td width="5%">:</td>
                             <td width="20%" style="border-right: 1px solid;"><?= $header->name;?></td>
-                            <td width="5%">&nbsp;</td>
+                            <td width="2%">&nbsp;</td>
                             <td width="10%">Nomor</td>
                             <td width="2%">:</td>
-                            <td width="33%"><?= $header->doc_number;?></td>
+                            <td width="36%"><?= $header->doc_number;?></td>
                         </tr>
                         <tr>
                             <td>&nbsp;</td>
@@ -172,21 +172,21 @@
                     </table>
                     <table class="my-table">
                         <tr>
-                            <td width="5%">D.</td>
-                            <td width="45%" colspan="4" style="border-right: 1px solid;">PENGEMBALIAN JAMINAN</td>
-                            <td width="5%">16.</td>
-                            <td width="45%" colspan="3">Rekening</td>
+                            <td width="2%">D.</td>
+                            <td width="48%" colspan="4" style="border-right: 1px solid;">PENGEMBALIAN JAMINAN</td>
+                            <td width="2%">16.</td>
+                            <td width="48%" colspan="3">Rekening</td>
                         </tr>
                         <tr>
-                            <td width="5%">&nbsp;</td>
+                            <td width="2%">&nbsp;</td>
                             <td width="5%">15.</td>
                             <td width="10%">Melalui : </td>
                             <td width="5%" class="center" style="border: 1px solid;"><?=$header->return_type;?></td>
-                            <td width="25%" style="border-right: 1px solid;">1. Diambil Sendiri</td>
-                            <td width="5%">&nbsp;</td>
+                            <td width="28%" style="border-right: 1px solid;">1. Diambil Sendiri</td>
+                            <td width="2%">&nbsp;</td>
                             <td width="10%">Nomor</td>
-                            <td width="5%">:</td>
-                            <td width="30%"><?=$account->number;?></td>
+                            <td width="2%">:</td>
+                            <td width="36%"><?=$account->number;?></td>
                         </tr>
                         <tr>
                             <td>&nbsp;</td>
