@@ -11,7 +11,7 @@
  Target Server Version : 100119
  File Encoding         : 65001
 
- Date: 06/10/2021 05:17:45
+ Date: 21/10/2021 07:43:37
 */
 
 SET NAMES utf8mb4;
@@ -53,15 +53,7 @@ CREATE TABLE `arr_valas` (
   KEY `nationality_arr_valas_fk_origin_id` (`nationality`),
   CONSTRAINT `nationality_arr_valas_fk_origin_id` FOREIGN KEY (`nationality`) REFERENCES `countries` (`id`),
   CONSTRAINT `origin_country_id_fk_country_id` FOREIGN KEY (`origin_country`) REFERENCES `countries` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of arr_valas
--- ----------------------------
-BEGIN;
-INSERT INTO `arr_valas` VALUES (1, '1/KD/VALAS/SH/2021', 'ga123', '2021-09-24', 2, 5, '123321123', '2021-09-01', 'address', 'occupation', '123321', 'place', '', 'destination', '1', '1', '1', '1', '3', '0', '1', '1', 'Robbi Amirudin', '123123123123123123', '2021-09-24 18:16:52', '0');
-INSERT INTO `arr_valas` VALUES (2, '2/KD/VALAS/SH/2021', 'full name', '2021-09-24', 2, 5, '123321123', '2021-09-01', 'asdasdas', 'asdasd', 'gaasdasd', 'asdasd', 'asdas', 'asdas', '2', '1', '1', '1', '1', '0', '1', '1', 'Robbi Amirudin', '123123123123123123', '2021-09-24 18:19:00', '1');
-COMMIT;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Table structure for arr_valas_cash
@@ -75,14 +67,7 @@ CREATE TABLE `arr_valas_cash` (
   PRIMARY KEY (`id`),
   KEY `arr_val_cash_header_id_fk_header_id` (`header_id`),
   CONSTRAINT `arr_val_cash_header_id_fk_header_id` FOREIGN KEY (`header_id`) REFERENCES `arr_valas` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of arr_valas_cash
--- ----------------------------
-BEGIN;
-INSERT INTO `arr_valas_cash` VALUES (1, 'usd', 100000, 1);
-COMMIT;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Table structure for arr_valas_corp
@@ -115,14 +100,7 @@ CREATE TABLE `arr_valas_ipl` (
   PRIMARY KEY (`id`),
   KEY `arr_val_cash_header_id_fk_header_id` (`header_id`),
   CONSTRAINT `arr_valas_ipl_ibfk_1` FOREIGN KEY (`header_id`) REFERENCES `arr_valas` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of arr_valas_ipl
--- ----------------------------
-BEGIN;
-INSERT INTO `arr_valas_ipl` VALUES (1, 'usd', 1000, '1', '123asd', '2021-09-01', 'BCA', 1);
-COMMIT;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Table structure for arr_valas_others
@@ -426,15 +404,13 @@ CREATE TABLE `dep_valas` (
   KEY `nationality_arr_valas_fk_origin_id` (`nationality`),
   CONSTRAINT `dep_valas_ibfk_1` FOREIGN KEY (`nationality`) REFERENCES `countries` (`id`),
   CONSTRAINT `dep_valas_ibfk_2` FOREIGN KEY (`origin_country`) REFERENCES `countries` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of dep_valas
 -- ----------------------------
 BEGIN;
-INSERT INTO `dep_valas` VALUES (1, '1/KB/VALAS/SH/2021', 'foo bar', '2021-09-24', 4, 4, '123321123', '2021-09-01', 'residence address', 'occupation', 'ga123', 'place', 'destination', 'address', '2', '1', '1', '1', '3', '', '', '', '', '', '0000-00-00', '', 'Robbi Amirudin', '123123123123123123', '1', '2021-09-24 18:19:48');
-INSERT INTO `dep_valas` VALUES (2, '2/KB/VALAS/SH/2021', 'asd', '2021-09-01', 5, 4, 'asdas', '2021-09-15', 'asdsa', 'asdasd', 'asdsa', 'asdas', 'asd', 'asd', '2', '1', '1', '1', '1', '0', '1', '1', '', '', '0000-00-00', '', 'Robbi Amirudin', '123123123123123123', '1', '2021-09-24 18:19:48');
-INSERT INTO `dep_valas` VALUES (3, '3/KB/VALAS/SH/2021', 'foo bar', '2021-09-24', 2, 2, '32123132', '2021-09-01', 'asdasdads', 'jkbknlkmlk', 'ga112323', 'place', 'hgjknlk', 'jknkn', '2', '1', '1', '1', '3', '0', '1', '1', '1', 'izinbank', '2021-09-01', 'KPU BEA DAN CUKAI TIPE C SOEKARNO-HATTA', 'Robbi Amirudin', '123123123123123123', '0', '2021-09-24 18:34:26');
+INSERT INTO `dep_valas` VALUES (1, '1/KB/VALAS/SH/2021', 'asd', '2021-10-17', 4, 4, '123122112', '2021-10-18', 'jknkl', 'nklnl', 'jnklk', 'nlnklml', 'kllnkl', 'klnnkl', '2', '1', '1', '1', '1', '0', '1', '1', '0', 'asds', '2021-10-17', 'KPU BEA DAN CUKAI TIPE C SOEKARNO-HATTA', 'Robbi Amirudin', '123123123123123123', '0', '2021-10-17 17:51:36');
 COMMIT;
 
 -- ----------------------------
@@ -449,15 +425,14 @@ CREATE TABLE `dep_valas_cash` (
   PRIMARY KEY (`id`),
   KEY `arr_val_cash_header_id_fk_header_id` (`header_id`),
   CONSTRAINT `dev_valas_cash_header_id_fk1` FOREIGN KEY (`header_id`) REFERENCES `dep_valas` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of dep_valas_cash
 -- ----------------------------
 BEGIN;
-INSERT INTO `dep_valas_cash` VALUES (1, 'yen', 1000, 2);
-INSERT INTO `dep_valas_cash` VALUES (2, 'USD', 100, 3);
-INSERT INTO `dep_valas_cash` VALUES (3, 'yen', 1000, 3);
+INSERT INTO `dep_valas_cash` VALUES (1, 'tes', 2000, 1);
+INSERT INTO `dep_valas_cash` VALUES (2, 'tes lagu', 2000, 1);
 COMMIT;
 
 -- ----------------------------
@@ -494,6 +469,14 @@ CREATE TABLE `dep_valas_ipl` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
+-- Records of dep_valas_ipl
+-- ----------------------------
+BEGIN;
+INSERT INTO `dep_valas_ipl` VALUES (1, 'asd', 1000, '1', 'asdas', '2021-10-19', 'asdsa', 1);
+INSERT INTO `dep_valas_ipl` VALUES (2, 'asd', 1000, '1', 'asdas', '2021-10-19', 'asdsa', 1);
+COMMIT;
+
+-- ----------------------------
 -- Table structure for dep_valas_others
 -- ----------------------------
 DROP TABLE IF EXISTS `dep_valas_others`;
@@ -523,14 +506,7 @@ CREATE TABLE `docs` (
   `doc_attach` varchar(128) DEFAULT NULL,
   `header_id` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of docs
--- ----------------------------
-BEGIN;
-INSERT INTO `docs` VALUES (1, 'dasd', 'asdad', '2021-09-09', '1632819844.jpg', 1);
-COMMIT;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Table structure for docs_temp
@@ -545,7 +521,7 @@ CREATE TABLE `docs_temp` (
   `header_id` int(10) NOT NULL,
   `nip_user` varchar(32) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Table structure for import
@@ -559,7 +535,6 @@ CREATE TABLE `import` (
   `name` varchar(128) NOT NULL,
   `address` varchar(255) NOT NULL,
   `passport` varchar(64) NOT NULL,
-  `flight_number` varchar(32) NOT NULL,
   `periode` int(8) NOT NULL,
   `return_type` enum('1','2','3') NOT NULL,
   `airport_in` int(11) NOT NULL,
@@ -572,18 +547,31 @@ CREATE TABLE `import` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `officer_nip` varchar(32) NOT NULL,
   `officer_name` varchar(128) NOT NULL,
+  `inv_date_out` date NOT NULL,
+  `re_office` int(11) DEFAULT NULL,
+  `re_date` date DEFAULT NULL,
+  `re_doc_number` varchar(32) DEFAULT NULL,
+  `re_name` varchar(128) DEFAULT NULL,
+  `re_notes` varchar(255) DEFAULT NULL,
+  `re_status` enum('0','1') DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `import_air_in_fk_office_id` (`airport_in`),
   KEY `import_air_out_fk_office_id` (`airport_out`),
+  KEY `import__re_office_fk_off_id` (`re_office`),
+  CONSTRAINT `import__re_office_fk_off_id` FOREIGN KEY (`re_office`) REFERENCES `office` (`id`),
   CONSTRAINT `import_air_in_fk_office_id` FOREIGN KEY (`airport_in`) REFERENCES `office` (`id`),
   CONSTRAINT `import_air_out_fk_office_id` FOREIGN KEY (`airport_out`) REFERENCES `office` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of import
 -- ----------------------------
 BEGIN;
-INSERT INTO `import` VALUES (13, '13/IS/T/KPU.03/2021', '2021-10-02', '1', 'nama lengkap', 'alamat lengkap', 'nomor paspor', '', 90, '1', 1, 3, 'no invoice', '2021-10-02', 'pengangkut', '1', '0', '2021-10-02 15:27:26', '123123123123123123', 'Robbi Amirudin');
+INSERT INTO `import` VALUES (31, '31/IS/KPU.03/2021', '2021-10-16', '2', 'Robbi Amirudin', 'Jonggol', '123321123', 14, '1', 143, 143, 'inv123', '2021-10-16', 'pengangkut', '2', '0', '2021-10-16 13:59:15', '123123123123123123', 'Robbi Amirudin', '2021-10-30', 143, '2021-10-19', '31/BPJ/KPU.03/2021', 'asdasd', 'adasd', '0');
+INSERT INTO `import` VALUES (32, '32/IS/KPU.03/2021', '2021-10-18', '1', 'Robbi Amirudin', 'Alamat lengkap', 'nomor paspor', 30, '1', 143, 143, 'inv123', '2021-10-20', 'pengangkut', '1', '0', '2021-10-18 09:02:22', '123123123123123123', 'Robbi Amirudin', '2021-11-17', NULL, NULL, '32/BPJ/KPU.03/2021', NULL, NULL, NULL);
+INSERT INTO `import` VALUES (33, '33/IS/KPU.03/2021', '2021-10-18', '1', 'asd', 'asd', 'asd', 31, '1', 143, 143, 'inv123', '2021-10-19', 'pengangkut', '2', '0', '2021-10-18 09:07:24', '123123123123123123', 'Robbi Amirudin', '2021-11-29', 143, '2021-10-19', '33/BPJ/KPU.03/2021', 'asdasd', 'adasd', '0');
+INSERT INTO `import` VALUES (34, '34/IS/KPU.03/2021', '2021-10-18', '1', 'asd', 'asd', 'asd', 31, '1', 143, 143, 'asdas', '2021-10-19', 'asdas', '3', '0', '2021-10-18 10:09:53', '123123123123123123', 'Robbi Amirudin', '2021-11-27', 143, '2021-10-19', '34/BPJ/KPU.03/2021', 'asdasd', 'adasd', '0');
+INSERT INTO `import` VALUES (35, '35/IS/KPU.03/2021', '2021-10-18', '1', 'tes', 'tes', 'tes', 1, '2', 143, 143, 'tes', '2021-10-27', 'tes', '3', '0', '2021-10-18 22:12:04', '123123123123123123', 'Robbi Amirudin', '2021-10-19', 143, '2021-10-19', '35/BPJ/KPU.03/2021', 'asdasd', 'adasd', '0');
 COMMIT;
 
 -- ----------------------------
@@ -599,13 +587,17 @@ CREATE TABLE `import_account` (
   PRIMARY KEY (`id`),
   KEY `im_acc_header_id_fk_import_id` (`header_id`),
   CONSTRAINT `im_acc_header_id_fk_import_id` FOREIGN KEY (`header_id`) REFERENCES `import` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of import_account
 -- ----------------------------
 BEGIN;
-INSERT INTO `import_account` VALUES (7, 'nama rek', 'no rek', 'bank', 13);
+INSERT INTO `import_account` VALUES (25, 'nama rekening', 'nomor rekening', 'bank', 31);
+INSERT INTO `import_account` VALUES (26, 'nama rekening', 'nomor rekening', 'bank rekening', 32);
+INSERT INTO `import_account` VALUES (27, 'nama rekening', 'nomor rekening', 'bank rekening', 33);
+INSERT INTO `import_account` VALUES (28, 'asdsa', 'asdas', 'asdsa', 34);
+INSERT INTO `import_account` VALUES (29, 'tes', 'tes', 'tes', 35);
 COMMIT;
 
 -- ----------------------------
@@ -618,17 +610,27 @@ CREATE TABLE `import_guarantee` (
   `name` varchar(128) NOT NULL,
   `address` varchar(255) NOT NULL,
   `nominal` bigint(255) NOT NULL,
+  `source` varchar(128) NOT NULL,
+  `source_number` varchar(32) NOT NULL,
+  `source_date` date NOT NULL,
+  `treasurer_name` varchar(128) NOT NULL,
+  `treasurer_nip` varchar(32) NOT NULL,
+  `doc_number` varchar(32) NOT NULL,
   `header_id` bigint(20) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `im_guarantee_header_id_fk_import_id` (`header_id`),
   CONSTRAINT `im_guarantee_header_id_fk_import_id` FOREIGN KEY (`header_id`) REFERENCES `import` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of import_guarantee
 -- ----------------------------
 BEGIN;
-INSERT INTO `import_guarantee` VALUES (7, '1', 'nama penjamin', 'alamat', 100000, 13);
+INSERT INTO `import_guarantee` VALUES (25, '2', 'penjamin', 'alamat penamin', 137000, '', '', '0000-00-00', 'bendaharanya', 'nipnya', '31/BPJ/KPU.03/2021', 31);
+INSERT INTO `import_guarantee` VALUES (26, '1', 'nama penjamin', 'alamat penjamin', 1417000, '', '', '0000-00-00', 'nama bendahara', 'nip bendahara', '32/BPJ/KPU.03/2021', 32);
+INSERT INTO `import_guarantee` VALUES (27, '2', 'nama penjamin', 'alamat penjamin', 2071000, '', '', '0000-00-00', 'nama bendahara', 'nip bendahara', '33/BPJ/KPU.03/2021', 33);
+INSERT INTO `import_guarantee` VALUES (28, '2', 'asdsa', 'asdas', 1844000, 'asdsad', 'asdasd', '2021-10-14', 'asdsadas', 'asdasdas', '34/BPJ/KPU.03/2021', 34);
+INSERT INTO `import_guarantee` VALUES (29, '1', 'tes', 'tes', 229000, 'tes', 'tes', '2021-10-18', 'tes', 'tes', '35/BPJ/KPU.03/2021', 35);
 COMMIT;
 
 -- ----------------------------
@@ -642,20 +644,39 @@ CREATE TABLE `import_items` (
   `bruto` bigint(20) NOT NULL,
   `description` varchar(255) NOT NULL,
   `package_type` int(11) NOT NULL,
+  `currency` varchar(8) NOT NULL,
+  `kurs` float NOT NULL,
+  `bm_tax` float NOT NULL,
+  `cif` bigint(20) NOT NULL,
+  `free` float NOT NULL,
+  `free_value` float NOT NULL,
+  `free_currency` varchar(8) NOT NULL,
+  `ppn_tax` float NOT NULL,
+  `pph_tax` float NOT NULL,
+  `ppnbm_tax` float NOT NULL,
+  `fine_tax` float NOT NULL,
+  `fob` bigint(20) NOT NULL,
+  `freight` bigint(20) NOT NULL,
+  `insurance` bigint(20) NOT NULL,
   `header_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`id`) USING BTREE,
   KEY `pck_type_im_items_fk_qty_type_id` (`package_type`),
   KEY `im_items_header_id_fk_import_id` (`header_id`),
   CONSTRAINT `im_items_header_id_fk_import_id` FOREIGN KEY (`header_id`) REFERENCES `import` (`id`),
   CONSTRAINT `pck_type_im_items_fk_qty_type_id` FOREIGN KEY (`package_type`) REFERENCES `quantity_type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of import_items
 -- ----------------------------
 BEGIN;
-INSERT INTO `import_items` VALUES (13, 'nama barang', 1, 10, '', 1, 13);
-INSERT INTO `import_items` VALUES (14, 'nama barang2', 1, 10, '', 1, 13);
+INSERT INTO `import_items` VALUES (31, 'barang1', 1, 1, 'deskripsi barang', 2, 'USD', 14249, 15, 30, 0, 0, '', 10, 7.5, 0, 0, 10, 10, 10, 31);
+INSERT INTO `import_items` VALUES (32, 'barang1', 1, 1, 'deskripsi barang', 2, 'USD', 14249, 15, 30, 0, 0, '', 10, 0, 0, 0, 10, 10, 10, 31);
+INSERT INTO `import_items` VALUES (33, 'barang1', 1, 10, 'spesifikasinya', 4, 'BND', 10490.1, 15, 520, 1424900, 0, '', 10, 75, 0, 0, 500, 10, 10, 32);
+INSERT INTO `import_items` VALUES (34, 'barang1', 1, 1, 'spek', 3, 'CAD', 11333, 15, 520, 0, 0, '', 10, 7.5, 0, 0, 500, 10, 10, 33);
+INSERT INTO `import_items` VALUES (35, 'barang1', 1, 10, 'asdasads', 4, 'BND', 10490.1, 15, 500, 0, 0, '', 10, 7.5, 0, 0, 500, 0, 0, 34);
+INSERT INTO `import_items` VALUES (36, 'barang1', 1, 1, 'tes', 1, 'AUD', 10386.8, 15, 30, 0, 0, '', 10, 7.5, 0, 0, 10, 10, 10, 35);
+INSERT INTO `import_items` VALUES (37, 'barang2', 1, 1, 'tes', 1, 'AUD', 10386.8, 15, 30, 0, 0, '', 10, 10, 0, 0, 10, 10, 10, 35);
 COMMIT;
 
 -- ----------------------------
@@ -669,16 +690,7 @@ CREATE TABLE `import_items_attachment` (
   PRIMARY KEY (`id`),
   KEY `iia_item_id_fk_import_items_id` (`item_id`),
   CONSTRAINT `iia_item_id_fk_import_items_id` FOREIGN KEY (`item_id`) REFERENCES `import_items` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of import_items_attachment
--- ----------------------------
-BEGIN;
-INSERT INTO `import_items_attachment` VALUES (1, 'IS_1633163220_459.jpg', 13);
-INSERT INTO `import_items_attachment` VALUES (2, 'IS_1633163238_963.jpg', 14);
-INSERT INTO `import_items_attachment` VALUES (3, 'IS_1633163238_186.jpg', 14);
-COMMIT;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Table structure for import_items_attachment_temp
@@ -690,7 +702,7 @@ CREATE TABLE `import_items_attachment_temp` (
   `key_item` varchar(64) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `iia_item_id_fk_import_items_id` (`key_item`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Table structure for import_items_temp
@@ -703,13 +715,45 @@ CREATE TABLE `import_items_temp` (
   `bruto` bigint(20) NOT NULL,
   `description` varchar(255) NOT NULL,
   `package_type` int(11) NOT NULL,
-  `key_header` varchar(64) NOT NULL,
+  `currency` varchar(8) NOT NULL,
+  `kurs` float NOT NULL,
+  `bm_tax` float NOT NULL,
+  `cif` bigint(20) NOT NULL,
+  `free_value` float NOT NULL,
+  `free_currency` varchar(8) NOT NULL,
+  `free` float NOT NULL,
+  `ppn_tax` float NOT NULL,
+  `pph_tax` float NOT NULL,
+  `ppnbm_tax` float NOT NULL,
+  `fine_tax` float NOT NULL,
+  `fob` bigint(20) NOT NULL,
+  `freight` bigint(20) NOT NULL,
+  `insurance` bigint(20) NOT NULL,
   `key_item` varchar(64) NOT NULL,
-  PRIMARY KEY (`id`),
+  `key_header` varchar(64) NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
   KEY `pck_type_im_items_fk_qty_type_id` (`package_type`),
   KEY `im_items_header_id_fk_import_id` (`key_header`),
   CONSTRAINT `import_items_temp_ibfk_2` FOREIGN KEY (`package_type`) REFERENCES `quantity_type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of import_items_temp
+-- ----------------------------
+BEGIN;
+INSERT INTO `import_items_temp` VALUES (59, 'barang1', 1, 1, 'spek', 4, 'CHF', 15313.7, 15, 120, 10, 'AUD', 104677, 10, 0, 0, 0, 100, 10, 10, '1634745225852', '1634744469110');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for import_reexport_attachments
+-- ----------------------------
+DROP TABLE IF EXISTS `import_reexport_attachments`;
+CREATE TABLE `import_reexport_attachments` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(128) NOT NULL,
+  `header_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Table structure for import_sponsor
@@ -727,7 +771,18 @@ CREATE TABLE `import_sponsor` (
   PRIMARY KEY (`id`),
   KEY `im_sponsor_header_id_fk_import_id` (`header_id`),
   CONSTRAINT `im_sponsor_header_id_fk_import_id` FOREIGN KEY (`header_id`) REFERENCES `import` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of import_sponsor
+-- ----------------------------
+BEGIN;
+INSERT INTO `import_sponsor` VALUES (17, 'Faeki', 'Hegarsari', '0812332112', '123321123123123', 'lokasinya', 'tujuannya', 31);
+INSERT INTO `import_sponsor` VALUES (18, 'nama sponsor', 'alamat sponsor', '0812332112', '123321123123', 'lokasi', 'tujuan', 32);
+INSERT INTO `import_sponsor` VALUES (19, 'asd', 'asd', 'asd', 'asd', 'asdas', 'asdas', 33);
+INSERT INTO `import_sponsor` VALUES (20, 'asd', 'asd', 'asd', 'asd', 'asd', 'asd', 34);
+INSERT INTO `import_sponsor` VALUES (21, 'tes', 'tes', 'tes', 'tes', 'tes', 'tes', 35);
+COMMIT;
 
 -- ----------------------------
 -- Table structure for item_categories
@@ -737,7 +792,7 @@ CREATE TABLE `item_categories` (
   `id` int(4) NOT NULL AUTO_INCREMENT,
   `name` varchar(128) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of item_categories
@@ -767,6 +822,7 @@ INSERT INTO `item_categories` VALUES (21, 'Perkakas (Mekanik/Elektrik)');
 INSERT INTO `item_categories` VALUES (22, 'Perlatan Dapur & Kamar mandi');
 INSERT INTO `item_categories` VALUES (23, 'Hewan dan Bagian Tubuh');
 INSERT INTO `item_categories` VALUES (24, 'Barang Lainnya');
+INSERT INTO `item_categories` VALUES (25, 'Alat Musik');
 COMMIT;
 
 -- ----------------------------
@@ -1187,15 +1243,7 @@ CREATE TABLE `spmb_barang` (
   CONSTRAINT `jenis_satuan_fk_qty_type_id` FOREIGN KEY (`jenis_satuan`) REFERENCES `quantity_type` (`id`),
   CONSTRAINT `spmb_barang_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `item_categories` (`id`),
   CONSTRAINT `spmb_barang_ibfk_2` FOREIGN KEY (`currency_id`) REFERENCES `currency` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- ----------------------------
--- Records of spmb_barang
--- ----------------------------
-BEGIN;
-INSERT INTO `spmb_barang` VALUES (1, 1, 0, 'asdas', 1.00, '1D (Drum, plywood)', 1, 1, NULL, '2021-09-28 16:03:30', '2021-09-28 16:03:30', '1/KB/T3U/SH/2021', 1, 100, '100', NULL, 2, 1, '1632819810.jpg', NULL);
-INSERT INTO `spmb_barang` VALUES (2, 1, 0, 'asdas', 1.00, '1G (Drum, fibre)', 1, 2, NULL, '2021-09-28 16:03:51', '2021-09-28 16:03:51', '1/KB/T3U/SH/2021', 1, 10000, '100', NULL, 3, 1, '1632819831.jpg', NULL);
-COMMIT;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
 -- Table structure for spmb_barang_temp
@@ -1226,7 +1274,7 @@ CREATE TABLE `spmb_barang_temp` (
   KEY `category_id_fk_id_item_category` (`category_id`),
   CONSTRAINT `category_id_fk_id_item_category` FOREIGN KEY (`category_id`) REFERENCES `item_categories` (`id`),
   CONSTRAINT `currency_idx_spmb_barang_temp` FOREIGN KEY (`currency_id`) REFERENCES `currency` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
 -- Table structure for spmb_header
@@ -1249,7 +1297,7 @@ CREATE TABLE `spmb_header` (
   `bandara_keberangkatan` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `bandara_kedatangan` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `nomor_penerbangan` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `id_dokumen` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id_dokumen` bigint(20) DEFAULT NULL,
   `nomor_dokumen` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `tanggal_dokumen` date DEFAULT NULL,
   `input_by` varchar(55) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -1260,14 +1308,7 @@ CREATE TABLE `spmb_header` (
   `print_status` int(2) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `nomor_paspor` (`nomor_paspor`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- ----------------------------
--- Records of spmb_header
--- ----------------------------
-BEGIN;
-INSERT INTO `spmb_header` VALUES (1, 'as', '2021-09-08', 'asd', 'asdas', 'asd', 'asdada', '80', 'asd@asd.asd', '2021-09-28 16:04:11', NULL, 'KPU BEA DAN CUKAI TIPE C SOEKARNO-HATTA', 'KPU BEA DAN CUKAI TIPE C SOEKARNO-HATTA', NULL, '5', 'asd', '1', '1/KB/T3U/SH/2021', '2021-09-28', 'Robbi Amirudin-123123123123123123', 2, 'asdasd', NULL, 'asdas', 0);
-COMMIT;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
 -- Table structure for users
