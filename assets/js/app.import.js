@@ -821,36 +821,17 @@
             });
 
             $('form[name="statusForm"]').on('submit', function(){
-                // var tab1 = $('#kt_tab_pane_1_4').hasClass('active');
+                var tab1 = $('#kt_tab_pane_1_4').hasClass('active');
                 var tab2 = $('#kt_tab_pane_2_4').hasClass('active');
+                var tab3 = $('#kt_tab_pane_3_4').hasClass('active');
                 // tab sesuai = 1
-                
-                if (tab2) {
-                    var notes = $(this).find('textarea[name=reNotesNOK]').val();
-                    tabValue = 0;
-                    // save images
-                    var fileData = $(this).find('#reAttachNOK1').prop('files')[0],
-                        fileData2 = $(this).find('#reAttachNOK2').prop('files')[0],
-                        fileData3 = $(this).find('#reAttachNOK3').prop('files')[0];
-                        
-                    if (fileData) {
-                        Import.verifyAttach(fileData);
-                    }
-                    if (fileData2) {
-                        Import.verifyAttach(fileData2);
-                    }
-                    if (fileData3) {
-                        Import.verifyAttach(fileData3);
-                    }
-                    
-                    var params = { key: tabValue, notes: notes, header: Import.params.headerID };
-                } else {
+                if (tab1) {
                     var notes = $(this).find('textarea[name="reNotes"]').val(),
                         office = ($(this).find('select[name="reOffice"]').val()) ? $(this).find('select[name="reOffice"]').val() : 143,
                         date = $(this).find('input[name="reDate"]').val(),
                         name = $(this).find('input[name="reName"]').val(),
                         docNumber = $(this).find('input[name="reDocNumber"]').val(),
-                        tabValue = 1;
+                        tabValue = '1';
 
                     var fileData = $(this).find('#reAttach1').prop('files')[0],
                         fileData2 = $(this).find('#reAttach2').prop('files')[0],
@@ -867,6 +848,50 @@
                     }
 
                     var params = { key: tabValue, notes: notes, name: name, office: office, date: date, number: docNumber, header: Import.params.headerID };
+                }
+
+                if (tab2) {
+                    var notes = $(this).find('textarea[name=reNotesNOK]').val();
+                    tabValue = '0';
+                    // save images
+                    var fileData = $(this).find('#reAttachNOK1').prop('files')[0],
+                        fileData2 = $(this).find('#reAttachNOK2').prop('files')[0],
+                        fileData3 = $(this).find('#reAttachNOK3').prop('files')[0];
+                        
+                    if (fileData) {
+                        Import.verifyAttach(fileData);
+                    }
+                    if (fileData2) {
+                        Import.verifyAttach(fileData2);
+                    }
+                    if (fileData3) {
+                        Import.verifyAttach(fileData3);
+                    }
+                    
+                    var params = { key: tabValue, notes: notes, header: Import.params.headerID };
+                }
+
+                if (tab3) {
+                    var notes = $(this).find('textarea[name="reNotesLJT"]').val(),
+                        date = $(this).find('input[name="reDateLTJ"]').val(),
+                        docNumber = $(this).find('input[name="reDocNumberLJT"]').val(),
+                        tabValue = '2';
+
+                    var fileData = $(this).find('#reAttachLJT1').prop('files')[0],
+                        fileData2 = $(this).find('#reAttachLJT2').prop('files')[0],
+                        fileData3 = $(this).find('#reAttachLJT3').prop('files')[0];
+                        
+                    if (fileData) {
+                        Import.verifyAttach(fileData);
+                    }
+                    if (fileData2) {
+                        Import.verifyAttach(fileData2);
+                    }
+                    if (fileData3) {
+                        Import.verifyAttach(fileData3);
+                    }
+
+                    var params = { key: tabValue, notes: notes, date: date, number: docNumber, header: Import.params.headerID };
                 }
 
                 // update data header

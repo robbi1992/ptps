@@ -306,6 +306,7 @@ class Import_model extends CI_Model {
     }
 
     public function update_header($params) {
+        // 0 = tidak sesuai, 1 = sesuai, 2 = jatuh tempo
         $this->db->set('re_notes', $params['notes']);
         $this->db->set('re_status', $params['key']);
         if($params['key'] == 1) {
@@ -314,7 +315,10 @@ class Import_model extends CI_Model {
             $this->db->set('re_date', $params['date']);
             $this->db->set('re_name', $params['name']);
             // $this->db->set('re_doc_number', $re_doc_number);
-        }   
+        }  elseif($params['key'] == 2) {
+            $this->db->set('re_date', $params['date']);
+        }
+        
         $this->db->set('status', '3');
         $this->db->where('id', $params['header']);
         return $this->db->update('import');

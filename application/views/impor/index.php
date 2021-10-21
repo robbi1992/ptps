@@ -1059,6 +1059,12 @@
                                     <span class="nav-text">TIDAK SESUAI</span>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_3_4">
+                                    <span class="nav-icon"><i class="fa fa-exclamation-circle"></i></span>
+                                    <span class="nav-text">LEWAT JATUH TEMPO</span>
+                                </a>
+                            </li>
                         </ul>
             
                         <div class="tab-content">
@@ -1117,6 +1123,30 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="tab-pane fade" id="kt_tab_pane_3_4" role="tabpanel" aria-labelledby="kt_tab_pane_3_4">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="reDateLTJ">Tanggal Re-ekspor</label>
+                                            <input id="reDateLTJ" name="reDateLTJ" class="form-control bc-date" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="reDocNumberLJT">Nomor Dokumen</label>
+                                            <input id="reDocNumberLJT" name="reDocNumberLJT" class="form-control" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="reNotesLJT">Catatan</label>
+                                            <textarea id="reNotesLJT" name="reNotesLJT" class="form-control"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="reAttachLJT1">Lampiran</label>
+                                            <input type="file" class="form-control" name="reAttachLJT1" id="reAttachLJT1" accept="image/png, image/gif, image/jpeg" />
+                                            <input type="file" class="form-control" name="reAttachLJT2" id="reAttachLJT2" accept="image/png, image/gif, image/jpeg" />
+                                            <input type="file" class="form-control" name="reAttachLJT3" id="reAttachLJT3" accept="image/png, image/gif, image/jpeg" />
+                                        </div>
+                                    </div>
+                                </div> 
                             </div>
                         </div>
                         <!-- end tab content -->
