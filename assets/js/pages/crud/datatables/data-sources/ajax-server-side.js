@@ -217,6 +217,66 @@ jQuery(document).ready(function() {
 		});
     });
 
+	$('#spmb_docs_form').on('submit', function (e) {
+		// $(this).find('button').attr('disabled', 'disabled');
+		// $('#pleaseWaitDialog').modal('show');
+
+		// mapping data
+		var type = $(this).find('[name="doc_type"]').val(),
+			number = $(this).find('[name="doc_number"]').val(),
+			date = $(this).find('[name="doc_date"]').val();
+
+		var params = {
+			type: type, number: number, date: date,
+			header: $('#key_header').val(), item: $('#key_doc').val()
+		};
+
+		var base_url = window.location.origin+'/spmb/new_docs_item';
+
+		$.ajax({
+			url: base_url,
+			type: 'post',
+			dataType: 'json',
+			data: JSON.stringify(params)
+		}).done(function(result) {
+			// if data saved
+			if (result) {
+				// save attachment
+				var myForm = $('form[name="spmb_docs_form"]');
+				myForm.find('button').attr('disabled', 'disabled');
+				$('#pleaseWaitDialog').modal('show');
+
+				var fileData = myForm.find('#itemAttach1').prop('files')[0],
+					fileData2 = myForm.find('#itemAttach2').prop('files')[0],
+					fileData3 = myForm.find('#itemAttach3').prop('files')[0];
+				
+				if (fileData) {
+					verifyUpload(fileData, true);
+				}
+				if (fileData2) {
+					verifyUpload(fileData2, true);
+				}
+				if (fileData3) {
+					verifyUpload(fileData3, true);
+				}
+
+				renderDocsTemp();
+				$('#docs_modal').modal('hide');
+			}
+		}).fail(function() {
+			alert('terjadi kesalahan, coba lagi nanti..');
+		}).always(function() {
+			$('#pleaseWaitDialog').modal('hide');
+			$('body').removeClass('modal-open');
+			$(".modal-backdrop").remove();
+			$('#pleaseWaitDialog').removeClass('show');
+			$('#pleaseWaitDialog').removeAttr('style');
+			$('form[name="spmb_goods_form"]').find('button').removeAttr('disabled');
+		});
+
+		return false;
+	});
+
 	$('#spmb_goods_form').on('submit', function (e) {
 		// $(this).find('button').attr('disabled', 'disabled');
 		// $('#pleaseWaitDialog').modal('show');
@@ -320,8 +380,8 @@ jQuery(document).ready(function() {
 
     $('#add_spmb').on('click', function (e) {
 		// reset data spmb temp
-		reset_spmb_data();
-       get_spmb_list_form();
+		// reset_spmb_data();
+    //    get_spmb_list_form();
 
 	   // generate key
 		var generator = generateKey();
@@ -349,7 +409,9 @@ jQuery(document).ready(function() {
 
 	$('#add_docs').on('click', function (e) {
 		$('#spmb_docs_form').find('input[type=text]').val('');
-		$('#kt_image_6').find('.image-input-wrapper').removeAttr('style');
+		var generator = generateKey();
+		$('#key_doc').val(generator);
+		$('#docs_modal').modal('show');
 	});
 });
 
@@ -357,23 +419,28 @@ function generateKey() {
 	return Math.floor(Math.random() * 26) + Date.now();
 }
 
-function verifyUpload(fileData) {
+function verifyUpload(fileData, docs = false) {
 	// console.log(fileData.size);
 	if (fileData.size > 0) {
 		if (fileData.size > 2000000) {
 			alert('Ukuran Max. file 2Mb');
 		} else {
-			uploadItems(fileData);
+			uploadItems(fileData, docs);
 		}
 	}
 }
 
-function uploadItems(data) {
+function uploadItems(data, docs) {
 	var formData =  new FormData();
 	formData.append('file', data);
-	formData.append('item_key', $('#key_item').val());
-
-	var base_url = window.location.origin + '/spmb/upload_items/';
+	if (docs) {
+		formData.append('item_key', $('#key_doc').val());
+		var base_url = window.location.origin + '/spmb/upload_docs/';
+	} else {
+		formData.append('item_key', $('#key_item').val());
+		var base_url = window.location.origin + '/spmb/upload_items/';
+	}
+	
 	$.ajax({
 		url: base_url,
 		dataType: 'json', 
@@ -487,65 +554,6 @@ $('#goods_quantity').on('change', function() {
 	$('#goods_custom').val(setIDR(total));
 });
 
-$('#spmb_docs_form').on('submit', function (e) {
-	$(this).find('button').attr('disabled', 'disabled');
-	$('#pleaseWaitDialog').modal('show');
-	
-	var fileData =  $(this).find('#doc_file_att').prop('files')[0];
-
-    var formData =  new FormData();
-	formData.append('file', fileData);
-	
-	// console.log(formData);
-	$.ajax({
-		url: '/spmb/upload_document',
-		dataType: 'json', // what to expect back from the server
-		cache: false,
-		contentType: false,
-		processData: false,
-		data: formData,
-		type: 'post'
-	}).done(function(result) {
-		if (result) {
-			if (result.status) {
-				// console.log($('#spmb_docs_form').find('input[name="doc_type"]').val());
-				// insert data
-				var base_url = window.location.origin+'/spmb/new_docs_item';
-				$.ajax({
-					url : base_url,
-					type: "POST",
-					data: $('#spmb_docs_form').serialize(),
-					dataType: "JSON",
-					beforeSend: function(){
-						// console.log(formData);
-					},
-					success: function(data){ 
-						// listing data
-						// console.log('sukses');
-						$('#docs_modal').modal('hide');
-						get_spmb_list_docs(data);
-					},
-					error: function (jqXHR, textStatus, errorThrown){
-						// alert('Failed !');
-						// $('.btn-submit-peralihan').text('Tambahkan');
-						// $('.btn-submit-peralihan').attr('disabled',false); 
-					}
-				});
-			} else {
-				alert('Lampiran harus diisi..');
-			}
-		}
-	}).always(function() {
-		$('#pleaseWaitDialog').modal('hide');
-		$('body').removeClass('modal-open');
-		$(".modal-backdrop").remove();
-		$('#pleaseWaitDialog').removeClass('show');
-		$('#pleaseWaitDialog').removeAttr('style');
-		$('#spmb_docs_form').find('button').removeAttr('disabled');
-	});
-
-	return false;
-});
 
 function get_spmb_list_docs(data){
 	var item_url_form = window.location.origin+'/spmb/spmb_list_docs/';
@@ -612,7 +620,42 @@ function showImage(data) {
 	// $('#imageItem').attr('src', '/assets/custom/docs/' + data);
 	$('#imageViewer').modal('show');
 }
+function renderDocsTemp() {
+	var header = $('#key_header').val();
+	var params = { key_header: header };
 
+	var base_url = window.location.origin + '/spmb/get_docs_temp/';
+	$.ajax({
+		url: base_url,
+		type: 'post',
+		dataType: 'json',
+		data: JSON.stringify(params)
+	}).done(function(result) {
+		if (result) {
+			var itemTable = $('#show_docs');
+			itemTable.find('tbody').empty();
+			var dataItems = '';
+			
+			$.each(result.items, function(index, value) {	
+				dataItems += '<tr id="' + value.id + '">\
+					<td view="type">' + value.doc_type + '</td>\
+					<td view="number">' + value.doc_number + '</td>\
+					<td view="date">' + value.doc_date + '</td>\
+					<td>\
+							<a href="javascript:;" onClick="deleteDocs(this)" class="btn btn-sm btn-danger btn-icon" title="delete" >\
+								<i class="la la-close"></i>\
+							</a>\
+					</td>';
+			});
+			itemTable.find('tbody').html(dataItems);
+		}
+	}).always(function() {
+		// Account.clearForm();
+		// Account.enabled(true);
+	}).fail(function() {
+		// alert('terjadi kesalahan, coba lagi nanti..');
+	});
+}
 function renderItemTemp() {
 
 	var header = $('#key_header').val();
@@ -783,6 +826,32 @@ function deleteForm(data) {
 	}).done(function(result) {
 		if (result) {
 			renderItemTemp();
+		}
+	}).always(function() {
+		// Account.clearForm();
+		// Account.enabled(true);
+	}).fail(function() {
+		// alert('terjadi kesalahan, coba lagi nanti..');
+	});
+}
+
+function deleteDocs(data) {
+	var row = data.closest('tr');
+	var itemID = row.id;
+
+	var base_url = window.location.origin + '/spmb/delete_doc/';
+	var dataPost = {
+		itemID : itemID
+	};
+
+	$.ajax({
+		url: base_url,
+		type: 'post',
+		dataType: 'json',
+		data: JSON.stringify(dataPost)
+	}).done(function(result) {
+		if (result) {
+			renderDocsTemp();
 		}
 	}).always(function() {
 		// Account.clearForm();

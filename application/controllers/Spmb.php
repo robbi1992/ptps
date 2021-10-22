@@ -94,6 +94,16 @@ class Spmb extends MY_Controller {
 			->set_content_type('application/json')
 			->set_output(json_encode($return));
     }
+
+	public function new_docs_item() {
+		$params = json_decode($this->input->raw_input_stream, TRUE);
+		$save_data =  $this->spmb_model->save_docs_temp($params);
+
+		$this->output
+			->set_content_type('application/json')
+			->set_output(json_encode($save_data));
+	}
+
     public function new_spmb_item(){
 		$params = json_decode($this->input->raw_input_stream, TRUE);
 		$save_data =  $this->spmb_model->save_item_temp($params);
@@ -287,32 +297,6 @@ class Spmb extends MY_Controller {
         echo json_encode($data);
 	}
 
-	public function new_docs_item() {
-		// temp file
-		$doc_type = $this->input->POST("doc_type");
-		$doc_number = $this->input->POST("doc_number");
-		$doc_date = $this->input->POST("doc_date");
-		$users = $this->session->userdata('users');
-		$attachment = $this->session->userdata($users['name']);
-
-		$item = array(
-			'doc_type' => $doc_type,
-			'doc_number' => $doc_number,
-			'doc_date' => $doc_date,
-			'doc_attach' => $attachment['file_id'],
-			'nip_user' => $users['nip']
-		);
-
-		$save_temp = $this->spmb_model->Insert('docs_temp', $item);
-		
-		if ($save_temp) {
-			// clear session
-			$this->session->unset_userdata($users['nip']);
-			echo json_encode(1);
-		}
-	
-	}
-
 	public function spmb_list_docs(){
         $str  = $this->input->POST('str');
 		// users params
@@ -377,6 +361,13 @@ class Spmb extends MY_Controller {
 			->set_output(json_encode(array('items' => $result)));
 	}
 
+	public function get_docs_temp() {
+		$params = json_decode($this->input->raw_input_stream, TRUE);
+		$result= $this->spmb_model->get_docs_temp($params['key_header']);
+		$this->output
+			->set_content_type('application/json')
+			->set_output(json_encode(array('items' => $result)));
+	}
 	public function get_item_temp() {
 		// item for edit with id
 		// edit function removed
@@ -405,6 +396,41 @@ class Spmb extends MY_Controller {
 		$this->output
 			->set_content_type('application/json')
 			->set_output(json_encode($return));
+	}
+
+	public function delete_doc() {
+		$params = json_decode($this->input->raw_input_stream, TRUE);
+		$result= $this->spmb_model->delete_doc_temp($params['itemID']);
+
+		$return = array('status' => 'ok');
+		$this->output
+			->set_content_type('application/json')
+			->set_output(json_encode($return));
+	}
+
+	public function upload_docs() {
+		$config['upload_path']          = './assets/custom/docs/';
+        $config['allowed_types']        = 'jpg|png|jpeg';
+        $config['max_size']             = 2000;
+        $config['file_name']            = 'SPMB_' . time() . '_' . rand(1, 1000) . '.jpg';
+        $config['overwrite'] = TRUE;
+		
+        $this->load->library('upload', $config);
+		$data['status'] = false;
+
+		$item_key = $this->input->post('item_key');
+		
+		if ($this->upload->do_upload('file')) {
+            $data['status'] = true;
+            $uploaded = $this->upload->data();
+
+			// save filename to attachment type
+			$save_data =  $this->spmb_model->save_docs_attachment_temp($config['file_name'], $item_key);
+        } else {
+            $data['error_msg'] = $this->upload->display_errors();
+        }
+
+        echo json_encode($data);
 	}
 
 	public function upload_items() {

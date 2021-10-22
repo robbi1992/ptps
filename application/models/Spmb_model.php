@@ -419,6 +419,13 @@ class Spmb_model extends CI_Model {
 		return $items;
 	}
 
+	public function get_docs_temp($id) {
+		$this->db->where('key_header', $id);
+		// $result = array();
+		$this->db->select('id, doc_type, doc_number, doc_date');
+		return $this->db->get('docs_temp')->result_array();
+	}
+
 	public function get_items_temp($id, $nip = '') {
 		/*
 		if (!empty($id)) {
@@ -453,6 +460,12 @@ class Spmb_model extends CI_Model {
 		// attachment not already deleted
 		$this->db->where('id', $id);
 		return $this->db->delete('spmb_barang_temp');
+	}
+
+	public function delete_doc_temp($id) {
+		// attachment not already deleted
+		$this->db->where('id', $id);
+		return $this->db->delete('docs_temp');
 	}
 
 	/**
@@ -586,9 +599,30 @@ class Spmb_model extends CI_Model {
 		return $insert;
 	}
 
+	public function save_docs_temp($params) {
+		$users = $this->session->userdata('users');
+
+		$data = array(
+			'doc_type' => $params['type'],
+			'doc_number' => $params['number'],
+			'doc_date' => $params['date'],
+			'nip_user' => $users['nip'],
+			'key_header' => $params['header'],
+			'key_doc' => $params['item']
+		);
+		$insert = $this->db->insert('docs_temp', $data);
+		return $insert;
+	}
+
 	public function save_item_attachment_temp($fileName, $key) {
         $this->db->set('name', $fileName);
         $this->db->set('key_item', $key);
         $this->db->insert('spmb_barang_attachment_temp');
     }
+
+	public function save_docs_attachment_temp($fileName, $key) {
+		$this->db->set('name', $fileName);
+        $this->db->set('key_item', $key);
+        $this->db->insert('docs_attachment_temp');
+	}
 }

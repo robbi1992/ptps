@@ -643,21 +643,6 @@
                                     </div>
                                     <div class="separator separator-dashed mt-4 mb-8"></div>
                                     <div class="row">
-                                        <!--
-                                        <table class="table table-bordered table-hover table-checkable" id="goods_item_form">
-                                            <thead>
-                                                <tr>
-                                                    <th>No</th>
-                                                    <th>Nama Barang</th>
-                                                    <th>Jumlah</th>
-                                                    <th>Kemasan</th>
-                                                    <th>Berat Kotor</th>
-                                                    <th>Pabean</th>
-                                                    <th>Lampiran</th>
-                                                </tr>
-                                            </thead>
-                                        </table>
-                                        -->
                                         <table id="show_item_list_new_spmb" class="table table-bordered table-hover">
                                             <thead>
                                                 <!-- <th>No. Dokumen</th> -->
@@ -678,16 +663,14 @@
                                     </div>
                                     <!-- <div class="separator separator-dashed mt-4 mb-8"></div> -->
                                     <div class="row">
-                                        <table class="table table-bordered table-hover table-checkable" id="docs_item_form">
+                                        <table id="show_docs" class="table table-bordered table-hover">
                                             <thead>
-                                                <tr>
-                                                    <th>No</th>
-                                                    <th>Jenis</th>
-                                                    <th>No. Dokumen</th>
-                                                    <th>Tanggal</th>
-                                                    <th>Lampiran</th>
-                                                </tr>
+                                                <th>Jenis</th>
+                                                <th>No. Dokumen</th>
+                                                <th>Tanggal</th>
+                                                <th>Menu</th>
                                             </thead>
+                                            <tbody></tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -707,7 +690,8 @@
         <div class="modal fade" id="docs_modal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
-                    <form class="form" id="spmb_docs_form" enctype="multipart/form-data">
+                    <form class="form" id="spmb_docs_form" name="spmb_docs_form" enctype="multipart/form-data">
+                        <input type="hidden" name="key_doc" id="key_doc" />
                         <div class="modal-header" style="background-color: #1BC5BD;">
                             <h5 class="modal-title" id="exampleModalLabel">Dokumen Pelengkap</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -739,24 +723,11 @@
                                         </div>
                                         <div class="col-md-4">&nbsp;</div>
                                     </div>
-                                    <div class="form-group-row">
-                                        <label class="col-md2 text-right">Lampiran</label>
-                                        <div class="col-md-9">
-                                            <div class="image-input image-input-empty image-input-outline" id="kt_image_6" style="background-image: url(ptps/assets/media/users/blank.png)">
-                                                <div class="image-input-wrapper"></div>
-                                                <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change avatar">
-                                                    <i class="fa fa-pen icon-sm text-muted"></i>
-                                                    <input type="file" id="doc_file_att" name="doc_file_att" accept=".png, .jpg, .jpeg" required />
-                                                    <input type="hidden" name="profile_avatar_remove" />
-                                                </label>
-                                                <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
-                                                    <i class="ki ki-bold-close icon-xs text-muted"></i>
-                                                </span>
-                                                <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="remove" data-toggle="tooltip" title="Remove avatar">
-                                                    <i class="ki ki-bold-close icon-xs text-muted"></i>
-                                                </span>
-                                            </div>
-                                        </div>
+                                    <div class="form-group">
+                                        <label for="itemAttach">Lampiran</label>
+                                        <input type="file" class="form-control" name="itemAttach1" id="itemAttach1" accept="image/png, image/gif, image/jpeg" />
+                                        <input type="file" class="form-control" name="itemAttach2" id="itemAttach2" accept="image/png, image/gif, image/jpeg" />
+                                        <input type="file" class="form-control" name="itemAttach3" id="itemAttach3" accept="image/png, image/gif, image/jpeg" />
                                     </div>
                                 </div>      
                             </div>
