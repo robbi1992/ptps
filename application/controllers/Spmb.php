@@ -53,6 +53,8 @@ class Spmb extends MY_Controller {
 		$maxdok = $max.'/KB/T3U/SH/2021';
 
 		$users = $this->session->userdata('users');
+		// key header
+		$key_header = $this->input->POST("key_header");
 
 		$spmb  = array(
 							'nama' 			 => $spmb_name,
@@ -81,7 +83,7 @@ class Spmb extends MY_Controller {
 		/**
 		 * set to transaction query
 		 */
-		$trans_query = $this->spmb_model->create_new_spmb($spmb, $users['nip']);
+		$trans_query = $this->spmb_model->create_new_spmb($spmb, $key_header);
 		$return['status'] = 'error';
 		
 		if ($trans_query) {
@@ -93,72 +95,12 @@ class Spmb extends MY_Controller {
 			->set_output(json_encode($return));
     }
     public function new_spmb_item(){
-		// insert to temp
-		/*
-    	if($this->session->userdata('doc_item') == '') {
-    		$max = $this->max_spmb();
-			$maxdok = $max.'/KB/T3U/SH/2021';
-	    	$sess_item = array(
-								'doc_item' => $maxdok,
-							);
-			$this->session->set_userdata($sess_item);
-			$doc_reff_id = $this->session->userdata('doc_item');
-		}
-		else{
-			$doc_reff_id = $this->session->userdata('doc_item');	
-		}
-		*/
-		$max = $this->max_spmb();
-		$doc_reff_id = $max . '/KB/T3U/SH/' . date('Y');
+		$params = json_decode($this->input->raw_input_stream, TRUE);
+		$save_data =  $this->spmb_model->save_item_temp($params);
 
-        $date = date("Y-m-d");
-        $dateinsert = date("Y-m-d H:i:s");
-		$itemID = $this->input->POST("itemID");
-		$goods_name = $this->input->POST("goods_name");
-		$goods_quantity = $this->input->POST("goods_quantity");
-		$goods_jenis_satuan = $this->input->POST("goods_jenis_satuan");
-		$currency = $this->input->POST("currency");
-		$category = $this->input->POST("goods_category");
-		// $goods_custom = $this->input->POST("goods_custom");
-		$goods_custom = $this->input->POST("price");
-		$goods_package = $this->input->POST("goods_jumlah_kemasan");
-		$goods_jenis_kemasan = $this->input->POST("goods_jenis_kemasan");
-		$goods_hs_code = $this->input->POST("goods_hs_code");
-		// $goods_category = $this->input->POST("goods_category");
-		$goods_bruto = $this->input->POST("goods_bruto");
-		
-		/* multiple user input*/
-		$users = $this->session->userdata('users');
-		$attachment = $this->session->userdata($users['name']);
-	
-		/* */
-		$item  = array(
-							'nama_barang'	=> $goods_name ,
-							'jumlah_kemasan'=> '',
-							'currency_id'=> $currency,
-							'category_id'=> $category,
-							'jumlah_kemasan' => $goods_package,
-							'jenis_kemasan'	=> $goods_jenis_kemasan,
-							'jumlah_satuan'	=> $goods_quantity,
-							'jenis_satuan'	=> $goods_jenis_satuan,
-							'nilai_pabean'  => $goods_custom,
-							'hs_id'			=> $goods_hs_code,
-							'created_at'	=> $dateinsert,
-							'updated_at'	=> $dateinsert,
-							'nomor_dokumen'	=> $doc_reff_id,
-							'status'		=> $goods_quantity,
-							'bruto'			=> $goods_bruto,
-							'attachment' => $attachment['item_id'],
-							'nip_user' => $users['nip']
-						);
-				        $is_spmb_item       = $this->spmb_model->Insert('spmb_barang_temp', $item, $itemID);
-		if ($is_spmb_item) {
-			$this->session->unset_userdata($users['nip']);
-			echo json_encode($doc_reff_id);
-		}
-		else{
-			var_dump($is_spmb_item);
-		}
+		$this->output
+			->set_content_type('application/json')
+			->set_output(json_encode($save_data));
     }
 
     public function spmb_goods_verification(){
@@ -437,16 +379,19 @@ class Spmb extends MY_Controller {
 
 	public function get_item_temp() {
 		// item for edit with id
+		// edit function removed
 		$params = json_decode($this->input->raw_input_stream, TRUE);
+		/*
 		$itemID = '';
 		if ($params['itemID']) {
 			$itemID = $params['itemID'];
 		}
+		*/
 		
-		$users = $this->session->userdata('users');
-		$nip = $users['nip'];
+		// $users = $this->session->userdata('users');
+		// $nip = $users['nip'];
 
-		$result= $this->spmb_model->get_items_temp($itemID, $nip);
+		$result= $this->spmb_model->get_items_temp($params['key_header']);
 		$this->output
 			->set_content_type('application/json')
 			->set_output(json_encode(array('items' => $result)));
@@ -460,5 +405,30 @@ class Spmb extends MY_Controller {
 		$this->output
 			->set_content_type('application/json')
 			->set_output(json_encode($return));
+	}
+
+	public function upload_items() {
+		$config['upload_path']          = './assets/custom/items/';
+        $config['allowed_types']        = 'jpg|png|jpeg';
+        $config['max_size']             = 2000;
+        $config['file_name']            = 'SPMB_' . time() . '_' . rand(1, 1000) . '.jpg';
+        $config['overwrite'] = TRUE;
+		
+        $this->load->library('upload', $config);
+		$data['status'] = false;
+
+		$item_key = $this->input->post('item_key');
+		
+		if ($this->upload->do_upload('file')) {
+            $data['status'] = true;
+            $uploaded = $this->upload->data();
+
+			// save filename to attachment type
+			$save_data =  $this->spmb_model->save_item_attachment_temp($config['file_name'], $item_key);
+        } else {
+            $data['error_msg'] = $this->upload->display_errors();
+        }
+
+        echo json_encode($data);
 	}
 }

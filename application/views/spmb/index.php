@@ -226,6 +226,7 @@
             <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
                 <div class="modal-content">
                     <form class="form" id="spmb_form">
+                        <input type="hidden" name="key_header" id="key_header" />
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Buat SPMB</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -665,7 +666,7 @@
                                                 <th>Kemasan</th>
                                                 <th>Berat</th>
                                                 <th>Harga</th>
-                                                <th>Lampiran</th>
+                                                <!-- <th>Lampiran</th> -->
                                                 <th>Menu</th>
                                             </thead>
                                             <tbody></tbody>
@@ -774,8 +775,9 @@
         <div class="modal fade" id="GoodsModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
-                    <form class="form" id="spmb_goods_form">
+                    <form class="form" id="spmb_goods_form" name="spmb_goods_form">
                         <input type="hidden" name="itemID" id="itemID" />
+                        <input type="hidden" name="key_item" id="key_item" />
                         <div class="modal-header" style="background-color: #1BC5BD;">
                             <h5 class="modal-title" id="exampleModalLabel">Tambah Data Barang</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1215,32 +1217,11 @@
                                             <input type="text" class="form-control" name="goods_bruto" required />
                                         </div>
                                     </div> 
-                                    <div class="row">
-                                        <!--begin::Card-->
-                                        <div class="card card-custom gutter-b example example-compact">
-                                                <div class="card-body">
-                                                    <div class="form-group row">
-                                                        <label class="col-md2 text-right">Lampiran</label>
-                                                        <div class="col-md-9">
-                                                            <div class="image-input image-input-empty image-input-outline" id="kt_image_5" style="background-image: url(ptps/assets/media/users/blank.png)">
-                                                                <div class="image-input-wrapper"></div>
-                                                                <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change avatar">
-                                                                    <i class="fa fa-pen icon-sm text-muted"></i>
-                                                                    <input type="file" id="profile_avatar" name="profile_avatar" accept=".png, .jpg, .jpeg" required />
-                                                                    <input type="hidden" name="profile_avatar_remove" />
-                                                                </label>
-                                                                <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
-                                                                    <i class="ki ki-bold-close icon-xs text-muted"></i>
-                                                                </span>
-                                                                <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="remove" data-toggle="tooltip" title="Remove avatar">
-                                                                    <i class="ki ki-bold-close icon-xs text-muted"></i>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                        </div>
-                                        <!--end::Card-->
+                                    <div class="form-group">
+                                        <label for="itemAttach">Lampiran</label>
+                                        <input type="file" class="form-control" name="itemAttach1" id="itemAttach1" accept="image/png, image/gif, image/jpeg" />
+                                        <input type="file" class="form-control" name="itemAttach2" id="itemAttach2" accept="image/png, image/gif, image/jpeg" />
+                                        <input type="file" class="form-control" name="itemAttach3" id="itemAttach3" accept="image/png, image/gif, image/jpeg" />
                                     </div>
                                 </div>
                             </div>

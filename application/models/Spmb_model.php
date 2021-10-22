@@ -356,7 +356,10 @@ class Spmb_model extends CI_Model {
 		return $result;
 		// print_r($data);
 	}
-
+	private function get_attachments($id) {
+		$this->db->where('item_id', $id);
+		return $this->db->get('spmb_barang_attachment')->result_array();
+	}
 	public function get_items($params) {
 		// set header not a created again
 		$this->db->set('status', 2);
@@ -392,7 +395,7 @@ class Spmb_model extends CI_Model {
 			} else {
 				$sisa = $val['jumlah_satuan'];
 			}
-
+			// attachment is array now
 			$items[] = array(
 				'item_id' => $val['id'],
 				'doc_number' => $val['nomor_dokumen'],
@@ -407,7 +410,7 @@ class Spmb_model extends CI_Model {
 				'remaining' => $sisa,
 				'statusID' => $val['status_barang'],
 				'status' => $this->item_status($val['status_barang']),
-				'attachment' => $val['attachment'],
+				'attachment' => $this->get_attachments($val['id']),
 				'bruto' => $val['bruto'],
 				'note' => $val['note']
 			);
@@ -417,11 +420,13 @@ class Spmb_model extends CI_Model {
 	}
 
 	public function get_items_temp($id, $nip = '') {
+		/*
 		if (!empty($id)) {
 			$this->db->where('id', $id);
 		}
 		$this->db->where('nip_user', $nip);
-
+		*/
+		$this->db->where('key_header', $id);
 		$result = array();
 		$this->db->select('id, nama_barang, jumlah_satuan, jenis_satuan, currency_id, category_id, jumlah_kemasan, jenis_kemasan, bruto, nilai_pabean, attachment');
 		$temp = $this->db->get('spmb_barang_temp')->result_array();
@@ -436,8 +441,8 @@ class Spmb_model extends CI_Model {
 				'bruto' => $val['bruto'],
 				'price' => $val['nilai_pabean'],
 				'currency' => $val['currency_id'],
-				'category' => $val['category_id'],
-				'attachment' => $val['attachment']
+				'category' => $val['category_id']
+				// 'attachment' => $val['attachment']
 			);
 		}
 
@@ -445,6 +450,7 @@ class Spmb_model extends CI_Model {
 	}
 
 	public function delete_spmb_temp($id) {
+		// attachment not already deleted
 		$this->db->where('id', $id);
 		return $this->db->delete('spmb_barang_temp');
 	}
@@ -455,8 +461,8 @@ class Spmb_model extends CI_Model {
 
 	public function create_new_spmb($spmb, $nip) {
 		$return_status = false;
-		$item_status = false;
-		$doc_status = false;
+		// $item_status = false;
+		// $doc_status = false;
 
 		$this->db->trans_start();
 		// insert header first
@@ -464,12 +470,15 @@ class Spmb_model extends CI_Model {
 		$header_id =  $this->db->insert_id();
 		
 		// insert table item from temp
-		$this->db->where('nip_user', $nip);
+		// params is key_header
+		// $this->db->where('nip_user', $nip);
+		$this->db->where('key_header', $nip);
 		$temp = $this->db->get('spmb_barang_temp')->result_array();
 
-		$items = array();
+		// $items = array();
+		// insert itemp
 		foreach($temp as $val) {
-			$items[] = array(
+			$items = array(
 				'nama_barang'	=> $val['nama_barang'] ,
 				'header_id'		=> $header_id,
 				'currency_id'		=> $val['currency_id'],
@@ -480,21 +489,40 @@ class Spmb_model extends CI_Model {
 				'jenis_satuan'	=> $val['jenis_satuan'],
 				'nilai_pabean'  => $val['nilai_pabean'],
 				'hs_id'			=> $val['hs_id'],
-				'created_at'	=> $val['created_at'],
-				'updated_at'	=> $val['updated_at'],
+				// 'created_at'	=> $val['created_at'],
+				// 'updated_at'	=> $val['updated_at'],
 				'nomor_dokumen'	=> $spmb['nomor_dokumen'],
 				'status'		=> $val['status'],
 				'bruto'			=> $val['bruto'],
-				'attachment'			=> $val['attachment'],
+				'attachment'			=> $val['attachment']
 			);
+
+			$this->db->insert('spmb_barang', $items);
+			$item_id = $this->db->insert_id();
+
+			// insert items attachment from temp
+			$this->db->where('key_item', $val['key_item']);
+			$file_temp = $this->db->get('spmb_barang_attachment_temp')->result_array();
+			if (count($file_temp) > 0) {
+				$data_file = array();
+				foreach ($file_temp as $row) {
+					$data_file[] = array(
+						'name' => $row['name'],
+						'item_id' => $item_id
+					);
+				}
+
+				$insert_file = $this->db->insert_batch('spmb_barang_attachment', $data_file);
+				if ($insert_file) {
+					// remove file temp after inserted
+					$this->db->where('key_item', $val['key_item']);
+					$this->db->delete('spmb_barang_attachment_temp');
+				}
+			}
 		};
-
-		if (count($items) > 0) {
-			$item_status = true;
-		} else {
-			$item_status = false;
-		}
-
+		// remove table temp after save
+		$this->db->where('key_header', $nip);
+        $this->db->delete('spmb_barang_temp');
 		// insert table docs from temp
 		$temp_docs = $this->db->get('docs_temp')->result_array();
 		// var_dump($temp); exit();
@@ -516,14 +544,10 @@ class Spmb_model extends CI_Model {
 		}
 		
 		// remove header data if no docs & items
-		if ($item_status && $doc_status) {
+		if ($doc_status) {
 			$this->db->insert_batch('docs', $docs);
 			$this->db->where('nip_user', $nip);
 			$this->db->delete('docs_temp');
-
-			$this->db->insert_batch('spmb_barang', $items);
-			$this->db->where('nip_user', $nip);
-			$this->db->delete('spmb_barang_temp');
 			$return_status = true;
 		} else {
 			$this->db->where('id', $header_id);
@@ -540,4 +564,31 @@ class Spmb_model extends CI_Model {
 
 		return $return_status;
 	}
+
+	public function save_item_temp($params) {
+		$users = $this->session->userdata('users');
+
+		$data = array(
+			'nama_barang' => $params['name'],
+			'jumlah_kemasan' => $params['package'],
+			'jenis_kemasan' => $params['packageType'],
+			'jumlah_satuan' => $params['qty'],
+			'jenis_satuan' => $params['qtyType'],
+			'nilai_pabean' => $params['price'],
+			'bruto' => $params['bruto'],
+			'category_id' => $params['category'],
+			'currency_id' => $params['currency'],
+			'nip_user' => $users['nip'],
+			'key_header' => $params['header'],
+			'key_item' => $params['item']
+		);
+		$insert = $this->db->insert('spmb_barang_temp', $data);
+		return $insert;
+	}
+
+	public function save_item_attachment_temp($fileName, $key) {
+        $this->db->set('name', $fileName);
+        $this->db->set('key_item', $key);
+        $this->db->insert('spmb_barang_attachment_temp');
+    }
 }
