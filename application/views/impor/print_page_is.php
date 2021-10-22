@@ -67,10 +67,10 @@
                         </tr>
                         <tr>
                             <td width="2%">&nbsp;</td>
-                            <td width="5%">1.</td>
+                            <td width="2%">1.</td>
                             <td width="18%">Nama Lengkap</td>
                             <td width="5%">:</td>
-                            <td width="20%" style="border-right: 1px solid;"><?= $header->name;?></td>
+                            <td width="23%" style="border-right: 1px solid;"><?= $header->name;?></td>
                             <td width="2%">&nbsp;</td>
                             <td width="10%">Nomor</td>
                             <td width="2%">:</td>
@@ -179,10 +179,10 @@
                         </tr>
                         <tr>
                             <td width="2%">&nbsp;</td>
-                            <td width="5%">15.</td>
-                            <td width="10%">Melalui : </td>
+                            <td width="2%">15.</td>
+                            <td width="7%">Melalui : </td>
                             <td width="5%" class="center" style="border: 1px solid;"><?=$header->return_type;?></td>
-                            <td width="28%" style="border-right: 1px solid;">1. Diambil Sendiri</td>
+                            <td width="34%" style="border-right: 1px solid;">1. Diambil Sendiri</td>
                             <td width="2%">&nbsp;</td>
                             <td width="10%">Nomor</td>
                             <td width="2%">:</td>
