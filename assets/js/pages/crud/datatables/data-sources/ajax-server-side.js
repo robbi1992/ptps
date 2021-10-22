@@ -320,7 +320,7 @@ jQuery(document).ready(function() {
 
     $('#add_spmb').on('click', function (e) {
 		// reset data spmb temp
-		// reset_spmb_data();
+		reset_spmb_data();
        get_spmb_list_form();
 
 	   // generate key

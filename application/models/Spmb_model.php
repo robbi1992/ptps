@@ -292,9 +292,9 @@ class Spmb_model extends CI_Model {
 
 	public function reset_spmb_temp($nip = '') {
 		// delete table temp with nip
-		$this->db->where('nip_user', $nip);
-		$a = $this->db->delete('spmb_barang_temp');
-
+		// $this->db->where('nip_user', $nip);
+		// $a = $this->db->delete('spmb_barang_temp');
+		$a = true;
 		$this->db->where('nip_user', $nip);
 		$b = $this->db->delete('docs_temp');
 		
