@@ -11,7 +11,7 @@
  Target Server Version : 100119
  File Encoding         : 65001
 
- Date: 21/10/2021 07:43:37
+ Date: 23/10/2021 08:43:51
 */
 
 SET NAMES utf8mb4;
@@ -506,7 +506,61 @@ CREATE TABLE `docs` (
   `doc_attach` varchar(128) DEFAULT NULL,
   `header_id` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of docs
+-- ----------------------------
+BEGIN;
+INSERT INTO `docs` VALUES (1, 'asd', 'dsa', '2021-10-23', '1634889451.jpg', 2);
+INSERT INTO `docs` VALUES (2, 'asd', 'dsa', '2021-10-23', '1634889451.jpg', 3);
+INSERT INTO `docs` VALUES (3, 'asd', 'asd', '2021-10-23', '1634889803.jpg', 3);
+INSERT INTO `docs` VALUES (4, 'asd', 'dsa', '2021-10-23', '1634889451.jpg', 4);
+INSERT INTO `docs` VALUES (5, 'asd', 'asd', '2021-10-23', '1634889803.jpg', 4);
+INSERT INTO `docs` VALUES (6, 'asd', 'asd', '2021-10-21', '1634890332.jpg', 4);
+INSERT INTO `docs` VALUES (7, 'doc', 'dasd', '2021-10-23', NULL, 5);
+INSERT INTO `docs` VALUES (10, 'doc01', 'dok123', '2021-10-24', NULL, 9);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for docs_attachment
+-- ----------------------------
+DROP TABLE IF EXISTS `docs_attachment`;
+CREATE TABLE `docs_attachment` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(128) NOT NULL,
+  `doc_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `docs_attach_doc_id_fk_docs_id` (`doc_id`),
+  CONSTRAINT `docs_attach_doc_id_fk_docs_id` FOREIGN KEY (`doc_id`) REFERENCES `docs` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of docs_attachment
+-- ----------------------------
+BEGIN;
+INSERT INTO `docs_attachment` VALUES (3, 'SPMB_1634953164_755.jpg', 10);
+INSERT INTO `docs_attachment` VALUES (4, 'SPMB_1634953164_920.jpg', 10);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for docs_attachment_temp
+-- ----------------------------
+DROP TABLE IF EXISTS `docs_attachment_temp`;
+CREATE TABLE `docs_attachment_temp` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(128) NOT NULL,
+  `key_item` varchar(64) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `iia_item_id_fk_import_items_id` (`key_item`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of docs_attachment_temp
+-- ----------------------------
+BEGIN;
+INSERT INTO `docs_attachment_temp` VALUES (1, 'SPMB_1634929473_895.jpg', '1634929455172');
+COMMIT;
 
 -- ----------------------------
 -- Table structure for docs_temp
@@ -520,8 +574,18 @@ CREATE TABLE `docs_temp` (
   `doc_attach` varchar(128) DEFAULT NULL,
   `header_id` int(10) NOT NULL,
   `nip_user` varchar(32) NOT NULL,
+  `key_header` varchar(32) NOT NULL,
+  `key_doc` varchar(32) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of docs_temp
+-- ----------------------------
+BEGIN;
+INSERT INTO `docs_temp` VALUES (8, 'doc', 'dasd', '2021-10-23', NULL, 0, '123123123123123123', '1634929452275', '1634929455172');
+INSERT INTO `docs_temp` VALUES (9, 'doc01', 'dok123', '2021-10-24', NULL, 0, '123123123123123123', '1634953094554', '1634953146946');
+COMMIT;
 
 -- ----------------------------
 -- Table structure for import
@@ -553,7 +617,7 @@ CREATE TABLE `import` (
   `re_doc_number` varchar(32) DEFAULT NULL,
   `re_name` varchar(128) DEFAULT NULL,
   `re_notes` varchar(255) DEFAULT NULL,
-  `re_status` enum('0','1') DEFAULT NULL,
+  `re_status` enum('0','1','2') DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `import_air_in_fk_office_id` (`airport_in`),
   KEY `import_air_out_fk_office_id` (`airport_out`),
@@ -567,8 +631,8 @@ CREATE TABLE `import` (
 -- Records of import
 -- ----------------------------
 BEGIN;
-INSERT INTO `import` VALUES (31, '31/IS/KPU.03/2021', '2021-10-16', '2', 'Robbi Amirudin', 'Jonggol', '123321123', 14, '1', 143, 143, 'inv123', '2021-10-16', 'pengangkut', '2', '0', '2021-10-16 13:59:15', '123123123123123123', 'Robbi Amirudin', '2021-10-30', 143, '2021-10-19', '31/BPJ/KPU.03/2021', 'asdasd', 'adasd', '0');
-INSERT INTO `import` VALUES (32, '32/IS/KPU.03/2021', '2021-10-18', '1', 'Robbi Amirudin', 'Alamat lengkap', 'nomor paspor', 30, '1', 143, 143, 'inv123', '2021-10-20', 'pengangkut', '1', '0', '2021-10-18 09:02:22', '123123123123123123', 'Robbi Amirudin', '2021-11-17', NULL, NULL, '32/BPJ/KPU.03/2021', NULL, NULL, NULL);
+INSERT INTO `import` VALUES (31, '31/IS/KPU.03/2021', '2021-10-16', '2', 'Robbi Amirudin', 'Jonggol', '123321123', 14, '1', 143, 143, 'inv123', '2021-10-16', 'pengangkut', '3', '0', '2021-10-16 13:59:15', '123123123123123123', 'Robbi Amirudin', '2021-10-30', 143, '2021-10-22', '31/BPJ/KPU.03/2021', '', 'asdas tempo', '2');
+INSERT INTO `import` VALUES (32, '32/IS/KPU.03/2021', '2021-10-18', '1', 'Robbi Amirudin', 'Alamat lengkap', 'nomor paspor', 30, '1', 143, 143, 'inv123', '2021-10-20', 'pengangkut', '3', '0', '2021-10-18 09:02:22', '123123123123123123', 'Robbi Amirudin', '2021-11-17', NULL, '2021-10-22', '32/BPJ/KPU.03/2021', NULL, 'jatuh tempo', '2');
 INSERT INTO `import` VALUES (33, '33/IS/KPU.03/2021', '2021-10-18', '1', 'asd', 'asd', 'asd', 31, '1', 143, 143, 'inv123', '2021-10-19', 'pengangkut', '2', '0', '2021-10-18 09:07:24', '123123123123123123', 'Robbi Amirudin', '2021-11-29', 143, '2021-10-19', '33/BPJ/KPU.03/2021', 'asdasd', 'adasd', '0');
 INSERT INTO `import` VALUES (34, '34/IS/KPU.03/2021', '2021-10-18', '1', 'asd', 'asd', 'asd', 31, '1', 143, 143, 'asdas', '2021-10-19', 'asdas', '3', '0', '2021-10-18 10:09:53', '123123123123123123', 'Robbi Amirudin', '2021-11-27', 143, '2021-10-19', '34/BPJ/KPU.03/2021', 'asdasd', 'adasd', '0');
 INSERT INTO `import` VALUES (35, '35/IS/KPU.03/2021', '2021-10-18', '1', 'tes', 'tes', 'tes', 1, '2', 143, 143, 'tes', '2021-10-27', 'tes', '3', '0', '2021-10-18 22:12:04', '123123123123123123', 'Robbi Amirudin', '2021-10-19', 143, '2021-10-19', '35/BPJ/KPU.03/2021', 'asdasd', 'adasd', '0');
@@ -735,7 +799,7 @@ CREATE TABLE `import_items_temp` (
   KEY `pck_type_im_items_fk_qty_type_id` (`package_type`),
   KEY `im_items_header_id_fk_import_id` (`key_header`),
   CONSTRAINT `import_items_temp_ibfk_2` FOREIGN KEY (`package_type`) REFERENCES `quantity_type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of import_items_temp
@@ -753,7 +817,15 @@ CREATE TABLE `import_reexport_attachments` (
   `name` varchar(128) NOT NULL,
   `header_id` bigint(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of import_reexport_attachments
+-- ----------------------------
+BEGIN;
+INSERT INTO `import_reexport_attachments` VALUES (2, 'IS_1634784998_373.jpg', 31);
+INSERT INTO `import_reexport_attachments` VALUES (3, 'IS_1634785233_203.jpg', 31);
+COMMIT;
 
 -- ----------------------------
 -- Table structure for import_sponsor
@@ -1216,7 +1288,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `spmb_barang`;
 CREATE TABLE `spmb_barang` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `header_id` bigint(20) unsigned DEFAULT NULL,
   `status_barang` int(1) DEFAULT '0',
   `nama_barang` text COLLATE utf8mb4_unicode_ci,
@@ -1225,8 +1297,8 @@ CREATE TABLE `spmb_barang` (
   `jumlah_satuan` int(11) DEFAULT NULL,
   `jenis_satuan` int(11) DEFAULT NULL,
   `hs_id` int(10) unsigned DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `nomor_dokumen` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
   `nilai_pabean` int(50) DEFAULT NULL,
@@ -1243,7 +1315,51 @@ CREATE TABLE `spmb_barang` (
   CONSTRAINT `jenis_satuan_fk_qty_type_id` FOREIGN KEY (`jenis_satuan`) REFERENCES `quantity_type` (`id`),
   CONSTRAINT `spmb_barang_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `item_categories` (`id`),
   CONSTRAINT `spmb_barang_ibfk_2` FOREIGN KEY (`currency_id`) REFERENCES `currency` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ----------------------------
+-- Records of spmb_barang
+-- ----------------------------
+BEGIN;
+INSERT INTO `spmb_barang` VALUES (31, 4, 2, 'barang1', 1.00, '1B (Drum, aluminium)', 1, 3, NULL, '2021-10-22 15:12:14', '2021-10-22 15:19:38', '3/KB/T3U/SH/2021', 1, 10000, '10', NULL, 1, 1, NULL, 'tes');
+INSERT INTO `spmb_barang` VALUES (32, 5, 0, 'asd', 1.00, '1A (Drum, steel)', 1, 4, NULL, '2021-10-23 02:05:35', '2021-10-23 02:05:35', '4/KB/T3U/SH/2021', NULL, 10000, '10', NULL, 2, 1, NULL, NULL);
+INSERT INTO `spmb_barang` VALUES (36, 9, 0, 'barang1', 1.00, '1G (Drum, fibre)', 1, 1, NULL, '2021-10-23 08:42:25', '2021-10-23 08:42:25', '5/KB/T3U/SH/2021', NULL, 1000000, '1', NULL, 1, 1, NULL, NULL);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for spmb_barang_attachment
+-- ----------------------------
+DROP TABLE IF EXISTS `spmb_barang_attachment`;
+CREATE TABLE `spmb_barang_attachment` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(128) NOT NULL,
+  `item_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `spmb_barang_att_item_id_fk_barang_id` (`item_id`),
+  CONSTRAINT `spmb_barang_att_item_id_fk_barang_id` FOREIGN KEY (`item_id`) REFERENCES `spmb_barang` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of spmb_barang_attachment
+-- ----------------------------
+BEGIN;
+INSERT INTO `spmb_barang_attachment` VALUES (4, 'SPMB_1634890321_959.jpg', 31);
+INSERT INTO `spmb_barang_attachment` VALUES (5, 'SPMB_1634929503_415.jpg', 32);
+INSERT INTO `spmb_barang_attachment` VALUES (12, 'SPMB_1634953144_301.jpg', 36);
+INSERT INTO `spmb_barang_attachment` VALUES (13, 'SPMB_1634953144_245.jpg', 36);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for spmb_barang_attachment_temp
+-- ----------------------------
+DROP TABLE IF EXISTS `spmb_barang_attachment_temp`;
+CREATE TABLE `spmb_barang_attachment_temp` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(128) NOT NULL,
+  `key_item` varchar(64) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `iia_item_id_fk_import_items_id` (`key_item`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Table structure for spmb_barang_temp
@@ -1258,8 +1374,8 @@ CREATE TABLE `spmb_barang_temp` (
   `jumlah_satuan` int(11) DEFAULT NULL,
   `jenis_satuan` int(11) DEFAULT NULL,
   `hs_id` int(10) unsigned DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `nomor_dokumen` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
   `nilai_pabean` int(50) DEFAULT NULL,
@@ -1269,12 +1385,14 @@ CREATE TABLE `spmb_barang_temp` (
   `currency_id` int(11) DEFAULT NULL,
   `attachment` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `nip_user` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `key_header` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `key_item` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `currency_idx_spmb_barang_temp` (`currency_id`),
   KEY `category_id_fk_id_item_category` (`category_id`),
   CONSTRAINT `category_id_fk_id_item_category` FOREIGN KEY (`category_id`) REFERENCES `item_categories` (`id`),
   CONSTRAINT `currency_idx_spmb_barang_temp` FOREIGN KEY (`currency_id`) REFERENCES `currency` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
 -- Table structure for spmb_header
@@ -1308,7 +1426,18 @@ CREATE TABLE `spmb_header` (
   `print_status` int(2) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `nomor_paspor` (`nomor_paspor`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ----------------------------
+-- Records of spmb_header
+-- ----------------------------
+BEGIN;
+INSERT INTO `spmb_header` VALUES (2, 'asd', '2021-10-22', 'asd', '0123123', 'asdsa', 'asdas', '76', 'asd@asd.asd', '2021-10-22 14:58:38', NULL, 'KPU BEA DAN CUKAI TIPE C SOEKARNO-HATTA', 'KPU BEA DAN CUKAI TIPE C SOEKARNO-HATTA', NULL, '5', 'asd', 1, '1/KB/T3U/SH/2021', '2021-10-22', 'Robbi Amirudin-123123123123123123', 1, 'asdas', NULL, 'asdas', 0);
+INSERT INTO `spmb_header` VALUES (3, 'asdas', '2021-10-23', '123321', 'asdas', 'asdas', '12321321', '76', 'asda@asda.com', '2021-10-22 15:03:35', NULL, 'KPU BEA DAN CUKAI TIPE C SOEKARNO-HATTA', 'KPU BEA DAN CUKAI TIPE C SOEKARNO-HATTA', NULL, '6', 'tes', 2, '2/KB/T3U/SH/2021', '2021-10-22', 'Robbi Amirudin-123123123123123123', 1, 'asdasds', NULL, 'asdasd', 0);
+INSERT INTO `spmb_header` VALUES (4, 'asd', '2021-10-21', 'asdas', 'asd', 'asd', 'asd', '76', 'asda@asda.com', '2021-10-22 15:12:14', NULL, 'KPU BEA DAN CUKAI TIPE C SOEKARNO-HATTA', 'KPU BEA DAN CUKAI TIPE C SOEKARNO-HATTA', NULL, '5', 'asdas', 3, '3/KB/T3U/SH/2021', '2021-10-22', 'Robbi Amirudin-123123123123123123', 2, 'asdsa', NULL, 'asdas', 0);
+INSERT INTO `spmb_header` VALUES (5, 'asd', '2021-10-23', 'aasd', '12312', 'asda', 'asdas', '76', 'asda@asda.com', '2021-10-23 02:05:35', NULL, 'KPU BEA DAN CUKAI TIPE C SOEKARNO-HATTA', 'KPU BEA DAN CUKAI TIPE C SOEKARNO-HATTA', NULL, '5', 'asd', 4, '4/KB/T3U/SH/2021', '2021-10-23', 'Robbi Amirudin-123123123123123123', 1, 'asdasds', NULL, 'asdas', 0);
+INSERT INTO `spmb_header` VALUES (9, 'asdsa', '2021-10-24', '123132', 'asdsa', 'asdas', '123213213212', '76', 'asda@asda.com', '2021-10-23 08:42:25', NULL, 'KPU BEA DAN CUKAI TIPE C SOEKARNO-HATTA', 'KPU BEA DAN CUKAI TIPE C SOEKARNO-HATTA', NULL, '3', 'tes', 5, '5/KB/T3U/SH/2021', '2021-10-23', 'Robbi Amirudin-123123123123123123', 2, 'asdsad', NULL, 'dsasads', 0);
+COMMIT;
 
 -- ----------------------------
 -- Table structure for users

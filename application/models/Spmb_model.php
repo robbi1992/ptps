@@ -473,7 +473,7 @@ class Spmb_model extends CI_Model {
 	 */
 
 	public function create_new_spmb($spmb, $nip) {
-		$return_status = false;
+		$return_status = true;
 		// $item_status = false;
 		// $doc_status = false;
 
@@ -488,7 +488,6 @@ class Spmb_model extends CI_Model {
 		$this->db->where('key_header', $nip);
 		$temp = $this->db->get('spmb_barang_temp')->result_array();
 
-		// $items = array();
 		// insert itemp
 		foreach($temp as $val) {
 			$items = array(
@@ -536,37 +535,43 @@ class Spmb_model extends CI_Model {
 		// remove table temp after save
 		$this->db->where('key_header', $nip);
         $this->db->delete('spmb_barang_temp');
+
 		// insert table docs from temp
+		$this->db->where('key_header', $nip);
 		$temp_docs = $this->db->get('docs_temp')->result_array();
-		// var_dump($temp); exit();
-		$docs = array();
+
 		foreach($temp_docs as $val) {
-			$docs[] = array(
+			$docs = array(
 				'header_id'		=> $header_id,
 				'doc_type' => $val['doc_type'],
 				'doc_number' => $val['doc_number'],
-				'doc_date' => $val['doc_date'],
-				'doc_attach' => $val['doc_attach']
+				'doc_date' => $val['doc_date']
 			);
-		};
 
-		if (count($docs) > 0) {
-			$doc_status = true;
-		} else {
-			$doc_status = false;
-		}
-		
-		// remove header data if no docs & items
-		if ($doc_status) {
-			$this->db->insert_batch('docs', $docs);
-			$this->db->where('nip_user', $nip);
-			$this->db->delete('docs_temp');
-			$return_status = true;
-		} else {
-			$this->db->where('id', $header_id);
-			$this->db->delete('spmb_header');
-			$return_status = false;
-		}
+			$this->db->insert('docs', $docs);
+			$item_id = $this->db->insert_id();
+
+			// insert items attachment from temp
+			$this->db->where('key_item', $val['key_doc']);
+			$file_temp = $this->db->get('docs_attachment_temp')->result_array();	
+			
+			if (count($file_temp) > 0) {
+				$data_file = array();
+				foreach ($file_temp as $row) {
+					$data_file[] = array(
+						'name' => $row['name'],
+						'doc_id' => $item_id
+					);
+				}
+
+				$insert_file = $this->db->insert_batch('docs_attachment', $data_file);
+				if ($insert_file) {
+					// remove file temp after inserted
+					$this->db->where('key_item', $val['key_doc']);
+					$this->db->delete('docs_attachment_temp');
+				}
+			}
+		};
 
 		$this->db->trans_complete();
 
