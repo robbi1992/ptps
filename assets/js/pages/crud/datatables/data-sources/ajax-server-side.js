@@ -271,7 +271,7 @@ jQuery(document).ready(function() {
 			$(".modal-backdrop").remove();
 			$('#pleaseWaitDialog').removeClass('show');
 			$('#pleaseWaitDialog').removeAttr('style');
-			$('form[name="spmb_goods_form"]').find('button').removeAttr('disabled');
+			$('form[name="spmb_docs_form"]').find('button').removeAttr('disabled');
 		});
 
 		return false;
