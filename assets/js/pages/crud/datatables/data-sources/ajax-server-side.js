@@ -394,6 +394,7 @@ jQuery(document).ready(function() {
 		// clear form
 		$('#spmb_goods_form').find('input[name="itemID"]').val('');
 		$('#spmb_goods_form').find('input[type=text]').val('');
+		$('#spmb_goods_form').find('input[type=file]').val('');
 		// $('#spmb_goods_form').find('select[name="goods_package"]').val('');
 		$('#spmb_goods_form').find('.selectpicker').selectpicker('val', '');
 		$('#kt_image_5').find('.image-input-wrapper').removeAttr('style');
@@ -409,6 +410,7 @@ jQuery(document).ready(function() {
 
 	$('#add_docs').on('click', function (e) {
 		$('#spmb_docs_form').find('input[type=text]').val('');
+		$('#spmb_docs_form').find('input[type=file]').val('');
 		var generator = generateKey();
 		$('#key_doc').val(generator);
 		$('#docs_modal').modal('show');

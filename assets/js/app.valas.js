@@ -12,7 +12,9 @@ var Valas = {
         iplNumber: 1,
         confirmSave: 0,
         // itemDetailNumber: 1,
-        instrumentNumber: 1
+        instrumentNumber: 1,
+        cashScore: 0,
+        iplScore: 0
     },
     enabled: function(formName, value) {
         if (value) $('form[name="'+formName+'"]').find('[name^="search"], button').removeAttr('disabled');
@@ -134,7 +136,15 @@ var Valas = {
     },
     removeItems: function() {
         var row = $(this).closest('tr');
+        var params = $(this).attr('action');
         row.remove();
+
+        // set score -1
+        if (params == 'ipl') {
+            Valas.params.iplScore--;
+        } else {
+            Valas.params.cashScore--; 
+        } 
     },
     clearContent: function() {
         // find all input type and clear
@@ -201,10 +211,13 @@ var Valas = {
             row.find('[view="instrumentBank"]').html(instrumentBank);
             
             // remove items
+            row.find('[view="instrumentAction"]').attr('action', 'ipl');
             row.find('[view="instrumentAction"]').on('click', Valas.removeItems);
             row.appendTo(rows);
             Valas.params.itemDetailNumber = Valas.params.instrumentNumber + 1;
             $('#instrumentModal').modal('hide');
+
+            Valas.params.iplScore++;
             return false;
         });
 
@@ -233,6 +246,9 @@ var Valas = {
         });
 
         $('#add_valas').on('click', function() {
+            // set value cash & ipl to zero
+            Valas.params.iplScore = 0;
+            Valas.params.cashScore = 0;
             // modal show
             // $("input[name=reason][value='1']").attr('checked', 'checked');
             // $('input[name=reason]:checked' ).val('1');
@@ -376,6 +392,12 @@ var Valas = {
             });
             // console.log(params);
             
+            // dont save if no ipl or cash
+            if (Valas.params.iplScore == 0  && Valas.params.cashScore == 0) {
+                alert('Data cash atau IPL tidak boleh kosong');
+                return false;
+            }
+
             Valas.params.step2 = params;
             // confirm first then create
             if (Valas.params.confirmSave == 0) {
@@ -408,15 +430,18 @@ var Valas = {
         });
         
         // cash page2
-        $('#btnAddCash, #btnAddIPL').on('click', function() {
-            var btnParam = $(this).attr('view');
+        $('#btnAddCash').on('click', function() {
+            // var btnParam = $(this).attr('view');
             var string = 'cash';
-            if (btnParam == 'ipl') {
-                string = 'ipl';
-            }
+            
             var cashCurrency = $('input[name="'+string+'currency"]').val();
             var cashAmount = $('input[name="'+string+'amount"]').val();
 
+            if (cashCurrency == "" || cashAmount == "") {
+                alert('currency atau mata uang tidak boleh kosong');
+                return false;
+            }
+            
             var result = $('table[name="'+string+'Table"]');
             var template = result.find('[template="'+string+'Body"]');
             var rows = result.find('tbody');
@@ -425,21 +450,21 @@ var Valas = {
             row.find('[view="'+string+'Currency"]').html(cashCurrency);
             row.find('[view="'+string+'Amount"]').html(cashAmount);
 
-            // after added
-            if (btnParam == 'ipl') {
-                row.find('[view="'+string+'Number"]').html(Valas.params.iplNumber);
-                Valas.params.iplNumber = Valas.params.iplNumber + 1;
-            } else {
-                row.find('[view="'+string+'Number"]').html(Valas.params.cashNumber);
-                Valas.params.cashNumber = Valas.params.cashNumber + 1;
-            }
+            // after
+            row.find('[view="'+string+'Number"]').html(Valas.params.cashNumber);
+            Valas.params.cashNumber = Valas.params.cashNumber + 1;
+            
             $('input[name="'+string+'currency"]').val('');
             $('input[name="'+string+'amount"]').val('');
 
             // remove items
+            row.find('[view="'+string+'Action"]').attr('action', 'cash');
             row.find('[view="'+string+'Action"]').on('click', Valas.removeItems);
 
             row.appendTo(rows);
+
+            //set cash score
+            Valas.params.cashScore++;
         });
 
         // back function
