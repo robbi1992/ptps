@@ -12,7 +12,9 @@
             iplNumber: 1,
             confirmSave: 0,
             // itemDetailNumber: 1,
-            instrumentNumber: 1
+            instrumentNumber: 1,
+            cashScore: 0,
+            iplScore: 0
         },
         enabled: function(formName, value) {
             if (value) $('form[name="'+formName+'"]').find('[name^="search"], button').removeAttr('disabled');
@@ -149,7 +151,15 @@
         },
         removeItems: function() {
             var row = $(this).closest('tr');
+            var params = $(this).attr('action');
             row.remove();
+
+            // set score -1
+            if (params == 'ipl') {
+                Departure.params.iplScore--;
+            } else {
+                Departure.params.cashScore--; 
+            } 
         },
         clearContent: function() {
             // find all input type and clear
@@ -216,10 +226,13 @@
                 row.find('[view="instrumentBank"]').html(instrumentBank);
                 
                 // remove items
+                row.find('[view="instrumentAction"]').attr('action', 'ipl');
                 row.find('[view="instrumentAction"]').on('click', Departure.removeItems);
                 row.appendTo(rows);
                 Departure.params.itemDetailNumber = Departure.params.instrumentNumber + 1;
                 $('#instrumentModal').modal('hide');
+
+                Departure.params.iplScore++;
                 return false;
             });
     
@@ -248,6 +261,8 @@
             });
     
             $('#add_valas').on('click', function() {
+                Departure.params.iplScore = 0;
+                Departure.params.cashScore = 0;
                 // modal show
                 // $("input[name=reason][value='1']").attr('checked', 'checked');
                 // $('input[name=reason]:checked' ).val('1');
@@ -403,7 +418,12 @@
                     }      
                 });
                 // console.log(params);
-                
+                // dont save if no ipl or cash
+                if (Departure.params.iplScore == 0  && Departure.params.cashScore == 0) {
+                    alert('Data cash atau IPL tidak boleh kosong');
+                    return false;
+                }
+
                 Departure.params.step2 = params;
                 // confirm first then create
                 if (Departure.params.confirmSave == 0) {
@@ -436,15 +456,18 @@
             });
             
             // cash page2
-            $('#btnAddCash, #btnAddIPL').on('click', function() {
-                var btnParam = $(this).attr('view');
+            $('#btnAddCash').on('click', function() {
+                // var btnParam = $(this).attr('view');
                 var string = 'cash';
-                if (btnParam == 'ipl') {
-                    string = 'ipl';
-                }
+                
                 var cashCurrency = $('input[name="'+string+'currency"]').val();
                 var cashAmount = $('input[name="'+string+'amount"]').val();
     
+                if (cashCurrency == "" || cashAmount == "") {
+                    alert('currency atau mata uang tidak boleh kosong');
+                    return false;
+                }
+                
                 var result = $('table[name="'+string+'Table"]');
                 var template = result.find('[template="'+string+'Body"]');
                 var rows = result.find('tbody');
@@ -453,22 +476,24 @@
                 row.find('[view="'+string+'Currency"]').html(cashCurrency);
                 row.find('[view="'+string+'Amount"]').html(cashAmount);
     
-                // after added
-                if (btnParam == 'ipl') {
-                    row.find('[view="'+string+'Number"]').html(Departure.params.iplNumber);
-                    Departure.params.iplNumber = Departure.params.iplNumber + 1;
-                } else {
-                    row.find('[view="'+string+'Number"]').html(Departure.params.cashNumber);
-                    Departure.params.cashNumber = Departure.params.cashNumber + 1;
-                }
+                // after
+                row.find('[view="'+string+'Number"]').html(Departure.params.cashNumber);
+                Departure.params.cashNumber = Departure.params.cashNumber + 1;
+                
                 $('input[name="'+string+'currency"]').val('');
                 $('input[name="'+string+'amount"]').val('');
     
                 // remove items
+                // row.find('[view="'+string+'Action"]').attr('action', 'cash');
+                row.find('[view="'+string+'Action"]').attr('action', 'cash');
                 row.find('[view="'+string+'Action"]').on('click', Departure.removeItems);
     
                 row.appendTo(rows);
+    
+                //set cash score
+                Departure.params.cashScore++;
             });
+    
     
             // back function
             $('button[name="btnBack"]').on('click', function() {
