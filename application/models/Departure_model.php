@@ -278,7 +278,8 @@ class Departure_model extends CI_Model {
             A.reason,
             A.flight_number, A.last_port, A.next_port, A.address_in_indonesia, A.purpose_of_visit,
             A.type,
-            A.is_suspicious, A.is_result, A.officer_name, A.officer_nip, A.is_count, A.doc_number
+            A.is_suspicious, A.is_result, A.officer_name, A.officer_nip, A.is_count, A.doc_number,
+            A.created_date
         ');
         $this->db->where('A.id', $header_id);
         $this->db->from('dep_valas A');

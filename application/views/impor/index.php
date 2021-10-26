@@ -1128,12 +1128,12 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="reDateLTJ">Tanggal Re-ekspor</label>
-                                            <input id="reDateLTJ" name="reDateLTJ" class="form-control bc-date" />
-                                        </div>
-                                        <div class="form-group">
                                             <label for="reDocNumberLJT">Nomor Dokumen</label>
                                             <input id="reDocNumberLJT" name="reDocNumberLJT" class="form-control" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="reDateLTJ">Tanggal</label>
+                                            <input id="reDateLTJ" name="reDateLTJ" class="form-control bc-date" />
                                         </div>
                                         <div class="form-group">
                                             <label for="reNotesLJT">Catatan</label>

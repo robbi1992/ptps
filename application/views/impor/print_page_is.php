@@ -60,21 +60,21 @@
                     </table>
                     <table class="my-table">
                         <tr>
-                            <td width="5%">A.</td>
-                            <td width="45%" colspan="4" style="border-right: 1px solid;">DATA PEMBERITAHU</td>
-                            <td width="5%">G.</td>
-                            <td width="45%" colspan="3">KOLOM KHUSUS BEA DAN CUKAI</td>
+                            <td width="2%">A.</td>
+                            <td width="48%" colspan="4" style="border-right: 1px solid;">DATA PEMBERITAHU</td>
+                            <td width="2%">G.</td>
+                            <td width="48%" colspan="3">KOLOM KHUSUS BEA DAN CUKAI</td>
                         </tr>
                         <tr>
-                            <td width="5%">&nbsp;</td>
-                            <td width="5%">1.</td>
-                            <td width="15%">Nama Lengkap</td>
+                            <td width="2%">&nbsp;</td>
+                            <td width="2%">1.</td>
+                            <td width="18%">Nama Lengkap</td>
                             <td width="5%">:</td>
-                            <td width="20%" style="border-right: 1px solid;"><?= $header->name;?></td>
-                            <td width="5%">&nbsp;</td>
+                            <td width="23%" style="border-right: 1px solid;"><?= $header->name;?></td>
+                            <td width="2%">&nbsp;</td>
                             <td width="10%">Nomor</td>
                             <td width="2%">:</td>
-                            <td width="33%"><?= $header->doc_number;?></td>
+                            <td width="36%"><?= $header->doc_number;?></td>
                         </tr>
                         <tr>
                             <td>&nbsp;</td>
@@ -172,21 +172,21 @@
                     </table>
                     <table class="my-table">
                         <tr>
-                            <td width="5%">D.</td>
-                            <td width="45%" colspan="4" style="border-right: 1px solid;">PENGEMBALIAN JAMINAN</td>
-                            <td width="5%">16.</td>
-                            <td width="45%" colspan="3">Rekening</td>
+                            <td width="2%">D.</td>
+                            <td width="48%" colspan="4" style="border-right: 1px solid;">PENGEMBALIAN JAMINAN</td>
+                            <td width="2%">16.</td>
+                            <td width="48%" colspan="3">Rekening</td>
                         </tr>
                         <tr>
-                            <td width="5%">&nbsp;</td>
-                            <td width="5%">15.</td>
-                            <td width="10%">Melalui : </td>
+                            <td width="2%">&nbsp;</td>
+                            <td width="2%">15.</td>
+                            <td width="7%">Melalui : </td>
                             <td width="5%" class="center" style="border: 1px solid;"><?=$header->return_type;?></td>
-                            <td width="25%" style="border-right: 1px solid;">1. Diambil Sendiri</td>
-                            <td width="5%">&nbsp;</td>
+                            <td width="34%" style="border-right: 1px solid;">1. Diambil Sendiri</td>
+                            <td width="2%">&nbsp;</td>
                             <td width="10%">Nomor</td>
-                            <td width="5%">:</td>
-                            <td width="30%"><?=$account->number;?></td>
+                            <td width="2%">:</td>
+                            <td width="36%"><?=$account->number;?></td>
                         </tr>
                         <tr>
                             <td>&nbsp;</td>
@@ -480,42 +480,41 @@
                                 <td width="25%" class="center" style="border-right: 1px solid;"><?= $val['quantity'] . ' ' . $val['package']; ?></td>
                                 <td width="20%" class="center"><?= $val['fob']; ?></td>
                             </tr>
+                            <tr>
+                                <td colspan="3" style="border-top: 1px solid; border-right: 1px solid;">&nbsp;</td>
+                                <td style="border-top: 1px solid; border-right: 1px solid;">
+                                    22. Valuta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;<?= $val['currency']; ?>
+                                </td>
+                                <td style="border-top: 1px solid;">
+                                    23. NDPBM&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;<?= $val['kurs']; ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="border-top: 1px solid; border-right: 1px solid;">&nbsp;</td>
+                                <td style="border-top: 1px solid; border-right: 1px solid;">
+                                    24. FOB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;<?= $val['fob']; ?>
+                                </td>
+                                <td style="border-top: 1px solid;">
+                                    25. Freight&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;<?= $val['freight']; ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="border-top: 1px solid; border-right: 1px solid;">&nbsp;</td>
+                                <td style="border-top: 1px solid; border-right: 1px solid;">
+                                    26. Asuransi&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;<?= $val['insurance']; ?>
+                                </td>
+                                <td style="border-top: 1px solid;">
+                                    27. CIF&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;<?= $val['fob'] + $val['freight'] + $val['insurance']; ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="border-top: 1px solid; border-right: 1px solid;">&nbsp;</td>
+                                <td colspan ="2" style="border-top: 1px solid;">
+                                    28. Rp.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;<?= $val['pabean_value']; ?>
+                                </td>
+                            </tr>
                         </table>
-                            <table class="my-table">
-                                <tr>
-                                    <td width="55%" style="border-right: 1px solid;">&nbsp;</td>
-                                    <td style="border-bottom: 1px solid;" width="5%">22. Valuta</td>
-                                    <td style="border-bottom: 1px solid;" width="5%">:</td>
-                                    <td style="border-bottom: 1px solid;" width="10%" style="border-right: 1px solid;"><?= $val['currency']; ?></td>
-                                    <td style="border-bottom: 1px solid;" width="10%">23. NDPBM</td>
-                                    <td style="border-bottom: 1px solid;" width="5%">:</td>
-                                    <td style="border-bottom: 1px solid;" width="10%" style="border-right: 1px solid;"><?= $val['kurs']; ?></td>
-                                </tr>
-                                <tr>
-                                    <td width="55%" style="border-right: 1px solid;">&nbsp;</td>
-                                    <td style="border-bottom: 1px solid;">24. FOB</td>
-                                    <td style="border-bottom: 1px solid;">:</td>
-                                    <td style="border-bottom: 1px solid;" style="border-right: 1px solid;"><?= $val['fob']; ?></td>
-                                    <td style="border-bottom: 1px solid;">25. Freight</td>
-                                    <td style="border-bottom: 1px solid;">:</td>
-                                    <td style="border-bottom: 1px solid;" style="border-right: 1px solid;"><?= $val['freight']; ?></td>
-                                </tr>
-                                <tr>
-                                    <td width="55%" style="border-right: 1px solid;">&nbsp;</td>
-                                    <td style="border-bottom: 1px solid;">26. Asuransi</td>
-                                    <td style="border-bottom: 1px solid;">:</td>
-                                    <td style="border-bottom: 1px solid;" style="border-right: 1px solid;"><?= $val['insurance']; ?></td>
-                                    <td style="border-bottom: 1px solid;">27. CIF</td>
-                                    <td style="border-bottom: 1px solid;">:</td>
-                                    <td style="border-bottom: 1px solid;" style="border-right: 1px solid;"><?= $val['fob'] + $val['freight'] + $val['insurance']; ?></td>
-                                </tr>
-                                <tr>
-                                    <td width="55%" style="border-right: 1px solid;">&nbsp;</td>
-                                    <td width="10%">28. Rp</td>
-                                    <td width="5%">:</td>
-                                    <td width="35%" colspan="4"><?= $val['pabean_value']; ?></td>
-                                </tr>
-                            </table>
+                            
                         <?php $no_items++; } ?>
                         <table class="my-table">
                             <tr>

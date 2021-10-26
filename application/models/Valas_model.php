@@ -228,7 +228,7 @@ class Valas_model extends CI_Model {
     public function get_detail($header_id) {
         $return = array();
 
-        $this->db->select('A.name, B.name AS nationality, A.identity_number, A.date_of_birth, A.residence_address, A.occupation,
+        $this->db->select('A.name, A.created_date, B.name AS nationality, A.identity_number, A.date_of_birth, A.residence_address, A.occupation,
             A.reason,
             A.flight_number, A.last_port, A.next_port, A.address_in_indonesia, A.purpose_of_visit,
             A.type,
