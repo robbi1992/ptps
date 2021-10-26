@@ -66,7 +66,7 @@
                     <i>Number and Date of Registration</i> 
                 </td>
                 <td width="35%"><div class="my-border"><u><?= $header->doc_number; ?></u></div></td>
-                <td width="35%"><div class="my-border"><u><?= date('Y-m-d', time($header->date_registered)); ?></u></div></td>
+                <td width="35%"><div class="my-border"><u><?= date('Y-m-d', strtotime($header->date_registered)); ?></u></div></td>
             </tr>
         <table>
         <table class="my-table">
@@ -403,7 +403,7 @@
                     <i>Number and Date of Registration</i> 
                 </td>
                 <td width="35%"><div class="my-border"><u><?= $header->doc_number; ?></u></div></td>
-                <td width="35%"><div class="my-border"><u><?= date('Y-m-d', time($header->date_registered)); ?></u></div></td>
+                <td width="35%"><div class="my-border"><u><?= date('Y-m-d', strtotime($header->date_registered)); ?></u></div></td>
             </tr>
         <table>
         <table class="my-table">

@@ -54,8 +54,13 @@
         </style>
     </head>
     <body>
+    <?php
+    $created = explode(' ', $personal->created_date);
+    $time = strtotime($created[0]);
+    $created_date = date('d/m/Y', $time);
+    ?>
     Nomor Dokumen: <?= $personal->doc_number; ?> <br />
-    Tanggal Dokumen: <?= date('d/m/Y'); ?>
+    Tanggal Dokumen: <?= $created_date; ?>
     <table width= "100%">
             <!-- removed by instruction -->
             <!-- 
