@@ -66,7 +66,7 @@
                     <i>Number and Date of Registration</i> 
                 </td>
                 <td width="35%"><div class="my-border"><u><?= $header->doc_number; ?></u></div></td>
-                <td width="35%"><div class="my-border"><u><?= date('Y-m-d', strtotime($header->date_registered)); ?></u></div></td>
+                <td width="35%"><div class="my-border"><u><?= date('d/m/Y', strtotime($header->date_registered)); ?></u></div></td>
             </tr>
         <table>
         <table class="my-table">
@@ -95,7 +95,7 @@
                 <td width="20%" style="border-right: 1px solid;"><u><?= isset($header->flight_number) ? $header->flight_number : '-'; ?></u></td>
                 <td width="5%" class="center">2.</td>
                 <td width="25%">Tanggal Keberangkatan</td>
-                <td width="20%"><u><?= isset($header->arrival_date) ? $header->arrival_date : '-'; ?></u></td>
+                <td width="20%"><u><?= isset($header->arrival_date) ? date('d/m/Y', strtotime($header->arrival_date)) : '-'; ?></u></td>
                 <!-- <td width="20%"><?= $result['tanggal_dokumen'];?></td> -->
             </tr>
             <tr>
@@ -234,6 +234,8 @@
             <?php
             $no_ipl = 1;
             foreach ($ipl as $val) {
+                // new date
+                $date = explode('-', $val['date']);
                 /**
                  * if cash >1
                  */
@@ -248,7 +250,7 @@
                             <td class="center" style="border-right: 1px solid; border-top: 1px solid;"><?= $val['currency'] . ' ' . setIDR($val['amount']); ?></td>
                             <td class="center" style="border-right: 1px solid; border-top: 1px solid;"><?= $val['type']; ?></td>
                             <td class="center" style="border-right: 1px solid; border-top: 1px solid;"><?= $val['number']; ?></td>
-                            <td class="center" style="border-right: 1px solid; border-top: 1px solid;"><?= $val['date']; ?></td>
+                            <td class="center" style="border-right: 1px solid; border-top: 1px solid;"><?= $date[2] . ' ' . get_month($date[1]) . ' ' . $date[0]; ?></td>
                             <td class="center" style="border-top: 1px solid;"><?= $val['bank']; ?></td>
                         </tr>
                     <?php
@@ -266,6 +268,9 @@
             </tr>
         <table>
         <!-- DATA DOKUMEN PELENGKAP -->
+        <?php
+        $date = explode('-', $header->permit_date);
+        ?>
         <table class="my-table">
             <tr>
                 <td widht="5%">18.</td>
@@ -278,7 +283,7 @@
             <tr>
                 <td widht="5%">&nbsp;</td>
                 <td widht="50%">Nomor/ <i>Number</i> : <?= $header->permit_number; ?></td>
-                <td widht="45%" style="border-right: 1px solid;">Tanggal/ <i>Date</i> : <?= $header->permit_date; ?></td>
+                <td widht="45%" style="border-right: 1px solid;">Tanggal/ <i>Date</i> : <?= $date[2] . ' ' . get_month($date[1]) . ' ' . $date[0]; ?></td>
             </tr>
         <table>
 
@@ -290,11 +295,16 @@
             </tr>
         <table>
         <table class="my-table">
+            <?php
+            $time = explode(' ', $header->date_registered);
+            $date_reg = explode('-', $time[0]);
+            // print_r($date); exit();  
+            ?>
             <tr>
                 <td width="30%">Untuk Pejabat Bea dan Cukai <br /> <i>For Customs Officer</i></td>
                 <td width="20%" style="border-right: 1px solid;">&nbsp;</td>
                 <td width="30%">Tanggal <br /> <i>Date</i></td>
-                <td width="20%"><u><?= date('Y-m-d', time($header->date_registered)); ?></u></td>
+                <td width="20%"><u><?= $date_reg[2] . ' ' . get_month($date_reg[1]) . ' ' . $date_reg[0]; ?></u></td>
             </tr>
             <tr>
                 <td width="30%">Nama <br /> <i>Name</i></td>
@@ -371,13 +381,14 @@
             </tr>
             <?php
             foreach ($ipl as $index=> $val) {
+                $date = explode('-', $val['date']);
                 ?>
             <tr>    
                 <td class="center" style="border-right: 1px solid; border-top: 1px solid; border-left: 1px solid;"><?= $no_ipl; ?></td>
                 <td class="center" style="border-right: 1px solid; border-top: 1px solid;"><?= $val['currency'] . ' ' . setIDR($val['amount']); ?></td>
                 <td class="center" style="border-right: 1px solid; border-top: 1px solid;"><?= $val['type']; ?></td>
                 <td class="center" style="border-right: 1px solid; border-top: 1px solid;"><?= $val['number']; ?></td>
-                <td class="center" style="border-right: 1px solid; border-top: 1px solid;"><?= $val['date']; ?></td>
+                <td class="center" style="border-right: 1px solid; border-top: 1px solid;"><?= $date[2] . ' ' . get_month($date[1]) . ' ' . $date[0]; ?></td>
                 <td class="center" style="border-top: 1px solid;"><?= $val['bank']; ?></td>
             </tr>
             <?php
@@ -403,13 +414,13 @@
                     <i>Number and Date of Registration</i> 
                 </td>
                 <td width="35%"><div class="my-border"><u><?= $header->doc_number; ?></u></div></td>
-                <td width="35%"><div class="my-border"><u><?= date('Y-m-d', strtotime($header->date_registered)); ?></u></div></td>
+                <td width="35%"><div class="my-border"><u><?= date('d/m/Y', strtotime($header->date_registered)); ?></u></div></td>
             </tr>
         <table>
         <table class="my-table">
             <tr>
                 <td width="15%">Tanggal<br /><i>Date</i></td>
-                <td width="85%"><?= date('Y-m-d'); ?></td>
+                <td width="85%"><?= $date_reg[2] . ' ' . get_month($date_reg[1]) . ' ' . $date_reg[0]; ?></td>
             </tr>
             <tr>
                 <td width="15%"><br /><br /><?= $header->officer_name; ?><br /><?= $header->officer_nip; ?><br />Tanda Tangan<br /><i>Signature</i></td>

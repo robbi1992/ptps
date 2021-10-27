@@ -486,9 +486,7 @@
                                     Date (dd/mm/yyyy) (Tanggal/Bulan/Tahun)
                                     <?php
                                     // explode date to fill column below
-                                    $date = str_split(date('d'));
-                                    $month = str_split(date('m'));
-                                    $year = str_split(date('Y'));
+                                    $date = str_split($created_date);
                                     ?>
                                     <br />
                                     <table>
@@ -497,14 +495,14 @@
                                             <td class="first-border"><?= $date[1]; ?></td>
                                             <td>&nbsp;</td>
                                             <td>&nbsp;</td>
-                                            <td class="first-border"><?= $month[0]; ?></td>
-                                            <td class="first-border"><?= $month[1]; ?></td>
+                                            <td class="first-border"><?= $date[3]; ?></td>
+                                            <td class="first-border"><?= $date[4]; ?></td>
                                             <td>&nbsp;</td>
                                             <td>&nbsp;</td>
-                                            <td class="first-border"><?= $year[0]; ?></td>
-                                            <td class="first-border"><?= $year[1]; ?></td>
-                                            <td class="first-border"><?= $year[2]; ?></td>
-                                            <td class="first-border"><?= $year[3]; ?></td>
+                                            <td class="first-border"><?= $date[6]; ?></td>
+                                            <td class="first-border"><?= $date[7]; ?></td>
+                                            <td class="first-border"><?= $date[8]; ?></td>
+                                            <td class="first-border"><?= $date[9]; ?></td>
                                         </tr>
                                     </table>
                                 </td>

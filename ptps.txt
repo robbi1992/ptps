@@ -69,3 +69,8 @@ Import
 - pos tarif hs code grab from API
 - hs code (bm,ppn,ppnbm)
 - total pungutan = bm + ppn + pph + ppnbm
+
+
+
+review (27 okt 2021)
+===============================
