@@ -26,6 +26,11 @@
     </head>
     <body>
         <?php
+        $array_date = explode('-', $header['re_date']);
+        if (empty($header['re_date'])) {
+            $array_date = explode('-', date('Y-m-d'));
+        }
+        $new_date = $array_date[2] . ' ' . get_month($array_date[1]) . ' ' . $array_date[0];
         for ($i=0; $i<2; $i++) { ?>
         <div class="full-width text-center med-font-size">
             <b>
@@ -39,7 +44,7 @@
         <div class="full-width text-center med-font-size">
             <b><u>TANDA TERIMA PENGEMBALIAN JAMINAN / BARANG TITIPAN</u></b>
         </div>
-        <p class="med-font-size">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pada hari ini tanggal <?= date('d'); ?> bulan <?= get_month(date('m')); ?> tahun <?= date('Y'); ?>
+        <p class="med-font-size">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pada hari ini tanggal <?= $array_date[2]; ?> bulan <?= get_month($array_date[1]); ?> tahun <?= $array_date[0]; ?>
             telah diterima kembali jaminan / barang titipan dengan rincian:
         </p>
         <table class="full-width med-font-size">
@@ -90,7 +95,7 @@
         <table class="full-width med-font-size">
             <tr>
                 <td width="10%">&nbsp;</td>
-                <td width="45%" colspan="2">Cengkareng, <?= date('d') . ' ' . get_month(date('m')) . ' ' . date('Y'); ?></td>
+                <td width="45%" colspan="2">Cengkareng, <?= $new_date; ?></td>
             </tr>
             <tr>
                 <td width="10%">&nbsp;</td>

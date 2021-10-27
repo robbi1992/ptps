@@ -531,7 +531,7 @@ class Import_model extends CI_Model {
 
     public function get_data_return($header_id) {
         $data = array();
-        $this->db->select('A.name, A.passport, B.nominal, A.officer_name, A.re_doc_number, A.re_name');
+        $this->db->select('A.name, A.passport, B.nominal, A.officer_name, A.re_doc_number, A.re_name, A.re_date');
         $this->db->from('import A');
         $this->db->join('import_guarantee B', 'A.id = B.header_id');
         $this->db->where('A.id', $header_id);

@@ -224,7 +224,7 @@
                         </tr>
                         <?php
                         $created = explode(' ', $header->created_at);
-                        $time = time($created[0]);
+                        $time = strtotime($created[0]);
                         $created_date = date('d-m-Y', $time);
                         $array_date = explode('-', $created_date);
                         $new_date = $array_date[0] . ' ' . get_month($array_date[1]) . ' ' . $array_date[2];

@@ -42,7 +42,7 @@
     <body>
         <?php
         $created = explode(' ', $header->created_at);
-        $time = time($created[0]);
+        $time = strtotime($created[0]);
         $created_date = date('d-m-Y', $time);
         $array_date = explode('-', $created_date);
         $new_date = $array_date[0] . ' ' . get_month($array_date[1]) . ' ' . $array_date[2];
@@ -164,6 +164,9 @@
             <?php
             $source_date = explode('-', $warrant->source_date);
             $sourceDate = $source_date[2] . ' ' . get_month($source_date[1]) . ' ' . $source_date[0];
+            if (!empty($warrant->source_date)) {
+                $sourceDate = '-';
+            }
             ?>
             <tr>
                 <td>Tanggal</td>
