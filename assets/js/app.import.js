@@ -595,7 +595,17 @@
                     freeIDR: freeIDR, free_value: free, free_currency: freeCurrencyText,
                     keyHeader: Import.params.keyHeaderPost, keyItem: Import.params.keyItemPost
                 };
+                // validate no save if no attachment choosed
+
+                var fileData = $(this).find('#itemAttach1').prop('files')[0],
+                    fileData2 = $(this).find('#itemAttach2').prop('files')[0],
+                    fileData3 = $(this).find('#itemAttach3').prop('files')[0];
                 
+                if (!fileData && !fileData2 && !fileData3) {
+                    alert('Lampiran harus diisi minimal 1 (Satu)');
+                    return false;
+                }
+
                 $.ajax({
                     url: '/import/save_item_temp',
                     type: 'post',
@@ -604,6 +614,7 @@
                 }).done(function(result) {
                     if (result) {
                         // save image
+                        var attachmentNumber = 1
                         var myForm = $('form[name="addItemForm"]');
                         myForm.find('button').attr('disabled', 'disabled');
 	                    $('#pleaseWaitDialog').modal('show');
