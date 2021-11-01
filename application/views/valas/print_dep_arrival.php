@@ -58,6 +58,7 @@
     $created = explode(' ', $personal->created_date);
     $time = strtotime($created[0]);
     $created_date = date('d/m/Y', $time);
+    // echo date('d', $time); exit();
     ?>
     Nomor Dokumen: <?= $personal->doc_number; ?> <br />
     Tanggal Dokumen: <?= $created_date; ?>
@@ -486,9 +487,9 @@
                                     Date (dd/mm/yyyy) (Tanggal/Bulan/Tahun)
                                     <?php
                                     // explode date to fill column below
-                                    $date = str_split(date('d'));
-                                    $month = str_split(date('m'));
-                                    $year = str_split(date('Y'));
+                                    $date = str_split(date('d', $time));
+                                    $month = str_split(date('m', $time));
+                                    $year = str_split(date('Y', $time));
                                     ?>
                                     <br />
                                     <table>
