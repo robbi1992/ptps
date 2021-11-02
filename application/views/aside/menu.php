@@ -107,6 +107,14 @@
                                         <span class="menu-text">Impor Sementara</span>
                                     </a>
                                 </li>
+                                <li class="menu-item <?= ($menuActive == 5) ? 'menu-item-active' : '';  ?>" aria-haspopup="true">
+                                    <a href="<?=base_url('ecd')?>" class="menu-link">
+                                        <i class="menu-bullet menu-bullet-dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="menu-text">ECD</span>
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </li>
