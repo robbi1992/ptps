@@ -23,4 +23,12 @@ class Ecd extends MY_Controller {
 			->set_content_type('application/json')
 			->set_output(json_encode($data));
     }
+
+	public function get_detail() {
+		$params = json_decode($this->input->raw_input_stream, TRUE);
+		$data['data'] = $this->ecd_model->get_detail($params);
+		$this->output
+			->set_content_type('application/json')
+			->set_output(json_encode($data));
+	}
 }

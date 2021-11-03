@@ -151,7 +151,7 @@
                                         </form>
                                         <div class="d-none" name="searchResult">
                                             <div class="card">
-                                                <table class="table table-bordered">
+                                                <table class="table table-bordered table-striped">
                                                     <thead>
                                                         <tr class="text-center">
                                                             <th>Nama</th>
@@ -196,6 +196,107 @@
             </div>
             <!-- end page -->
         </div>
+
+        <!-- modal layout -->
+        <!-- modal detail -->
+        <div class="modal fade" id="detailModal" name="detailModal" data-backdrop="static" style="overflow: scroll !important;">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Data Penumpang dan Barang</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label for="fullName" class="form-label">Nama Lengkap</label>
+                                    <input type="text" class="form-control" id="fullName" name="fullName" readonly />
+                                </div>
+                                <div class="mb-3">
+                                    <label for="birth" class="form-label">Tanggal Kelahiran</label>
+                                    <input type="text" class="form-control" id="birth" name="birth" readonly />
+                                </div>
+                                <div class="mb-3">
+                                    <label for="occupation" class="form-label">Pekerjaan</label>
+                                    <input type="text" class="form-control" id="occupation" name="occupation" readonly />
+                                </div>
+                                <div class="mb-3">
+                                    <label for="nationality" class="form-label">Kebangsaan</label>
+                                    <input type="text" class="form-control" id="nationality" name="nationality" readonly />
+                                </div>
+                                <div class="mb-3">
+                                    <label for="passport" class="form-label">Nomor Paspor</label>
+                                    <input type="text" class="form-control" id="passport" name="passport" readonly />
+                                </div>
+                                <div class="mb-3">
+                                    <label for="address" class="form-label">Alamat di Indonesia</label>
+                                    <textarea type="text" class="form-control" id="address" name="address" readonly></textarea>
+                                </div>
+                            </div>
+                            <!-- end col md 3 -->
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <table>
+                                            <tr>
+                                                <td>1.</td><td>uang dan/atau instrumen pembayaran lainnya dalam bentuk cek, cek perjalanan, surat sanggup bayar, atau bilyet giro, dalam rupiah atau dalam mata uang asing senilai Rp100.000.000,00 (seratus juta rupiah) atau lebih, atau</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2.</td><td>uang kertas asing paling sedikit setara dengan Rp1.000.000.000,00 (satu milyar rupiah).</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- end card -->
+                                <div class="card mt-3">
+                                    <div class="card-body">
+                                        <table name="detail_goods" class="table table-striped table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Uraian Barang</th>
+                                                    <th scope="col">Jumlah</th>
+                                                    <th scope="col">Nilai</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end div col md 6 -->
+                            <div class="col-md-3">
+                                <h3>Pesawat</h3>
+                                <div class="card bg-danger text-white text-center">
+                                    <span class="pt-3" view="flight"></span>
+                                    <span class="pb-3" view="arrival"></span>
+                                </div>
+
+                                <h3>Keterangan</h3>
+                                <div class="card bg-danger text-white text-center">
+                                    <span class="pt-5 pb-5">DECLARE</span>
+                                </div>
+
+                                <h3>Intercept</h3>
+                                <div class="card bg-danger text-white text-center">
+                                    <span class="pt-5 pb-5"><i class="fa fa-bullseye"></i> Ubah Merah</span>
+                                </div>
+                            </div>
+                            <!-- end div col md 3 -->
+                        </div>
+                        <!-- end row -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Tutup</button>
+                    </div>
+                </div>
+                <!-- end modal content -->
+            </div>
+            <!-- end modal dialog -->
+        </div>
+        <!-- end modal detail -->
+        <!-- end modal layout -->
 
         <?php $this->load->view('aside/user');?>    
         <?php $this->load->view('aside/script');?>

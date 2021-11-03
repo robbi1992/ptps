@@ -4,6 +4,50 @@
             page: 1,
             date: ''
         },
+        getDetail: function() {
+            var row = $(this).closest('tr'),
+            data = row.attr('id');
+
+            var params = {
+                headerID: data
+            };
+
+            $.ajax({
+                url: '/ecd/get_detail',
+                type: 'post',
+                dataType: 'json',
+                data: JSON.stringify(params)
+            }).done(function(result) {
+                Ecd.renderDetail(result.data);
+            }).fail(function() {
+                alert('terjadi kesalahan, coba lagi nanti..');
+            });
+        },
+        renderDetail: function(data) {
+            $('#fullName').val(data.name);
+            $('#birth').val(data.birth);
+            $('#occupation').val(data.occupation);
+            $('#nationality').val(data.nationality);
+            $('#passport').val(data.passport);
+            $('#address').val(data.address);
+            $('span[view="flight"]').html(data.flight);
+            $('span[view="arrival"]').html(data.arrival);
+            // table of goods
+            var theTable = $('table[name="detail_goods"]');
+            var theBody = theTable.find('tbody').empty();
+            var number = 1;
+            $.each(data.goods, function(index, value) {
+                var row = '<tr>\
+                    <th scope="row">' + number + '</th>\
+                    <td>'+value.description+'</td>\
+                    <td>'+value.quantity+'</td>\
+                    <td>'+value.value+'</td>\
+                </tr>';
+                theBody.append(row);
+                number++;
+            });
+            $('#detailModal').modal('show');
+        },
         renderSearch: function(data) {
             var result = $('[name="searchResult"]');
             var template = result.find('[template="searchResultRow"]');
@@ -31,8 +75,8 @@
                 } else {
                     row.find('[view="zone"]').addClass('bg-danger');
                 }
-
                 row.appendTo(rows);
+                row.on('click', Ecd.getDetail);
             });
             
             if (data.nav.page == 1) nav.find('[name="prev"]').attr('disabled', 'disabled');

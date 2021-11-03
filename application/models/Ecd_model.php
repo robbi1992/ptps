@@ -11,7 +11,7 @@ class Ecd_model extends CI_Model {
 
         // search parameter
         if (!empty($params['date'])) {
-            $this->db->where('A.arrival_date', $params['date']);
+            // $this->db->where('A.arrival_date', $params['date']);
         }
         $this->db->order_by('A.created_at', 'DESC');
         // set for pagination
@@ -50,4 +50,34 @@ class Ecd_model extends CI_Model {
         return $result;
     }
 
+    public function get_detail($val) {
+        $result = array();
+        $this->db->select('A.*, B.name AS nationality');
+        $this->db->join('countries B', 'B.id = A.nationality');
+        $this->db->where('A.id', $val['headerID']);
+        $data = $this->db->get('ecd_personal A')->row_array();
+        
+        $this->db->where('personal_id', $data['id']);
+        $goods = $this->db->get('ecd_goods')->result_array();
+        $arrival_date = explode('-', $data['arrival_date']);
+        $new_arrival = $arrival_date[2] . ' ' . get_month($arrival_date[1]) . ' ' . $arrival_date[0]; 
+        $result = array(
+            'name' => $data['full_name'],
+            'nationality' => $data['nationality'],
+            'birth' => date('d/m/Y', strtotime($data['date_of_birth'])),
+            'occupation' => $data['occupation'],
+            'passport' => $data['passport_number'],
+            'address' => $data['address_in_indo'],
+            'flight' => $data['flight_number'],
+            'arrival' => $new_arrival,
+            'baggage_in' => $data['baggage_in'],
+            'baggage_ex' => $data['baggage_ex'],
+            'scanned' => $data['scan_status'],
+            'zone' => $data['zone'],
+            'goods' => $goods
+        );
+        
+        return $result;
+    }
+ 
 } 
