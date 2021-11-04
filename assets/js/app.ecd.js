@@ -63,7 +63,7 @@
                     <td>'+value.passport_number+'</td>\
                 </tr>';
                 familyBody.append(row);
-                number++
+                number++;
             });
 
             $('button[name="btnPersonalDetail"]').on('click', function(){
