@@ -56,9 +56,13 @@ class Ecd_model extends CI_Model {
         $this->db->join('countries B', 'B.id = A.nationality');
         $this->db->where('A.id', $val['headerID']);
         $data = $this->db->get('ecd_personal A')->row_array();
-        
+        // goods
         $this->db->where('personal_id', $data['id']);
         $goods = $this->db->get('ecd_goods')->result_array();
+        // family
+        $this->db->where('personal_id', $data['id']);
+        $fams = $this->db->get('ecd_personal_family')->result_array();
+
         $arrival_date = explode('-', $data['arrival_date']);
         $new_arrival = $arrival_date[2] . ' ' . get_month($arrival_date[1]) . ' ' . $arrival_date[0]; 
         $result = array(
@@ -74,7 +78,8 @@ class Ecd_model extends CI_Model {
             'baggage_ex' => $data['baggage_ex'],
             'scanned' => $data['scan_status'],
             'zone' => $data['zone'],
-            'goods' => $goods
+            'goods' => $goods,
+            'family' => $fams
         );
         
         return $result;

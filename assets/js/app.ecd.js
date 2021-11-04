@@ -30,6 +30,10 @@
             $('#nationality').val(data.nationality);
             $('#passport').val(data.passport);
             $('#address').val(data.address);
+            $('#arrival').val(data.arrival);
+            $('#baggage_in').val(data.baggage_in + ' pck');
+            $('#baggage_ex').val(data.baggage_ex + ' pck');
+            $('#family_num').val(data.family.length);
             $('span[view="flight"]').html(data.flight);
             $('span[view="arrival"]').html(data.arrival);
             // table of goods
@@ -47,6 +51,24 @@
                 number++;
             });
             $('#detailModal').modal('show');
+
+            // family data
+            var familyTable = $('table[name="familyTable"]');
+            var familyBody = familyTable.find('tbody').empty();
+            var number = 1;
+            $.each(data.family, function(index, value) {
+                var row = '<tr>\
+                    <th scope="row">' + number + '</th>\
+                    <td>'+value.full_name+'</td>\
+                    <td>'+value.passport_number+'</td>\
+                </tr>';
+                familyBody.append(row);
+                number++
+            });
+
+            $('button[name="btnPersonalDetail"]').on('click', function(){
+                $('#personalDetailModal').modal('show');
+            });
         },
         renderSearch: function(data) {
             var result = $('[name="searchResult"]');

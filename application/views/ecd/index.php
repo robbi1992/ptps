@@ -233,6 +233,9 @@
                                     <label for="address" class="form-label">Alamat di Indonesia</label>
                                     <textarea type="text" class="form-control" id="address" name="address" readonly></textarea>
                                 </div>
+                                <div class="mb-3">
+                                    <button name="btnPersonalDetail" type="button" class="btn btn-primary float-right btn-sm">Detail</button>
+                                </div>
                             </div>
                             <!-- end col md 3 -->
                             <div class="col-md-6">
@@ -296,6 +299,47 @@
             <!-- end modal dialog -->
         </div>
         <!-- end modal detail -->
+        
+        <!-- modal personal detail -->
+        <div class="modal fade" id="personalDetailModal" name="personalDetailModal" data-backdrop="static" style="overflow: scroll !important;">
+            <div class="modal-dialog">
+                <div class="modal-content bg-dark text-white">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="arrival" class="form-label">Tanggal Kedatangan</label>
+                            <input type="text" class="form-control" id="arrival" name="arrival" readonly />
+                        </div>
+                        <div class="mb-3">
+                            <label for="baggage_in" class="form-label">Jumlah bagasi yang dibawa</label>
+                            <input type="text" class="form-control" id="baggage_in" name="baggage_in" readonly />
+                        </div>
+                        <div class="mb-3">
+                            <label for="baggage_ex" class="form-label">Jumlah bagasi yang datang tidak bersamaan</label>
+                            <input type="text" class="form-control" id="baggage_ex" name="baggage_ex" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="family_num" class="form-label">Informasi Keluarga</label>
+                            <input type="text" class="form-control" id="family_num" name="family_num" />
+                        </div>
+                        <table name="familyTable" class="table table-striped table-sm table-dark">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Nama</th>
+                                    <th scope="col">Nomor Paspor</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Tutup</button>
+                    </div>
+                </div>
+                <!-- end modal content -->
+            </div>
+        </div>
+        <!-- end modal personal detail -->
         <!-- end modal layout -->
 
         <?php $this->load->view('aside/user');?>    
