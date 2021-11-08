@@ -415,7 +415,7 @@
                                                 <th>Jumlah</th>
                                                 <th>HS Code & Tarif</th>
                                                 <th>Nilai Pabean (CIF)</th>
-                                                <th>Pembebasan</th>
+                                                <th class="d-none">Pembebasan</th>
                                                 <th>Jml BM PDRI</th>
                                                 <th>Aksi</th>
                                             </tr>
@@ -425,7 +425,7 @@
                                                 <td view="imQty"></td>
                                                 <td view="imHscode"></td>
                                                 <td view="imPabean"></td>
-                                                <td view="imFree"></td>
+                                                <td class="d-none" view="imFree"></td>
                                                 <td view="imCollect"></td>
                                                 <td>
                                                     <button view="actionItemDelete" class="btn btn-sm btn-danger"><i class="fa fa-minus"></i></button>
@@ -587,12 +587,12 @@
                                     <label for="itemKurs">Kurs / NDPBM</label>
                                     <input type="text" name="itemKurs" class="form-control" id="itemKurs" value="0" readonly />
                                 </div>
-                                <div class="row">
+                                <div class="row d-none">
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="itemFreeCurrency">Mata Uang</label>
                                             <select name="itemFreeCurrency" id="itemFreeCurrency" class="form-control selectpicker" data-size="7" data-live-search="true">
-                                                <option value="">-- Pilih --</option>
+                                                <option value="0">-- Pilih --</option>
                                                 <?php
                                                 foreach ($kurs as $val) {
                                                 ?>
@@ -616,6 +616,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- row of free -->
                                 <div class="form-group">
                                     <label for="itemValue">Nilai Pabean (Rp)</label>
                                     <input type="text" name="itemValue" class="form-control" id="itemValue" value="0" readonly />
