@@ -107,6 +107,45 @@
                                         <span class="menu-text">Impor Sementara</span>
                                     </a>
                                 </li>
+                                <li class="menu-item menu-item-submenu <?= ($menuActive == 5 || $menuActive == 6 || $menuActive == 7) ? 'menu-item-open' : '';  ?>" aria-haspopup="true" data-menu-toggle="hover">
+                                    <a href="javascript:;" class="menu-link menu-toggle">
+                                        <i class="menu-bullet menu-bullet-dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="menu-text">Classic</span>
+                                        <i class="menu-arrow"></i>
+                                    </a>
+                                    <div class="menu-submenu">
+                                        <i class="menu-arrow"></i>
+                                        <ul class="menu-subnav">
+                                            <li class="menu-item <?= ($menuActive == 5) ? 'menu-item-active' : '';  ?>" aria-haspopup="true">
+                                                <a href="<?=base_url('ecd')?>" class="menu-link">
+                                                    <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">Admin</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-item <?= ($menuActive == 6) ? 'menu-item-active' : '';  ?>" aria-haspopup="true">
+                                                <a href="<?=base_url('reference')?>" class="menu-link">
+                                                    <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">Tabel Referensi</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-item <?= ($menuActive == 7) ? 'menu-item-active' : '';  ?>" aria-haspopup="true">
+                                                <a href="<?=base_url('rao')?>" class="menu-link">
+                                                    <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">RAO</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <!-- 
                                 <li class="menu-item <?= ($menuActive == 5) ? 'menu-item-active' : '';  ?>" aria-haspopup="true">
                                     <a href="<?=base_url('ecd')?>" class="menu-link">
                                         <i class="menu-bullet menu-bullet-dot">
@@ -115,6 +154,7 @@
                                         <span class="menu-text">ECD</span>
                                     </a>
                                 </li>
+                                 -->
                             </ul>
                         </div>
                     </li>
