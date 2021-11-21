@@ -50,11 +50,17 @@ class Ecd_model extends CI_Model {
         return $result;
     }
 
-    public function get_detail($val) {
+    public function get_detail($val, $rao=FALSE) {
         $result = array();
         $this->db->select('A.*, B.name AS nationality');
         $this->db->join('countries B', 'B.id = A.nationality');
-        $this->db->where('A.id', $val['headerID']);
+        
+        if ($rao) {
+            $this->db->where('A.qr_code', $val['qrcode']);
+        } else {
+            $this->db->where('A.id', $val['headerID']);
+        }
+        
         $data = $this->db->get('ecd_personal A')->row_array();
         // goods
         $this->db->where('personal_id', $data['id']);

@@ -112,7 +112,7 @@
                                         <i class="menu-bullet menu-bullet-dot">
                                             <span></span>
                                         </i>
-                                        <span class="menu-text">Classic</span>
+                                        <span class="menu-text">ECD</span>
                                         <i class="menu-arrow"></i>
                                     </a>
                                     <div class="menu-submenu">
