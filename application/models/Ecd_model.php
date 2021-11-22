@@ -58,6 +58,40 @@ class Ecd_model extends CI_Model {
         return $result;
     }
 
+    private function get_family($id) {
+        $this->db->where('personal_id', $id);
+        $fams = $this->db->get('ecd_personal_family')->result_array();
+
+        $return = array();
+        foreach($fams as $val) {
+            $return[] = array(
+                'id' => $val['id'],
+                'full_name' => $val['full_name'],
+                'passport_number' => $val['passport_number'],
+                'date_of_birth' => date('d/m/Y', strtotime($val['date_of_birth']))
+            );
+        }
+
+        return $return;
+    }
+
+    private function get_goods($id) {
+        $this->db->where('personal_id', $id);
+        $goods = $this->db->get('ecd_goods')->result_array();
+
+        $return = array();
+        foreach($goods as $val) {
+            $return[] = array(
+                'id' => $val['id'],
+                'description' => $val['description'],
+                'quantity' => $val['quantity'],
+                'value' => setIDR($val['value'])
+            );
+        }
+
+        return $return;
+    }
+
     public function get_detail($val, $rao=FALSE) {
         $result = array();
         $this->db->select('A.*, B.name AS nationality');
@@ -71,15 +105,14 @@ class Ecd_model extends CI_Model {
         
         $data = $this->db->get('ecd_personal A')->row_array();
         // goods
-        $this->db->where('personal_id', $data['id']);
-        $goods = $this->db->get('ecd_goods')->result_array();
+        $goods = $this->get_goods($data['id']);
         // family
-        $this->db->where('personal_id', $data['id']);
-        $fams = $this->db->get('ecd_personal_family')->result_array();
-
+        $fams = $this->get_family($data['id']);
+        
         $arrival_date = explode('-', $data['arrival_date']);
         $new_arrival = $arrival_date[2] . ' ' . get_month($arrival_date[1]) . ' ' . $arrival_date[0]; 
         $result = array(
+            'personalID' => $data['id'],
             'name' => $data['full_name'],
             'nationality' => $data['nationality'],
             'birth' => date('d/m/Y', strtotime($data['date_of_birth'])),
@@ -97,6 +130,12 @@ class Ecd_model extends CI_Model {
         );
         
         return $result;
+    }
+
+    public function change_zone($params) {
+        $this->db->set('zone', '1');
+        $this->db->where('id', $params['personal']);
+        return $this->db->update('ecd_personal');
     }
  
 } 

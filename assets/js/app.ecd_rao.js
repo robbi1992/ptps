@@ -1,5 +1,21 @@
 (function($) {
     var Rao = {
+        changeZone: function(personalID){
+            var params = {
+                personal: personalID
+            };
+            $.ajax({
+                url: '/rao/change_zone',
+                type: 'post',
+                dataType: 'json',
+                data: JSON.stringify(params)
+            }).done(function(result) {
+                $('[view="detail-change-zone"]').removeClass('bg-danger');
+                $('[view="detail-change-zone"]').addClass('bg-secondary');
+            }).fail(function() {
+                alert('terjadi kesalahan, coba lagi nanti..');
+            });
+        },
         renderDetail: function(data) {
             $('#fullName').val(data.name);
             $('#birth').val(data.birth);
@@ -8,8 +24,8 @@
             $('#passport').val(data.passport);
             $('#address').val(data.address);
             $('#arrival').val(data.arrival);
-            $('#baggage_in').val(data.baggage_in + ' pck');
-            $('#baggage_ex').val(data.baggage_ex + ' pck');
+            $('span[view="baggage_in"]').html(data.baggage_in);
+            $('span[view="baggage_ex"]').html(data.baggage_ex);
             $('#family_num').val(data.family.length);
             $('span[view="flight"]').html(data.flight);
             $('span[view="arrival"]').html(data.arrival);
@@ -19,14 +35,30 @@
             var number = 1;
             $.each(data.goods, function(index, value) {
                 var row = '<tr>\
-                    <th scope="row">' + number + '</th>\
-                    <td>'+value.description+'</td>\
-                    <td>'+value.quantity+'</td>\
-                    <td>'+value.value+'</td>\
+                    <th class="text-center" scope="row">' + number + '</th>\
+                    <td class="text-center">'+value.description+'</td>\
+                    <td class="text-center">'+value.quantity+'</td>\
+                    <td class="text-center">'+value.value+'</td>\
                 </tr>';
                 theBody.append(row);
                 number++;
             });
+
+            // set zone
+            if (data.zone == '1') {
+                $('[view="detail-zone"]').removeClass('bg-success');
+                $('[view="detail-zone"]').addClass('bg-danger');
+                $('[view="detail-zone-text"]').html('MERAH');
+
+                // intersect
+                $('[view="detail-change-zone"]').removeClass('bg-danger');
+                $('[view="detail-change-zone"]').addClass('bg-secondary');
+            } else {
+                $('[view="detail-change-zone"]').on('click', function(){
+                    Rao.changeZone(data.personalID);
+                });
+            }
+
             $('#detailModal').modal('show');
 
             // family data
@@ -35,17 +67,18 @@
             var number = 1;
             $.each(data.family, function(index, value) {
                 var row = '<tr>\
-                    <th scope="row">' + number + '</th>\
-                    <td>'+value.full_name+'</td>\
-                    <td>'+value.passport_number+'</td>\
+                    <th class="text-center" scope="row">' + number + '</th>\
+                    <td class="text-center">'+value.full_name+'</td>\
+                    <td class="text-center">'+value.date_of_birth+'</td>\
+                    <td class="text-center">'+value.passport_number+'</td>\
                 </tr>';
                 familyBody.append(row);
                 number++;
             });
-
+            /*
             $('button[name="btnPersonalDetail"]').on('click', function(){
                 $('#personalDetailModal').modal('show');
-            });
+            });*/
         },
         renderSearch: function(data) {
             var result = $('[name="searchResult"]');

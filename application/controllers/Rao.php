@@ -16,8 +16,17 @@ class Rao extends MY_Controller {
 	}
 
 	public function get_detail() {
+		$this->load->helper('my_helper');
 		$params = json_decode($this->input->raw_input_stream, TRUE);
 		$data['data'] = $this->ecd_model->get_detail($params, TRUE);
+		$this->output
+			->set_content_type('application/json')
+			->set_output(json_encode($data));
+	}
+
+	public function change_zone() {
+		$params = json_decode($this->input->raw_input_stream, TRUE);
+		$data = $this->ecd_model->change_zone($params);
 		$this->output
 			->set_content_type('application/json')
 			->set_output(json_encode($data));
