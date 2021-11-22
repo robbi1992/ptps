@@ -5,14 +5,21 @@ class Ecd_model extends CI_Model {
     // scan status 0 = no, 1 yes
     public function search($params) {
         $this->db->select('A.id AS ecdID, A.full_name, A.date_of_birth, A.passport_number,  A.flight_number, A.scan_status,
-            A.zone
+            A.zone, A.arrival_date
         ');
         $this->db->from('ecd_personal A');
 
         // search parameter
-        if (!empty($params['date'])) {
-            // $this->db->where('A.arrival_date', $params['date']);
+        if (!empty($params['dateFrom'])) {
+            $this->db->where('A.arrival_date >=', $params['dateFrom']);
         }
+        if (!empty($params['dateUntil'])) {
+            $this->db->where('A.arrival_date >=', $params['dateUntil']);
+        }
+        if (!empty($params['flightNumber'])) {
+            $this->db->like('A.flight_number >=', $params['flightNumber']);
+        }
+
         $this->db->order_by('A.created_at', 'DESC');
         // set for pagination
         // limit +1 for next page indicator
@@ -40,6 +47,7 @@ class Ecd_model extends CI_Model {
                     'flight' => $row['flight_number'],
                     'scan' => $row['scan_status'],
                     'zone' => $row['zone'],
+                    'arrival_date' => date('d/m/Y', strtotime($row['arrival_date'])),
                 );
             } else {
                 $result['nav']['last'] = FALSE;

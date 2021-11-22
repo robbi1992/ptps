@@ -69,6 +69,9 @@
                                             <li class="breadcrumb-item text-muted">
                                                 <a href="" class="text-muted">ECD</a>
                                             </li>
+                                            <li class="breadcrumb-item text-muted active">
+                                                <a href="" class="text-muted">Admin</a>
+                                            </li>
                                         </ul>
                                         <!--end::Breadcrumb-->
                                     </div>
@@ -89,16 +92,9 @@
                                             <span class="card-icon">
                                                 <i class="flaticon2-supermarket text-primary"></i>
                                             </span>
-                                            <h3 class="card-label">DAFTAR ATENSI PAU</h3>
+                                            <h3 class="card-label">Electronic CD - Admin</h3>
                                         </div>
                                         <div class="card-toolbar">
-                                            <!--begin::Button-->
-                                            <!-- 
-                                            <button class="btn btn-sm btn-primary" id="add_valas">
-                                                <i class="fa fa-plus"></i> NEW IS
-                                            </button>
-                                             -->
-                                            <!--end::Button-->
                                         </div>
                                     </div>
                                     <!-- end card header -->
@@ -106,13 +102,6 @@
                                         <!-- search form -->
                                         <form name="searchForm">
                                             <div class="row">
-                                                <!-- 
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label for="docNumber">Kata Kunci</label>
-                                                        <input type="text" name="docNumber" class="form-control" id="docNumber" placeholder="Nomor/Nama/Negara" />
-                                                    </div>  
-                                                </div>
                                                 <div class="col-md-3">
                                                     <div class="form-group">
                                                         <label for="dateFrom">Dari</label>
@@ -125,26 +114,29 @@
                                                         
                                                     </div>  
                                                 </div>
-                                                 -->
                                                 <div class="col-md-3">
                                                     <div class="form-group">
-                                                        <label for="date">Tanggal</label>
+                                                        <label for="dateUntil">Sampai</label>
                                                         <div class="input-group mb-3">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" id="basic-addon1"><i class="fa fa-calendar"></i></span>
                                                             </div>
-                                                            <input type="text" name="date" class="form-control bc-date" id="date" value="<?= date('Y-m-d'); ?>" readonly />
+                                                            <input type="text" name="dateUntil" class="form-control bc-date" id="dateUntil" />
                                                         </div>
-                                                        
                                                     </div>  
                                                 </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="flightNumber">Kode Penerbangan</label>
+                                                        <input type="text" name="flightNumber" class="form-control" id="flightNumber" />
+                                                    </div>  
+                                                </div>
+                                                <div class="col-md-1">&nbsp;</div>
                                                 <div class="col-md-2">
-                                                    <!-- 
                                                     <div class="form-group">
                                                         <label>&nbsp;</label>
                                                         <button type="submit" class="btn btn-primary form-control"><i class="fa fa-search"></i></button>
                                                     </div>
-                                                     -->
                                                 </div>
                                             </div>
                                             <!-- end row in card header -->
@@ -154,20 +146,39 @@
                                                 <table class="table table-bordered table-striped">
                                                     <thead>
                                                         <tr class="text-center">
-                                                            <th>Nama</th>
-                                                            <th>TTL</th>
-                                                            <th>Nomor Paspor</th>
-                                                            <th>Pesawat</th>
-                                                            <th>Status Scan</th>
+                                                            <th>#</th>
+                                                            <th>Nama Penumpang</th>
+                                                            <th>Paspor</th>
+                                                            <th>Tgl Lahir</th>
+                                                            <th>Kode Penerbangan</th>
+                                                            <th>Tanggal Pesawat</th>
                                                             <th>Jalur</th>
+                                                            <th>Aksi</th>
                                                         </tr>
                                                         <tr class="d-none" template="searchResultRow">
+                                                            <td view="number"></td>
                                                             <td view="name"></td>
-                                                            <td view="birthDate"></td>
                                                             <td view="passport"></td>
+                                                            <td view="birthDate"></td>
                                                             <td view="flightNumber"></td>
-                                                            <td view="status"></td>
+                                                            <td view="arrival"></td>
                                                             <td view="zone"></td>
+                                                            <td>
+                                                                <div class="dropdown dropdown-inline">
+                                                                    <a href="javascript:;" class="btn btn-sm btn-clean btn-icon" data-toggle="dropdown">
+                                                                        <i class="la la-cog"></i>
+                                                                    </a>
+                                                                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                                                        <ul class="nav nav-hoverable flex-column">
+                                                                            <li class="nav-item"><a class="nav-link" view="actionGetBaggage" style="cursor: pointer;"><i class="nav-icon la la-briefcase"></i><span class="nav-text">Data Bagasi</span></a></li>
+                                                                            <li class="nav-item"><a class="nav-link" view="actionDetail" value="1" style="cursor: pointer;"><i class="nav-icon la la-users"></i><span class="nav-text">Data Penumpang</span></a></li>
+                                                                            <li class="nav-item"><a class="nav-link" view="actionChangeZone" value="0" style="cursor: pointer;"><i class="nav-icon la la-edit"></i><span class="nav-text">Ubah Merah</span></a></li>
+                                                                            <li class="nav-item"><a class="nav-link" view="actiongetHistory" value="2" style="cursor: pointer;"><i class="nav-icon la la-list"></i><span class="nav-text">History</span></a></li>
+                                                                            <li class="nav-item"><a class="nav-link" view="actionPrint" style="cursor: pointer;"><i class="nav-icon la la-print"></i><span class="nav-text">Cetak</span></a></li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </td>    
                                                         </tr>
                                                     </thead>
                                                     <tbody><!-- Appended by Ajax --></tbody>

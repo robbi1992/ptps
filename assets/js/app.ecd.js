@@ -2,7 +2,10 @@
     var Ecd = {
         params: {
             page: 1,
-            date: ''
+            dateFrom: '',
+            dateUntil: '',
+            flightNumber: '',
+            limit: 20
         },
         getDetail: function() {
             var row = $(this).closest('tr'),
@@ -75,14 +78,19 @@
             var template = result.find('[template="searchResultRow"]');
             var rows = result.find('tbody').empty();
             var nav = result.find('[name="searchNav"]');
-            
+            var theNumber = 1;
+            if (Ecd.params.page > 1) {
+                theNumber =  (Ecd.params.limit * Ecd.params.page) + 1;
+            }
             $.each(data.rows, function(index, value) {
                 var row = template.clone().removeClass('d-none').removeAttr('template');
                 row.attr('id', value.ecd);
+                row.find('[view="number"]').html(theNumber);
                 row.find('[view="name"]').html(value.name);
                 row.find('[view="birthDate"]').html(value.birth);
                 row.find('[view="passport"]').html(value.passport);
                 row.find('[view="flightNumber"]').html(value.flight);
+                row.find('[view="arrival"]').html(value.arrival_date);
                 
                 // set status
                 var status = 'Tidak';
@@ -93,12 +101,15 @@
 
                 // set zone
                 if (value.zone == '0') {
-                    row.find('[view="zone"]').addClass('bg-success');
+                    row.find('[view="zone"]').html('Hijau');
+                    row.find('[view="zone"]').addClass('bg-success text-white text-center');
                 } else {
-                    row.find('[view="zone"]').addClass('bg-danger');
+                    row.find('[view="zone"]').html('Merah');
+                    row.find('[view="zone"]').addClass('bg-danger text-white text-center');
                 }
                 row.appendTo(rows);
-                row.on('click', Ecd.getDetail);
+                // row.on('click', Ecd.getDetail);
+                theNumber++;
             });
             
             if (data.nav.page == 1) nav.find('[name="prev"]').attr('disabled', 'disabled');
@@ -112,7 +123,9 @@
         doSearch: function() {
             var data = {
                 page: Ecd.params.page,
-                date: Ecd.params.date,
+                dateFrom: Ecd.params.dateFrom,
+                dateUntil: Ecd.params.dateUntil,
+                flightNumber: Ecd.params.flightNumber
             };
     
             $.ajax({
@@ -129,7 +142,21 @@
             });
         },
         init: function() {
-            Ecd.params.date = $('form[name="searchForm"]').find('input[name="date"]').val();
+            $('.bc-date').datepicker({
+                todayHighlight: true,
+                orientation: "bottom left",
+                format: 'yyyy-mm-dd'
+            });
+
+            $('form[name="searchForm"]').on('submit', function() {
+                Ecd.params.dateFrom =  $(this).find('[name="dateFrom"]').val();
+                Ecd.params.dateUntil =  $(this).find('[name="dateUntil"]').val();
+                Ecd.params.flightNumber =  $(this).find('[name="flightNumber"]').val();
+
+                Ecd.doSearch();
+                return false;
+            });
+
             Ecd.doSearch();
         }
     };
