@@ -12,6 +12,11 @@
             }).done(function(result) {
                 $('[view="detail-change-zone"]').removeClass('bg-danger');
                 $('[view="detail-change-zone"]').addClass('bg-secondary');
+
+                // change zone layout
+                $('[view="detail-zone"]').removeClass('bg-success');
+                $('[view="detail-zone"]').addClass('bg-danger');
+                $('[view="detail-zone-text"]').html('MERAH');
             }).fail(function() {
                 alert('terjadi kesalahan, coba lagi nanti..');
             });
@@ -126,6 +131,7 @@
             });
             
             $('#qrcode').on('change textInput input', function() {
+                $('#detailModal').modal('hide');
                 var data = $(this).val();
 
                 var params = {
