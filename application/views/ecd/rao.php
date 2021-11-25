@@ -102,8 +102,7 @@
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="qrcode">QR Code</label>
-                                                    <input type="text" name="qrcode" class="form-control" id="qrcode" placeholder="QR Code Number" />
+                                                    <!-- <label for="qrcode">QR Code</label> -->
                                                 </div>  
                                             </div>
                                         </div>
@@ -127,9 +126,13 @@
         <div class="modal fade" id="detailModal" name="detailModal" data-backdrop="static" style="overflow: scroll !important;">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Data Penumpang dan Barang</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                    <div class="modal-header"> 
+                        <div class="row">
+                            <div class="col-6"><h4 class="modal-title">Data Penumpang dan Barang</h4></div>
+                            <div class="col-6"><input type="text" name="qrcode" class="form-control" id="qrcode" placeholder="QR Code Number" /></div>
+                        </div>
+                        
+                        
                     </div>
                     <div class="modal-body">
                         <div class="row">
@@ -244,9 +247,11 @@
                         </div>
                         <!-- end row -->
                     </div>
+                    <!-- 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Tutup</button>
                     </div>
+                     -->
                 </div>
                 <!-- end modal content -->
             </div>
