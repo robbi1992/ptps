@@ -126,10 +126,11 @@
         <div class="modal fade" id="detailModal" name="detailModal" data-backdrop="static" style="overflow: scroll !important;">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
-                    <div class="modal-header"> 
+                    <div class="modal-header bg-success"> 
                         <div class="row">
-                            <div class="col-6"><h4 class="modal-title">Data Penumpang dan Barang</h4></div>
-                            <div class="col-6"><input type="text" name="qrcode" class="form-control" id="qrcode" placeholder="QR Code Number" /></div>
+                            <div class="col-1 text-right"><img style="width: 100%;" src="assets/media/logos/bc_logo.png" /></div>
+                            <div class="col-6 text-white"><h4 class="modal-title text-white">E - Customs Declaration</h4>Soekarno Hatta</div>
+                            <div class="col-5"><input type="text" name="qrcode" class="form-control" id="qrcode" placeholder="QR Code Number" /></div>
                         </div>
                         
                         
