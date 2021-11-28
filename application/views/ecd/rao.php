@@ -238,7 +238,7 @@
                                     <span view="detail-zone-text" class="pt-5 pb-5">HIJAU</span>
                                 </div>
 
-                                <h3 class="mt-3">Intersect RAO</h3>
+                                <h3 class="mt-3">Intercept RAO</h3>
                                 <div view="detail-change-zone" class="card bg-danger text-center">
                                     <span class="pt-5 pb-5 text-white"><i class="fa fa-bullseye text-white"></i> Ubah Merah</span>
                                 </div>

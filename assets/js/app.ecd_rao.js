@@ -17,6 +17,9 @@
                 $('[view="detail-zone"]').removeClass('bg-success');
                 $('[view="detail-zone"]').addClass('bg-danger');
                 $('[view="detail-zone-text"]').html('MERAH');
+                // set header
+                $('.modal-header').removeClass('bg-success');
+                $('.modal-header').addClass('bg-danger');
             }).fail(function() {
                 alert('terjadi kesalahan, coba lagi nanti..');
             });
@@ -51,6 +54,10 @@
 
             // set zone
             if (data.zone == '1') {
+                // set header
+                $('.modal-header').removeClass('bg-success');
+                $('.modal-header').addClass('bg-danger');
+
                 $('[view="detail-zone"]').removeClass('bg-success');
                 $('[view="detail-zone"]').addClass('bg-danger');
                 $('[view="detail-zone-text"]').html('MERAH');
@@ -59,6 +66,10 @@
                 $('[view="detail-change-zone"]').removeClass('bg-danger');
                 $('[view="detail-change-zone"]').addClass('bg-secondary');
             } else {
+                // set header
+                $('.modal-header').removeClass('bg-danger');
+                $('.modal-header').addClass('bg-success');  
+
                 $('[view="detail-zone"]').removeClass('bg-danger');
                 $('[view="detail-zone"]').addClass('bg-success');
                 $('[view="detail-zone-text"]').html('HIJAU');
