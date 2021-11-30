@@ -18,8 +18,8 @@
                 $('[view="detail-zone"]').addClass('bg-danger');
                 $('[view="detail-zone-text"]').html('MERAH');
                 // set header
-                $('.modal-header').removeClass('bg-success');
-                $('.modal-header').addClass('bg-danger');
+                $('.card-header').removeClass('bg-success');
+                $('.card-header').addClass('bg-danger');
             }).fail(function() {
                 alert('terjadi kesalahan, coba lagi nanti..');
             });
@@ -55,8 +55,8 @@
             // set zone
             if (data.zone == '1') {
                 // set header
-                $('.modal-header').removeClass('bg-success');
-                $('.modal-header').addClass('bg-danger');
+                $('.card-header').removeClass('bg-success');
+                $('.card-header').addClass('bg-danger');
 
                 $('[view="detail-zone"]').removeClass('bg-success');
                 $('[view="detail-zone"]').addClass('bg-danger');
@@ -67,8 +67,8 @@
                 $('[view="detail-change-zone"]').addClass('bg-secondary');
             } else {
                 // set header
-                $('.modal-header').removeClass('bg-danger');
-                $('.modal-header').addClass('bg-success');  
+                $('.card-header').removeClass('bg-danger');
+                $('.card-header').addClass('bg-success');  
 
                 $('[view="detail-zone"]').removeClass('bg-danger');
                 $('[view="detail-zone"]').addClass('bg-success');
@@ -98,19 +98,26 @@
                 familyBody.append(row);
                 number++;
             });
+
+            // set dnone
+            $('div[name="bc-data"]').removeClass('d-none');
+            $('div[name="bc-none"]').addClass('d-none');
         },
         init: function() {
-            $('#detailModal').modal('show');
+            // set minimize
+            $('#kt_body').addClass('aside-minimize');
+            // $('#detailModal').modal('show');
 
             $('#qrcode').focus();
             $('#qrcode').focusout(function(){
                 $('#qrcode').focus();
             });
             
-            $('#qrcode').on('change textInput input', function() {
+            // $('#qrcode').on('change textInput input', function() {
+            $('#qrcode').on('change', function() {
                 // $('#detailModal').modal('hide');
                 var data = $(this).val();
-                if (data.length >= 18) {
+                if (data.length == 18) {
                     var params = {
                         qrcode: data
                     };
@@ -124,15 +131,18 @@
                         // clear and set focus again
                         Rao.renderDetail(result.data);
                     }).fail(function() {
-                        alert('terjadi kesalahan, coba lagi nanti..');
+                        // hide the data
+                        $('div[name="bc-none"]').removeClass('d-none');
+                        $('div[name="bc-data"]').addClass('d-none');
+                        // alert('terjadi kesalahan, coba lagi nanti..');
                     }).always(function(){
                         $('#qrcode').val('').focus();
                     });
-                }  
-            });
-
-            $('#detailModal').on('hide.bs.modal', function (e) {
-                $('#qrcode').focus();
+                } else if (data.length > 18) {
+                    $('div[name="bc-none"]').removeClass('d-none');
+                    $('div[name="bc-data"]').addClass('d-none');
+                    $('#qrcode').val('').focus();
+                }
             });
         }
     };
