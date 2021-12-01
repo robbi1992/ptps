@@ -125,13 +125,15 @@
                                                 </div>
                                                 <hr />
                                                 <h4>Pemberitahuan / Declare</h4><hr />
-                                                <table>
+                                                <table name="tableDeclare">
+                                                    <!-- 
                                                     <tr>
                                                         <td style="vertical-align: top;">1.</td><td>uang dan/atau instrumen pembayaran lainnya dalam bentuk cek, cek perjalanan, surat sanggup bayar, atau bilyet giro, dalam rupiah atau dalam mata uang asing senilai Rp100.000.000,00 (seratus juta rupiah) atau lebih, atau</td>
                                                     </tr>
                                                     <tr>
                                                         <td style="vertical-align: top;">2.</td><td>uang kertas asing paling sedikit setara dengan Rp1.000.000.000,00 (satu milyar rupiah).</td>
                                                     </tr>
+                                                     -->
                                                 </table>
                                                 <hr />
                                                 <h4>Detail Barang</h4><hr />

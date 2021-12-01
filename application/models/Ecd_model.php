@@ -92,6 +92,24 @@ class Ecd_model extends CI_Model {
         return $return;
     }
 
+    private function get_declare($id) {
+        $this->db->select('B.in_content AS declare');
+        $this->db->from('ecd_declare_answer A');
+        $this->db->join('ecd_goods_declare B', 'A.goods_declare_id = B.id');
+        $this->db->where('A.personal_id', $id);
+        $this->db->where('A.answer', '1');
+        $goods = $this->db->get()->result_array();
+
+        $return = array();
+        foreach($goods as $val) {
+            $return[] = array(
+                'content' => $val['declare']
+            );
+        }
+
+        return $return;
+    }
+
     public function get_detail($val, $rao=FALSE) {
         $result = array();
         $this->db->select('A.*, B.name AS nationality');
@@ -106,6 +124,8 @@ class Ecd_model extends CI_Model {
         $data = $this->db->get('ecd_personal A')->row_array();
         // goods
         $goods = $this->get_goods($data['id']);
+        // get declare
+        $declare = $this->get_declare($data['id']);
         // family
         $fams = $this->get_family($data['id']);
         
@@ -126,7 +146,8 @@ class Ecd_model extends CI_Model {
             'scanned' => $data['scan_status'],
             'zone' => $data['zone'],
             'goods' => $goods,
-            'family' => $fams
+            'family' => $fams,
+            'declare' => $declare
         );
         
         return $result;

@@ -98,6 +98,17 @@
                 familyBody.append(row);
                 number++;
             });
+            // set declare
+            var declareTable = $('table[name="tableDeclare"]').empty();
+            var number = 1;
+            $.each(data.declare, function(index, value) {
+                var row = '<tr>\
+                    <td style="vertical-align: top;">' + number + '.</td>\
+                    <td>' + value.content + '</td>\
+                </tr>';
+                declareTable.append(row);
+                number++;
+            });
 
             // set dnone
             $('div[name="bc-data"]').removeClass('d-none');
