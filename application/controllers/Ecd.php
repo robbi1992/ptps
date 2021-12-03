@@ -25,6 +25,7 @@ class Ecd extends MY_Controller {
     }
 
 	public function get_detail() {
+		$this->load->helper('my_helper');
 		$params = json_decode($this->input->raw_input_stream, TRUE);
 		$data['data'] = $this->ecd_model->get_detail($params);
 		$this->output

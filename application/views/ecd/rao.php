@@ -133,7 +133,7 @@
                                                     <tr>
                                                         <td style="vertical-align: top;">2.</td><td>uang kertas asing paling sedikit setara dengan Rp1.000.000.000,00 (satu milyar rupiah).</td>
                                                     </tr>
-                                                     -->
+                                                    -->
                                                 </table>
                                                 <hr />
                                                 <h4>Detail Barang</h4><hr />

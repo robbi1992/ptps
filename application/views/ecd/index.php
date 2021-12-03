@@ -153,7 +153,7 @@
                                                             <th>Kode Penerbangan</th>
                                                             <th>Tanggal Pesawat</th>
                                                             <th>Jalur</th>
-                                                            <th>Aksi</th>
+                                                            <!-- <th>Aksi</th> -->
                                                         </tr>
                                                         <tr class="d-none" template="searchResultRow">
                                                             <td view="number"></td>
@@ -163,6 +163,7 @@
                                                             <td view="flightNumber"></td>
                                                             <td view="arrival"></td>
                                                             <td view="zone"></td>
+                                                            <!-- 
                                                             <td>
                                                                 <div class="dropdown dropdown-inline">
                                                                     <a href="javascript:;" class="btn btn-sm btn-clean btn-icon" data-toggle="dropdown">
@@ -178,7 +179,8 @@
                                                                         </ul>
                                                                     </div>
                                                                 </div>
-                                                            </td>    
+                                                            </td>  
+                                                             -->  
                                                         </tr>
                                                     </thead>
                                                     <tbody><!-- Appended by Ajax --></tbody>
@@ -213,13 +215,18 @@
         <div class="modal fade" id="detailModal" name="detailModal" data-backdrop="static" style="overflow: scroll !important;">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Data Penumpang dan Barang</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                    <div class="modal-header bg-success">
+                        <h4 class="modal-title">
+                        <span class="card-icon text-white">
+                            <img style="width: 40px;" src="assets/media/logos/bc_logo.png" />
+                            E - Customs Declaration - soekarno hatta
+                        </span>
+                        </h4>
+                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">&times;</button>
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="fullName" class="form-label">Nama Lengkap</label>
                                     <input type="text" class="form-control" id="fullName" name="fullName" readonly />
@@ -244,57 +251,79 @@
                                     <label for="address" class="form-label">Alamat di Indonesia</label>
                                     <textarea type="text" class="form-control" id="address" name="address" readonly></textarea>
                                 </div>
+                                <h4>Informasi Keluarga</h4><hr />
+                                <table name="familyTable" class="table table-bordered table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" scope="col">#</th>
+                                            <th class="text-center" scope="col">Nama</th>
+                                            <th class="text-center" scope="col">Tgl Lahir</th>
+                                            <th class="text-center" scope="col">Paspor</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                                <!--
                                 <div class="mb-3">
                                     <button name="btnPersonalDetail" type="button" class="btn btn-primary float-right btn-sm">Detail</button>
                                 </div>
+                                -->
                             </div>
                             <!-- end col md 3 -->
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <table>
-                                            <tr>
-                                                <td>1.</td><td>uang dan/atau instrumen pembayaran lainnya dalam bentuk cek, cek perjalanan, surat sanggup bayar, atau bilyet giro, dalam rupiah atau dalam mata uang asing senilai Rp100.000.000,00 (seratus juta rupiah) atau lebih, atau</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2.</td><td>uang kertas asing paling sedikit setara dengan Rp1.000.000.000,00 (satu milyar rupiah).</td>
-                                            </tr>
-                                        </table>
-                                    </div>
+                            <div class="col-md-5">
+                                <h4>Jumlah Bagasi</h4><hr />
+                                <div class="row">
+                                    <div class="col-md-6">bersamaan <b><span view="baggage_in"></span> Pkg</b></div>
+                                    <div class="col-md-6">tidak bersamaan <b><span view="baggage_ex"></span> Pkg</b></div>
                                 </div>
-                                <!-- end card -->
-                                <div class="card mt-3">
-                                    <div class="card-body">
-                                        <table name="detail_goods" class="table table-striped table-sm">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">#</th>
-                                                    <th scope="col">Uraian Barang</th>
-                                                    <th scope="col">Jumlah</th>
-                                                    <th scope="col">Nilai</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody></tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                                <hr />
+                                <h4>Pemberitahuan / Declare</h4><hr />
+                                <table name="tableDeclare">
+                                </table>
+                                <hr />
+                                <h4>Detail Barang</h4><hr />
+                                <table name="detail_goods" class="table table-bordered table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" scope="col">#</th>
+                                            <th class="text-center" scope="col">Uraian Barang</th>
+                                            <th class="text-center" scope="col">Jumlah</th>
+                                            <th class="text-center" scope="col">Nilai</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                                <hr />
+                                <h4>Riwayat Pemeriksaan</h4><hr />
+                                <table name="historyTable" class="table table-bordered table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" scope="col">#</th>
+                                            <th class="text-center" scope="col">Jenis Dok</th>
+                                            <th class="text-center" scope="col">Tanggal Dok</th>
+                                            <th class="text-center" scope="col">Barang</th>
+                                            <th class="text-center" scope="col">Total Pungutan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
                             </div>
                             <!-- end div col md 6 -->
                             <div class="col-md-3">
-                                <h3>Pesawat</h3>
-                                <div class="card bg-danger text-white text-center">
+                                <h4>Pesawat / Tgl Kedatangan</h4>
+                                <div class="card bg-info text-white text-center">
                                     <span class="pt-3" view="flight"></span>
                                     <span class="pb-3" view="arrival"></span>
                                 </div>
 
-                                <h3>Keterangan</h3>
-                                <div class="card bg-danger text-white text-center">
-                                    <span class="pt-5 pb-5">DECLARE</span>
+                                <h3 class="mt-3">Penjaluran</h3>
+                                <div view="detail-zone" class="card bg-success text-white text-center">
+                                    <span view="detail-zone-text" class="pt-5 pb-5">HIJAU</span>
                                 </div>
 
-                                <h3>Intercept</h3>
-                                <div class="card bg-danger text-white text-center">
-                                    <span class="pt-5 pb-5"><i class="fa fa-bullseye"></i> Ubah Merah</span>
+                                <h3 class="mt-3">Intercept RAO</h3>
+                                <div view="detail-change-zone" class="card bg-danger text-center">
+                                    <span class="pt-5 pb-5 text-white"><i class="fa fa-bullseye text-white"></i> Ubah Merah</span>
                                 </div>
                             </div>
                             <!-- end div col md 3 -->
@@ -312,6 +341,7 @@
         <!-- end modal detail -->
         
         <!-- modal personal detail -->
+        <!-- 
         <div class="modal fade" id="personalDetailModal" name="personalDetailModal" data-backdrop="static" style="overflow: scroll !important;">
             <div class="modal-dialog">
                 <div class="modal-content bg-dark text-white">
@@ -347,9 +377,10 @@
                         <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Tutup</button>
                     </div>
                 </div>
-                <!-- end modal content -->
+               
             </div>
         </div>
+        -->
         <!-- end modal personal detail -->
         <!-- end modal layout -->
 

@@ -14,10 +14,10 @@ class Ecd_model extends CI_Model {
             $this->db->where('A.arrival_date >=', $params['dateFrom']);
         }
         if (!empty($params['dateUntil'])) {
-            $this->db->where('A.arrival_date >=', $params['dateUntil']);
+            $this->db->where('A.arrival_date <=', $params['dateUntil']);
         }
         if (!empty($params['flightNumber'])) {
-            $this->db->like('A.flight_number >=', $params['flightNumber']);
+            $this->db->like('A.flight_number', $params['flightNumber']);
         }
 
         $this->db->order_by('A.created_at', 'DESC');

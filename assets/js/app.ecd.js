@@ -7,6 +7,30 @@
             flightNumber: '',
             limit: 20
         },
+        changeZone: function(personalID){
+            var params = {
+                personal: personalID
+            };
+            $.ajax({
+                url: '/rao/change_zone',
+                type: 'post',
+                dataType: 'json',
+                data: JSON.stringify(params)
+            }).done(function(result) {
+                $('[view="detail-change-zone"]').removeClass('bg-danger');
+                $('[view="detail-change-zone"]').addClass('bg-secondary');
+
+                // change zone layout
+                $('[view="detail-zone"]').removeClass('bg-success');
+                $('[view="detail-zone"]').addClass('bg-danger');
+                $('[view="detail-zone-text"]').html('MERAH');
+                // set header
+                $('.modal-header').removeClass('bg-success');
+                $('.modal-header').addClass('bg-danger');
+            }).fail(function() {
+                alert('terjadi kesalahan, coba lagi nanti..');
+            });
+        },
         getDetail: function() {
             var row = $(this).closest('tr'),
             data = row.attr('id');
@@ -34,8 +58,10 @@
             $('#passport').val(data.passport);
             $('#address').val(data.address);
             $('#arrival').val(data.arrival);
-            $('#baggage_in').val(data.baggage_in + ' pck');
-            $('#baggage_ex').val(data.baggage_ex + ' pck');
+            $('span[view="baggage_in"]').html(data.baggage_in);
+            $('span[view="baggage_ex"]').html(data.baggage_ex);
+            // $('#baggage_in').val(data.baggage_in + ' pck');
+            // $('#baggage_ex').val(data.baggage_ex + ' pck');
             $('#family_num').val(data.family.length);
             $('span[view="flight"]').html(data.flight);
             $('span[view="arrival"]').html(data.arrival);
@@ -45,14 +71,44 @@
             var number = 1;
             $.each(data.goods, function(index, value) {
                 var row = '<tr>\
-                    <th scope="row">' + number + '</th>\
-                    <td>'+value.description+'</td>\
-                    <td>'+value.quantity+'</td>\
-                    <td>'+value.value+'</td>\
+                    <th class="text-center" scope="row">' + number + '</th>\
+                    <td class="text-center">'+value.description+'</td>\
+                    <td class="text-center">'+value.quantity+'</td>\
+                    <td class="text-center">'+value.value+'</td>\
                 </tr>';
                 theBody.append(row);
                 number++;
             });
+            // set zone
+            if (data.zone == '1') {
+                // set header
+                $('.modal-header').removeClass('bg-success');
+                $('.modal-header').addClass('bg-danger');
+
+                $('[view="detail-zone"]').removeClass('bg-success');
+                $('[view="detail-zone"]').addClass('bg-danger');
+                $('[view="detail-zone-text"]').html('MERAH');
+
+                // intersect
+                $('[view="detail-change-zone"]').removeClass('bg-danger');
+                $('[view="detail-change-zone"]').addClass('bg-secondary');
+            } else {
+                // set header
+                $('.modal-header').removeClass('bg-danger');
+                $('.modal-header').addClass('bg-success');  
+
+                $('[view="detail-zone"]').removeClass('bg-danger');
+                $('[view="detail-zone"]').addClass('bg-success');
+                $('[view="detail-zone-text"]').html('HIJAU');
+
+                $('[view="detail-change-zone"]').addClass('bg-danger');
+                $('[view="detail-change-zone"]').removeClass('bg-secondary');
+                
+                $('[view="detail-change-zone"]').on('click', function(){
+                    Ecd.changeZone(data.personalID);
+                });
+            }
+
             $('#detailModal').modal('show');
 
             // family data
@@ -61,17 +117,30 @@
             var number = 1;
             $.each(data.family, function(index, value) {
                 var row = '<tr>\
-                    <th scope="row">' + number + '</th>\
-                    <td>'+value.full_name+'</td>\
-                    <td>'+value.passport_number+'</td>\
+                    <th class="text-center" scope="row">' + number + '</th>\
+                    <td class="text-center">'+value.full_name+'</td>\
+                    <td class="text-center">'+value.date_of_birth+'</td>\
+                    <td class="text-center">'+value.passport_number+'</td>\
                 </tr>';
                 familyBody.append(row);
                 number++;
             });
 
+            // set declare
+            var declareTable = $('table[name="tableDeclare"]').empty();
+            var number = 1;
+            $.each(data.declare, function(index, value) {
+                var row = '<tr>\
+                    <td style="vertical-align: top;">' + number + '.</td>\
+                    <td>' + value.content + '</td>\
+                </tr>';
+                declareTable.append(row);
+                number++;
+            });
+            /*
             $('button[name="btnPersonalDetail"]').on('click', function(){
                 $('#personalDetailModal').modal('show');
-            });
+            });*/
         },
         renderSearch: function(data) {
             var result = $('[name="searchResult"]');
@@ -108,7 +177,7 @@
                     row.find('[view="zone"]').addClass('bg-danger text-white text-center');
                 }
                 row.appendTo(rows);
-                // row.on('click', Ecd.getDetail);
+                row.on('click', Ecd.getDetail);
                 theNumber++;
             });
             
