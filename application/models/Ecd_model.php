@@ -113,7 +113,7 @@ class Ecd_model extends CI_Model {
     public function get_detail($val, $rao=FALSE) {
         $result = array();
         $this->db->select('A.*, B.name AS nationality');
-        $this->db->join('countries B', 'B.id = A.nationality');
+        $this->db->join('en_countries B', 'B.id = A.nationality');
         
         if ($rao) {
             $this->db->where('A.qr_code', $val['qrcode']);
