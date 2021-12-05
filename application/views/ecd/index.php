@@ -146,7 +146,7 @@
                                                 <table class="table table-bordered table-striped">
                                                     <thead>
                                                         <tr class="text-center">
-                                                            <th>#</th>
+                                                            <th>No</th>
                                                             <th>Nama Penumpang</th>
                                                             <th>Paspor</th>
                                                             <th>Tgl Lahir</th>
@@ -255,7 +255,7 @@
                                 <table name="familyTable" class="table table-bordered table-sm">
                                     <thead>
                                         <tr>
-                                            <th class="text-center" scope="col">#</th>
+                                            <th class="text-center" scope="col">No</th>
                                             <th class="text-center" scope="col">Nama</th>
                                             <th class="text-center" scope="col">Tgl Lahir</th>
                                             <th class="text-center" scope="col">Paspor</th>
@@ -285,7 +285,7 @@
                                 <table name="detail_goods" class="table table-bordered table-sm">
                                     <thead>
                                         <tr>
-                                            <th class="text-center" scope="col">#</th>
+                                            <th class="text-center" scope="col">No</th>
                                             <th class="text-center" scope="col">Uraian Barang</th>
                                             <th class="text-center" scope="col">Jumlah</th>
                                             <th class="text-center" scope="col">Nilai</th>
@@ -298,7 +298,7 @@
                                 <table name="historyTable" class="table table-bordered table-sm">
                                     <thead>
                                         <tr>
-                                            <th class="text-center" scope="col">#</th>
+                                            <th class="text-center" scope="col">No</th>
                                             <th class="text-center" scope="col">Jenis Dok</th>
                                             <th class="text-center" scope="col">Tanggal Dok</th>
                                             <th class="text-center" scope="col">Barang</th>

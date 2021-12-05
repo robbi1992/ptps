@@ -107,7 +107,7 @@
                                                 <table name="familyTable" class="table table-bordered table-sm">
                                                     <thead>
                                                         <tr>
-                                                            <th class="text-center" scope="col">#</th>
+                                                            <th class="text-center" scope="col">No</th>
                                                             <th class="text-center" scope="col">Nama</th>
                                                             <th class="text-center" scope="col">Tgl Lahir</th>
                                                             <th class="text-center" scope="col">Paspor</th>
@@ -140,7 +140,7 @@
                                                 <table name="detail_goods" class="table table-bordered table-sm">
                                                     <thead>
                                                         <tr>
-                                                            <th class="text-center" scope="col">#</th>
+                                                            <th class="text-center" scope="col">No</th>
                                                             <th class="text-center" scope="col">Uraian Barang</th>
                                                             <th class="text-center" scope="col">Jumlah</th>
                                                             <th class="text-center" scope="col">Nilai</th>
@@ -153,7 +153,7 @@
                                                 <table name="historyTable" class="table table-bordered table-sm">
                                                     <thead>
                                                         <tr>
-                                                            <th class="text-center" scope="col">#</th>
+                                                            <th class="text-center" scope="col">No</th>
                                                             <th class="text-center" scope="col">Jenis Dok</th>
                                                             <th class="text-center" scope="col">Tanggal Dok</th>
                                                             <th class="text-center" scope="col">Barang</th>
@@ -256,7 +256,7 @@
                         <table name="familyTable" class="table table-striped table-sm table-dark">
                             <thead>
                                 <tr>
-                                    <th scope="col">#</th>
+                                    <th scope="col">No</th>
                                     <th scope="col">Nama</th>
                                     <th scope="col">Nomor Paspor</th>
                                 </tr>
