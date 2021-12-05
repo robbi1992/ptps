@@ -211,6 +211,16 @@
             });
         },
         init: function() {
+            //nav function
+            $('[name="next"]').on('click', function(){
+                Ecd.params.page = Ecd.params.page + 1;
+                Ecd.doSearch();
+            });
+            $('[name="prev"]').on('click', function(){
+                Ecd.params.page = Ecd.params.page - 1;
+                Ecd.doSearch();
+            });
+
             $('.bc-date').datepicker({
                 todayHighlight: true,
                 orientation: "bottom left",

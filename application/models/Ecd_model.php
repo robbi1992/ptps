@@ -23,7 +23,7 @@ class Ecd_model extends CI_Model {
         $this->db->order_by('A.created_at', 'DESC');
         // set for pagination
         // limit +1 for next page indicator
-        $limit = 20;
+        $limit = 10;
         $offset = ($params['page'] - 1) * $limit;
 
         $this->db->limit($limit + 1);
