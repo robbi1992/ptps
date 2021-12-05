@@ -85,7 +85,8 @@ class Ecd_model extends CI_Model {
                 'id' => $val['id'],
                 'description' => $val['description'],
                 'quantity' => $val['quantity'],
-                'value' => setIDR($val['value'])
+                'value' => setIDR($val['value']),
+                'currency' => $val['currency']
             );
         }
 

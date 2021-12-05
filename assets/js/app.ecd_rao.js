@@ -46,7 +46,7 @@
                     <th class="text-center" scope="row">' + number + '</th>\
                     <td class="text-center">'+value.description+'</td>\
                     <td class="text-center">'+value.quantity+'</td>\
-                    <td class="text-center">'+value.value+'</td>\
+                    <td class="text-center">'+value.value+ ' ' + value.currency + '</td>\
                 </tr>';
                 theBody.append(row);
                 number++;
