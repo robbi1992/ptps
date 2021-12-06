@@ -77,10 +77,11 @@ class Import_model extends CI_Model {
                 ->or_like('A.name', $params['docNumber'])
                 ->group_end();
         }
+        $this->db->order_by('A.id', 'DESC');
 
         // set for pagination
         // limit +1 for next page indicator
-        $limit = 10;
+        $limit = 20;
         $offset = ($params['page'] - 1) * $limit;
 
         $this->db->limit($limit + 1);

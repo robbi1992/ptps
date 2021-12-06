@@ -20,10 +20,10 @@ class Ecd_model extends CI_Model {
             $this->db->like('A.flight_number', $params['flightNumber']);
         }
 
-        $this->db->order_by('A.created_at', 'DESC');
+        $this->db->order_by('A.id', 'DESC');
         // set for pagination
         // limit +1 for next page indicator
-        $limit = 10;
+        $limit = 20;
         $offset = ($params['page'] - 1) * $limit;
 
         $this->db->limit($limit + 1);

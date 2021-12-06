@@ -40,6 +40,7 @@ class Valas_model extends CI_Model {
 
         // data not deleted
         $this->db->where('A.is_deleted', '0');
+        $this->db->order_by('A.id', 'DESC');
         // parameters search 
         // unconment if we know where the arrival date come
         
@@ -62,7 +63,7 @@ class Valas_model extends CI_Model {
         
         // set for pagination
         // limit +1 for next page indicator
-        $limit = 10;
+        $limit = 20;
         $offset = ($params['page'] - 1) * $limit;
 
         $this->db->limit($limit + 1);
