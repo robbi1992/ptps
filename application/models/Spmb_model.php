@@ -67,7 +67,9 @@ class Spmb_model extends CI_Model {
 		}
 		// $data = $this->db->query("SELECT * FROM spmb_header");
 		$this->db->limit($limit, $offset);
+		$this->db->order_by('id', 'DESC');
 		$data = $this->db->get('spmb_header')->result_array();
+		
 		$return = array();
 
 		foreach($data as $val) {
