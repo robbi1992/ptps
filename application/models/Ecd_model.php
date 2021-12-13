@@ -182,4 +182,63 @@ class Ecd_model extends CI_Model {
         return $this->db->update('ecd_personal');
     }
  
+    public function get_reference($params) {
+        $this->db->select('A.id AS ecdID, A.nama, A.no_paspor, A.tgl_lahir,  A.jns_dok_hist, A.no_dok_hist,
+            A.tgl_dok_hist
+        ');
+        $this->db->from('reff_atensi_merah_header A');
+
+        // search parameter
+        if (!empty($params['dateFrom'])) {
+            $this->db->where('A.tgl_dok_hist >=', $params['dateFrom']);
+        }
+        if (!empty($params['dateUntil'])) {
+            $this->db->where('A.tgl_dok_hist <=', $params['dateUntil']);
+        }
+        if (!empty($params['flightNumber'])) {
+            // search by doc number / passenger name or origin country
+            $this->db->group_start()
+                ->like('A.nama', $params['flightNumber'])
+                ->or_like('A.no_paspor', $params['flightNumber'])
+                ->or_like('A.no_dok_hist', $params['flightNumber'])
+            ->group_end();
+            // $this->db->like('A.flight_number', $params['flightNumber']);
+        }
+
+        $this->db->order_by('A.id', 'DESC');
+        // set for pagination
+        // limit +1 for next page indicator
+        $limit = 20;
+        $offset = ($params['page'] - 1) * $limit;
+
+        $this->db->limit($limit + 1);
+        $this->db->offset($offset);
+
+        $result = array(
+			'rows' => array(),
+			'nav' => array(
+				'page' => $params['page'],
+				'last' => TRUE
+			)
+        );
+
+        foreach ($this->db->get()->result_array() as $index => $row) {
+            if ($index < $limit) {
+                $result['rows'][$index] = array(
+                    'header' => $row['ecdID'],
+                    'name' => $row['nama'],
+                    'birth' => date('d/m/Y', strtotime($row['tgl_lahir'])),
+                    'passport' => $row['no_paspor'],
+                    'docType' => $row['jns_dok_hist'],
+                    'docNumber' => $row['no_dok_hist'],
+                    'docDate' => date('d/m/Y', strtotime($row['tgl_dok_hist']))
+                );
+            } else {
+                $result['nav']['last'] = FALSE;
+				break;
+            }
+        }
+
+        return $result;
+    }
 } 
