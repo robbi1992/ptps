@@ -72,7 +72,7 @@
                                     <!-- end card header -->
                                     <div name="bc-data" class="card-body d-none">
                                         <div class="row">
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <h4>Data Personal</h4><hr />
                                                 <div class="mb-3">
                                                     <label for="fullName" class="form-label">Nama Lengkap</label>
@@ -117,7 +117,7 @@
                                                 </table>
                                             </div>
                                             <!-- end col md 3 -->
-                                            <div class="col-md-5">
+                                            <div class="col-md-6">
                                                 <h4>Jumlah Bagasi</h4><hr />
                                                 <div class="row">
                                                     <div class="col-md-6">bersamaan <b><span view="baggage_in"></span> Pkg</b></div>

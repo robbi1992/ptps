@@ -113,6 +113,7 @@ class Ecd_model extends CI_Model {
 
     public function get_detail($val, $rao=FALSE) {
         $result = array();
+        $data = array();
         $this->db->select('A.*, B.name AS nationality');
         $this->db->join('en_countries B', 'B.id = A.nationality');
         
@@ -123,6 +124,26 @@ class Ecd_model extends CI_Model {
         }
         
         $data = $this->db->get('ecd_personal A')->row_array();
+
+        // get history data
+        $this->db->select('header_reff_id');
+        $this->db->from('ecd_reff_personal');
+        $this->db->where('personal_id', $data['id']);
+        $reff = $this->db->get()->result_array();
+        $reff_data = array();
+        $reff_id = array();
+        foreach ($reff as $val) {
+            $reff_id[] = $val['header_reff_id'];
+        }
+        $reff_data = array();
+        if (count($reff) > 0) {
+            $this->db->select('A.jumlah_barang, A.uraian_barang, A.satuan_barang, A.total_pungutan, B.jns_dok_hist, B.tgl_dok_hist, B.no_dok_hist');
+            $this->db->from('reff_atensi_merah_barang A');
+            $this->db->join('reff_atensi_merah_header B', 'A.header_id = B.id');
+            $this->db->where_in('header_id', $reff_id);
+            $reff_data = $this->db->get()->result_array();
+        }
+        // print_r($reff_data); exit();
         // goods
         $goods = $this->get_goods($data['id']);
         // get declare
@@ -148,7 +169,8 @@ class Ecd_model extends CI_Model {
             'zone' => $data['zone'],
             'goods' => $goods,
             'family' => $fams,
-            'declare' => $declare
+            'declare' => $declare,
+            'history' => $reff_data
         );
         
         return $result;

@@ -226,7 +226,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="mb-3">
                                     <label for="fullName" class="form-label">Nama Lengkap</label>
                                     <input type="text" class="form-control" id="fullName" name="fullName" readonly />
@@ -270,7 +270,7 @@
                                 -->
                             </div>
                             <!-- end col md 3 -->
-                            <div class="col-md-5">
+                            <div class="col-md-6">
                                 <h4>Jumlah Bagasi</h4><hr />
                                 <div class="row">
                                     <div class="col-md-6">bersamaan <b><span view="baggage_in"></span> Pkg</b></div>

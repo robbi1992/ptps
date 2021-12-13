@@ -24,6 +24,10 @@
                 alert('terjadi kesalahan, coba lagi nanti..');
             });
         },
+        setIdr: function(value) {
+            var output = value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+            return output;
+        },
         renderDetail: function(data) {
             $('#fullName').val(data.name);
             $('#birth').val(data.birth);
@@ -52,6 +56,21 @@
                 number++;
             });
 
+            // history table
+            var theTable = $('table[name="historyTable"]');
+            var theBody = theTable.find('tbody').empty();
+            // var number = 1;
+            $.each(data.history, function(index, value) {
+                var row = '<tr>\
+                    <th class="text-center" scope="row">' + value.no_dok_hist + '</th>\
+                    <td class="text-center">'+value.jns_dok_hist+'</td>\
+                    <td class="text-center">'+value.tgl_dok_hist+'</td>\
+                    <td class="text-center">'+value.jumlah_barang+ ' ' + value.satuan_barang + ' ' + value.uraian_barang +'</td>\
+                    <td class="text-center">'+Rao.setIdr(value.total_pungutan)+'</td>\
+                </tr>';
+                theBody.append(row);
+                number++;
+            });
             // set zone
             if (data.zone == '1') {
                 // set header
