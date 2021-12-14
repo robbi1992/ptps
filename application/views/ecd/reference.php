@@ -191,6 +191,44 @@
             <!-- end page -->
         </div>
 
+        <!-- modal detail -->
+        <div class="modal fade" id="detailModal" name="detailModal" data-backdrop="static" style="overflow: scroll !important;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-success">
+                        <h4 class="modal-title">
+                        <span class="card-icon text-white">
+                            <img style="width: 40px;" src="assets/media/logos/bc_logo.png" />
+                            History Data Barang
+                        </span>
+                        </h4>
+                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <h4>Detail Barang</h4><hr />
+                        <table name="detail_goods" class="table table-bordered table-sm">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" scope="col">No</th>
+                                    <th class="text-center" scope="col">Uraian Barang</th>
+                                    <th class="text-center" scope="col">Jumlah Barang</th>
+                                    <th class="text-center" scope="col">Satuan Barang</th>
+                                    <th class="text-center" scope="col">Total Pungutan (Rp)</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Tutup</button>
+                    </div>
+                </div>
+                <!-- end modal content -->
+            </div>
+            <!-- end modal dialog -->
+        </div>
+        <!-- end modal detail -->
+
 
         <?php $this->load->view('aside/user');?>    
         <?php $this->load->view('aside/script');?>

@@ -44,124 +44,34 @@
             };
 
             $.ajax({
-                url: '/ecd/get_detail',
+                url: '/reference/get_detail',
                 type: 'post',
                 dataType: 'json',
                 data: JSON.stringify(params)
             }).done(function(result) {
-                Ecd.renderDetail(result.data);
+                Ecd.renderDetail(result.searchResult);
             }).fail(function() {
                 alert('terjadi kesalahan, coba lagi nanti..');
             });
         },
         renderDetail: function(data) {
-            $('#fullName').val(data.name);
-            $('#birth').val(data.birth);
-            $('#occupation').val(data.occupation);
-            $('#nationality').val(data.nationality);
-            $('#passport').val(data.passport);
-            $('#address').val(data.address);
-            $('#arrival').val(data.arrival);
-            $('span[view="baggage_in"]').html(data.baggage_in);
-            $('span[view="baggage_ex"]').html(data.baggage_ex);
-            // $('#baggage_in').val(data.baggage_in + ' pck');
-            // $('#baggage_ex').val(data.baggage_ex + ' pck');
-            $('#family_num').val(data.family.length);
-            $('span[view="flight"]').html(data.flight);
-            $('span[view="arrival"]').html(data.arrival);
             // table of goods
             var theTable = $('table[name="detail_goods"]');
             var theBody = theTable.find('tbody').empty();
             var number = 1;
-            $.each(data.goods, function(index, value) {
+            $.each(data, function(index, value) {
                 var row = '<tr>\
                     <th class="text-center" scope="row">' + number + '</th>\
-                    <td class="text-center">'+value.description+'</td>\
-                    <td class="text-center">'+value.quantity+'</td>\
-                    <td class="text-center">'+value.value+ ' ' + value.currency + '</td>\
-                </tr>';
-                theBody.append(row);
-                number++;
-            });
-
-            // history table
-            var theTable = $('table[name="historyTable"]');
-            var theBody = theTable.find('tbody').empty();
-            // var number = 1;
-            $.each(data.history, function(index, value) {
-                var row = '<tr>\
-                    <th class="text-center" scope="row">' + value.no_dok_hist + '</th>\
-                    <td class="text-center">'+value.jns_dok_hist+'</td>\
-                    <td class="text-center">'+value.tgl_dok_hist+'</td>\
-                    <td class="text-center">'+value.jumlah_barang+ ' ' + value.satuan_barang + ' ' + value.uraian_barang +'</td>\
+                    <td class="text-center">'+value.uraian_barang+'</td>\
+                    <td class="text-center">'+value.jumlah_barang+'</td>\
+                    <td class="text-center">'+value.satuan_barang+'</td>\
                     <td class="text-center">'+Ecd.setIdr(value.total_pungutan)+'</td>\
                 </tr>';
                 theBody.append(row);
                 number++;
             });
 
-            // set zone
-            if (data.zone == '1') {
-                // set header
-                $('.modal-header').removeClass('bg-success');
-                $('.modal-header').addClass('bg-danger');
-
-                $('[view="detail-zone"]').removeClass('bg-success');
-                $('[view="detail-zone"]').addClass('bg-danger');
-                $('[view="detail-zone-text"]').html('MERAH');
-
-                // intersect
-                $('[view="detail-change-zone"]').removeClass('bg-danger');
-                $('[view="detail-change-zone"]').addClass('bg-secondary');
-            } else {
-                // set header
-                $('.modal-header').removeClass('bg-danger');
-                $('.modal-header').addClass('bg-success');  
-
-                $('[view="detail-zone"]').removeClass('bg-danger');
-                $('[view="detail-zone"]').addClass('bg-success');
-                $('[view="detail-zone-text"]').html('HIJAU');
-
-                $('[view="detail-change-zone"]').addClass('bg-danger');
-                $('[view="detail-change-zone"]').removeClass('bg-secondary');
-                
-                $('[view="detail-change-zone"]').on('click', function(){
-                    Ecd.changeZone(data.personalID);
-                });
-            }
-
             $('#detailModal').modal('show');
-
-            // family data
-            var familyTable = $('table[name="familyTable"]');
-            var familyBody = familyTable.find('tbody').empty();
-            var number = 1;
-            $.each(data.family, function(index, value) {
-                var row = '<tr>\
-                    <th class="text-center" scope="row">' + number + '</th>\
-                    <td class="text-center">'+value.full_name+'</td>\
-                    <td class="text-center">'+value.date_of_birth+'</td>\
-                    <td class="text-center">'+value.passport_number+'</td>\
-                </tr>';
-                familyBody.append(row);
-                number++;
-            });
-
-            // set declare
-            var declareTable = $('table[name="tableDeclare"]').empty();
-            var number = 1;
-            $.each(data.declare, function(index, value) {
-                var row = '<tr>\
-                    <td style="vertical-align: top;">' + number + '.</td>\
-                    <td>' + value.content + '</td>\
-                </tr>';
-                declareTable.append(row);
-                number++;
-            });
-            /*
-            $('button[name="btnPersonalDetail"]').on('click', function(){
-                $('#personalDetailModal').modal('show');
-            });*/
         },
         renderSearch: function(data) {
             var result = $('[name="searchResult"]');

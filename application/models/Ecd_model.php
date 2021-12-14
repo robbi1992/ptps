@@ -181,7 +181,12 @@ class Ecd_model extends CI_Model {
         $this->db->where('id', $params['personal']);
         return $this->db->update('ecd_personal');
     }
- 
+    
+    public function get_reference_goods($params) {
+        $this->db->select('uraian_barang, jumlah_barang, satuan_barang, total_pungutan');
+        $this->db->where('header_id', $params['headerID']);
+        return $this->db->get('reff_atensi_merah_barang')->result_array();
+    }
     public function get_reference($params) {
         $this->db->select('A.id AS ecdID, A.nama, A.no_paspor, A.tgl_lahir,  A.jns_dok_hist, A.no_dok_hist,
             A.tgl_dok_hist

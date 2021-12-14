@@ -15,6 +15,15 @@ class Reference extends MY_Controller {
 		$this->page->view('ecd/reference', $data);
 	}
 
+	public function get_detail() {
+        $params = json_decode($this->input->raw_input_stream, TRUE);
+
+		$data['searchResult'] =  $this->ecd_model->get_reference_goods($params);
+		$this->output
+			->set_content_type('application/json')
+			->set_output(json_encode($data));
+    }
+
 	public function search() {
         $params = json_decode($this->input->raw_input_stream, TRUE);
 
