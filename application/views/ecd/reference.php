@@ -95,6 +95,11 @@
                                             <h3 class="card-label">Electronic CD - Tabel Referensi</h3>
                                         </div>
                                         <div class="card-toolbar">
+                                            <!--begin::Button-->
+                                            <button class="btn btn-sm btn-primary" id="add_atensi">
+                                                <i class="fa fa-plus"></i> Tambah Atensi
+                                            </button>
+                                            <!--end::Button-->
                                         </div>
                                     </div>
                                     <!-- end card header -->
@@ -229,6 +234,77 @@
         </div>
         <!-- end modal detail -->
 
+        <!-- add new -->
+        <div class="modal fade" id="addModal" name="addModal" data-backdrop="static" style="overflow: scroll !important;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-success">
+                        <h4 class="modal-title">
+                        <span class="card-icon text-white">
+                            <img style="width: 40px;" src="assets/media/logos/bc_logo.png" />
+                            Tambah Atensi
+                        </span>
+                        </h4>
+                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">&times;</button>
+                    </div>
+                    <form name="atensiForm">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="newName">Nama Penumpang</label>
+                            <input type="text" name="newName" class="form-control" id="newName" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="newPaspor">Paspor</label>
+                            <input type="text" name="newPaspor" class="form-control" id="newPaspor" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="newBirth">Tanggal Lahir</label>
+                            <input type="text" name="newBirth" class="form-control bc-date" id="newBirth" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="newDocNumber">No Dokumen</label>
+                            <input type="text" name="newDocNumber" class="form-control" id="newDocNumber" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="newDocType">Jenis Dokumen</label>
+                            <select name="newDocType" id="newDocType" class="form-control selectpicker" data-live-search="true" required>
+                                <option value="">-- Pilih --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="newDocDate">Tanggal Dokumen</label>
+                            <input type="text" name="newDocDate" class="form-control bc-date" id="newDocDate" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="newDesc">Uraian atensi</label>
+                            <textarea type="text" name="newDesc" class="form-control" id="newDesc" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="newQty">Jumlah Barang</label>
+                            <input type="text" name="newQty" class="form-control bc-date" id="newQty" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="newType">Satuan</label>
+                            <select name="newType" id="newType" class="form-control selectpicker" data-live-search="true" required>
+                                <option value="">-- Pilih --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="newTotal">Total Pungutan</label>
+                            <input type="text" name="newTotal" class="form-control" id="newTotal" required />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-light-primary font-weight-bold">Simpan</button>
+                    </div>
+                </form>
+                </div>
+                <!-- end modal content -->
+            </div>
+            <!-- end modal dialog -->
+        </div>
+        <!-- end add new -->
 
         <?php $this->load->view('aside/user');?>    
         <?php $this->load->view('aside/script');?>

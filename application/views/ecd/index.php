@@ -143,26 +143,38 @@
                                         </form>
                                         <div class="d-none" name="searchResult">
                                             <div class="card">
-                                                <table class="table table-bordered table-striped">
+                                                <table class="table table-bordered table-striped table-sm">
                                                     <thead>
                                                         <tr class="text-center">
-                                                            <th>No</th>
-                                                            <th>Nama Penumpang</th>
-                                                            <th>Paspor</th>
-                                                            <th>Tgl Lahir</th>
-                                                            <th>Kode Penerbangan</th>
-                                                            <th>Tanggal Pesawat</th>
-                                                            <th>Jalur</th>
+                                                            <th style="vertical-align:middle;" rowspan="2">No</th>
+                                                            <th style="vertical-align:middle;" rowspan="2">Nama Penumpang</th>
+                                                            <th style="vertical-align:middle;" rowspan="2">Paspor</th>
+                                                            <th style="vertical-align:middle;" rowspan="2">Tgl Lahir</th>
+                                                            <th style="vertical-align:middle;" rowspan="2">Kode Penerbangan</th>
+                                                            <th style="vertical-align:middle;" rowspan="2">Tanggal Pesawat</th>
+                                                            <th style="vertical-align:middle;" rowspan="2">Jalur</th>
+                                                            <th style="vertical-align:middle;" colspan="2">Status</th>
+                                                            <!-- <th>Aksi</th> -->
+                                                        </tr>
+                                                        <tr class="text-center">
+                                                            <th>Scan</th>
+                                                            <th>Petugas</th>
+                                                            <th>Waktu</th>
+                                                            <!-- <th>SPPB</th> -->
                                                             <!-- <th>Aksi</th> -->
                                                         </tr>
                                                         <tr class="d-none" template="searchResultRow">
-                                                            <td view="number"></td>
-                                                            <td view="name"></td>
-                                                            <td view="passport"></td>
-                                                            <td view="birthDate"></td>
-                                                            <td view="flightNumber"></td>
-                                                            <td view="arrival"></td>
-                                                            <td view="zone"></td>
+                                                            <td class="text-center" view="number"></td>
+                                                            <td class="text-center" view="name"></td>
+                                                            <td class="text-center" view="passport"></td>
+                                                            <td class="text-center" view="birthDate"></td>
+                                                            <td class="text-center" view="flightNumber"></td>
+                                                            <td class="text-center" view="arrival"></td>
+                                                            <td class="text-center" view="zone"></td>
+                                                            <td class="text-center" view="scan"></td>
+                                                            <td class="text-center" view="scan_by"></td>
+                                                            <td class="text-center" view="scan_time"></td>
+                                                            <!-- <td class="text-center" view="sppb"></td> -->
                                                             <!-- 
                                                             <td>
                                                                 <div class="dropdown dropdown-inline">

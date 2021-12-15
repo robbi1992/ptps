@@ -181,6 +181,15 @@
                 row.find('[view="passport"]').html(value.passport);
                 row.find('[view="flightNumber"]').html(value.flight);
                 row.find('[view="arrival"]').html(value.arrival_date);
+                // set scan status
+                if (value.scan == '1') {
+                    var scanStatus = 'Yes';
+                } else {
+                    var scanStatus = 'No';
+                }
+                row.find('[view="scan"]').html(scanStatus);
+                row.find('[view="scan_by"]').html(value.scan_by);
+                row.find('[view="scan_time"]').html(value.scan_time);
                 
                 // set status
                 var status = 'Tidak';

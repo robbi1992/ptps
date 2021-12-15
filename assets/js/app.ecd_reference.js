@@ -11,30 +11,6 @@
             var output = value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
             return output;
         },
-        changeZone: function(personalID){
-            var params = {
-                personal: personalID
-            };
-            $.ajax({
-                url: '/rao/change_zone',
-                type: 'post',
-                dataType: 'json',
-                data: JSON.stringify(params)
-            }).done(function(result) {
-                $('[view="detail-change-zone"]').removeClass('bg-danger');
-                $('[view="detail-change-zone"]').addClass('bg-secondary');
-
-                // change zone layout
-                $('[view="detail-zone"]').removeClass('bg-success');
-                $('[view="detail-zone"]').addClass('bg-danger');
-                $('[view="detail-zone-text"]').html('MERAH');
-                // set header
-                $('.modal-header').removeClass('bg-success');
-                $('.modal-header').addClass('bg-danger');
-            }).fail(function() {
-                alert('terjadi kesalahan, coba lagi nanti..');
-            });
-        },
         getDetail: function() {
             var row = $(this).closest('tr'),
             data = row.attr('id');
@@ -131,6 +107,10 @@
             });
         },
         init: function() {
+            // add function
+            $('#add_atensi').on('click', function(){
+                $('#addModal').modal();
+            });
             //nav function
             $('[name="next"]').on('click', function(){
                 Ecd.params.page = Ecd.params.page + 1;
@@ -153,6 +133,10 @@
                 Ecd.params.flightNumber =  $(this).find('[name="flightNumber"]').val();
 
                 Ecd.doSearch();
+                return false;
+            });
+
+            $('form[name="atensiForm"]').on('submit', function() {
                 return false;
             });
 

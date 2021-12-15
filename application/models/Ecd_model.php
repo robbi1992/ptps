@@ -5,7 +5,7 @@ class Ecd_model extends CI_Model {
     // scan status 0 = no, 1 yes
     public function search($params) {
         $this->db->select('A.id AS ecdID, A.full_name, A.date_of_birth, A.passport_number,  A.flight_number, A.scan_status,
-            A.zone, A.arrival_date
+            A.zone, A.arrival_date, A.scan_by, A.scan_time
         ');
         $this->db->from('ecd_personal A');
 
@@ -39,6 +39,14 @@ class Ecd_model extends CI_Model {
 
         foreach ($this->db->get()->result_array() as $index => $row) {
             if ($index < $limit) {
+                // set indo time
+                $scan_time = '';
+                if (!empty($row['scan_time'])) {
+                    $scan_time_array = explode(' ', $row['scan_time']);
+                    // print_r($scan_time_array); exit();
+                    $scan_time = date('d/m/Y', strtotime($scan_time_array[0])) . ' ' .  $scan_time_array[1];
+                }             
+
                 $result['rows'][$index] = array(
                     'ecd' => $row['ecdID'],
                     'name' => $row['full_name'],
@@ -46,6 +54,8 @@ class Ecd_model extends CI_Model {
                     'passport' => $row['passport_number'],
                     'flight' => $row['flight_number'],
                     'scan' => $row['scan_status'],
+                    'scan_by' => $row['scan_by'],
+                    'scan_time' => $scan_time,
                     'zone' => $row['zone'],
                     'arrival_date' => date('d/m/Y', strtotime($row['arrival_date'])),
                 );
@@ -124,6 +134,16 @@ class Ecd_model extends CI_Model {
         }
         
         $data = $this->db->get('ecd_personal A')->row_array();
+        
+        // change status and officer
+        if ($rao) {
+            $this->db->set('scan_status', '1');
+            $this->db->set('scan_by', $_SESSION['users']['name']);
+            $this->db->set('scan_time', date('Y-m-d H:i:s'));
+            $this->db->where('qr_code', $val['qrcode']);
+            $this->db->update('ecd_personal');
+        }
+        // end change status and officer
 
         // get history data
         $this->db->select('header_reff_id');
