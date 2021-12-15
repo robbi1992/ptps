@@ -160,7 +160,7 @@
                                                             <th>Scan</th>
                                                             <th>Petugas</th>
                                                             <th>Waktu</th>
-                                                            <!-- <th>SPPB</th> -->
+                                                            <th>SPPB</th>
                                                             <!-- <th>Aksi</th> -->
                                                         </tr>
                                                         <tr class="d-none" template="searchResultRow">
@@ -174,7 +174,7 @@
                                                             <td class="text-center" view="scan"></td>
                                                             <td class="text-center" view="scan_by"></td>
                                                             <td class="text-center" view="scan_time"></td>
-                                                            <!-- <td class="text-center" view="sppb"></td> -->
+                                                            <td class="text-center" view="sppb"></td>
                                                             <!-- 
                                                             <td>
                                                                 <div class="dropdown dropdown-inline">

@@ -190,6 +190,16 @@
                 row.find('[view="scan"]').html(scanStatus);
                 row.find('[view="scan_by"]').html(value.scan_by);
                 row.find('[view="scan_time"]').html(value.scan_time);
+
+                if (value.sppb == '0') {
+                    row.find('[view="sppb"]').html('Hijau');
+                    row.find('[view="sppb"]').addClass('bg-success text-white text-center');
+                } else if(value.sppb == '1') {
+                    row.find('[view="sppb"]').html('Merah');
+                    row.find('[view="sppb"]').addClass('bg-danger text-white text-center');
+                } else {
+                    row.find('[view="sppb"]').html(value.sppb);
+                }
                 
                 // set status
                 var status = 'Tidak';

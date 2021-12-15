@@ -44,9 +44,9 @@ class Ecd_model extends CI_Model {
                 $sppb = '';
                 if ($row['scan_status'] == '1') {
                     if ($row['zone'] == '1') {
-                        $sppb = 'Merah';
+                        $sppb = '1';
                     } else {
-                        $sppb = 'Hijau';
+                        $sppb = '0';
                     }
                 }
 
@@ -65,6 +65,7 @@ class Ecd_model extends CI_Model {
                     'scan' => $row['scan_status'],
                     'scan_by' => $row['scan_by'],
                     'scan_time' => $scan_time,
+                    'sppb' => $sppb,
                     'zone' => $row['zone'],
                     'arrival_date' => date('d/m/Y', strtotime($row['arrival_date'])),
                 );
