@@ -41,6 +41,15 @@ class Ecd_model extends CI_Model {
             if ($index < $limit) {
                 // set indo time
                 $scan_time = '';
+                $sppb = '';
+                if ($row['scan_status'] == '1') {
+                    if ($row['zone'] == '1') {
+                        $sppb = 'Merah';
+                    } else {
+                        $sppb = 'Hijau';
+                    }
+                }
+
                 if (!empty($row['scan_time'])) {
                     $scan_time_array = explode(' ', $row['scan_time']);
                     // print_r($scan_time_array); exit();
