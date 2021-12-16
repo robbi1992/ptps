@@ -276,4 +276,36 @@ class Ecd_model extends CI_Model {
 
         return $result;
     }
+
+    public function save_reference($params) {
+        $return_status = TRUE;
+        $this->db->trans_start();
+        // header first
+        $this->db->set('nama', $params['name']);
+        $this->db->set('no_paspor', $params['passport']);
+        $this->db->set('tgl_lahir', $params['birt']);
+        $this->db->set('jns_dok_hist', $params['type']);
+        $this->db->set('no_dok_hist', $params['number']);
+        $this->db->set('tgl_dok_hist', $params['date']);
+        $save_header = $this->db->insert('reff_atensi_merah_header');
+
+        if ($save_header) {
+            $header_id = $this->db->insert_id();
+            // insert goods
+            $this->db->set('header_id', $header_id);
+            $this->db->set('uraian_barang', $params['desc']);
+            $this->db->set('jumlah_barang', $params['qty']);
+            $this->db->set('satuan_barang', $params['pckg']);
+            $this->db->set('total_pungutan', $params['total']);
+            $save_goods = $this->db->insert('reff_atensi_merah_barang');
+        }
+
+        $this->db->trans_complete();
+        if ($this->db->trans_status() === FALSE)
+		{
+			$return_status = FALSE;
+		}
+
+        return $return_status;
+    }
 } 

@@ -249,47 +249,64 @@
                     </div>
                     <form name="atensiForm">
                     <div class="modal-body">
-                        <div class="form-group">
+                        <div class="form-group mb-3">
                             <label for="newName">Nama Penumpang</label>
-                            <input type="text" name="newName" class="form-control" id="newName" required />
+                            <input placeholder="Nama Penumpang" type="text" name="newName" class="form-control" id="newName" required />
                         </div>
-                        <div class="form-group">
+                        <div class="form-group mb-3">
                             <label for="newPaspor">Paspor</label>
                             <input type="text" name="newPaspor" class="form-control" id="newPaspor" required />
                         </div>
-                        <div class="form-group">
+                        <div class="form-group mb-3">
                             <label for="newBirth">Tanggal Lahir</label>
                             <input type="text" name="newBirth" class="form-control bc-date" id="newBirth" required />
                         </div>
-                        <div class="form-group">
-                            <label for="newDocNumber">No Dokumen</label>
-                            <input type="text" name="newDocNumber" class="form-control" id="newDocNumber" required />
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group mb-3">
+                                    <label for="newDocNumber">No Dokumen</label>
+                                    <input type="text" name="newDocNumber" class="form-control" id="newDocNumber" required />
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group mb-3">
+                                    <label for="newDocType">Jenis Dokumen</label>
+                                    <select name="newDocType" id="newDocType" class="form-control" data-live-search="false" required>
+                                        <option value="CD">CD</option>
+                                        <option value="SBP">SBP</option>
+                                        <option value="SPPP">SPPP</option>
+                                        <option value="ST">ST</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="newDocType">Jenis Dokumen</label>
-                            <select name="newDocType" id="newDocType" class="form-control selectpicker" data-live-search="true" required>
-                                <option value="">-- Pilih --</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
+                        <div class="form-group mb-3">
                             <label for="newDocDate">Tanggal Dokumen</label>
                             <input type="text" name="newDocDate" class="form-control bc-date" id="newDocDate" required />
                         </div>
-                        <div class="form-group">
+                        <div class="form-group mb-3">
                             <label for="newDesc">Uraian atensi</label>
                             <textarea type="text" name="newDesc" class="form-control" id="newDesc" required></textarea>
                         </div>
-                        <div class="form-group">
-                            <label for="newQty">Jumlah Barang</label>
-                            <input type="text" name="newQty" class="form-control bc-date" id="newQty" required />
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group mb-3">
+                                    <label for="newQty">Jumlah Barang</label>
+                                    <input type="text" name="newQty" class="form-control" id="newQty" required />
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group mb-3">
+                                    <label for="newType">Satuan</label>
+                                    <select name="newType" id="newType" class="form-control" required>
+                                        <!-- <option value="">-- Pilih --</option> -->
+                                        <option value="PCE">PCE</option>
+                                        <option value="SET">SET</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="newType">Satuan</label>
-                            <select name="newType" id="newType" class="form-control selectpicker" data-live-search="true" required>
-                                <option value="">-- Pilih --</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
+                        <div class="form-group mb-3">
                             <label for="newTotal">Total Pungutan</label>
                             <input type="text" name="newTotal" class="form-control" id="newTotal" required />
                         </div>

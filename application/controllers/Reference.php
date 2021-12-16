@@ -15,6 +15,15 @@ class Reference extends MY_Controller {
 		$this->page->view('ecd/reference', $data);
 	}
 
+	public function create() {
+        $params = json_decode($this->input->raw_input_stream, TRUE);
+
+		$save =  $this->ecd_model->save_reference($params);
+		$this->output
+			->set_content_type('application/json')
+			->set_output(json_encode($save));
+    }
+
 	public function get_detail() {
         $params = json_decode($this->input->raw_input_stream, TRUE);
 

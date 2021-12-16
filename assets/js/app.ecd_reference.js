@@ -7,9 +7,41 @@
             flightNumber: '',
             limit: 20
         },
+        alphaNumericValidate: function(string) {
+            var regex = new RegExp("^[a-zA-Z0-9]+$");
+            // var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+            if (regex.test(string)) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        numericValidate: function(string) {
+            var regex = new RegExp("^[0-9]+$");
+            // var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+            if (regex.test(string)) {
+                return true;
+            } else {
+                return false;
+            }
+        },
         setIdr: function(value) {
             var output = value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
             return output;
+        },
+        saveData: function(data) {
+            $.ajax({
+                url: '/reference/create',
+                type: 'post',
+                dataType: 'json',
+                data: JSON.stringify(data)
+            }).done(function(result) {
+                alert('Data berhasil disimpan');
+                $('#addModal').modal('hide');
+                Ecd.doSearch();
+            }).fail(function() {
+                alert('terjadi kesalahan, coba lagi nanti..');
+            });
         },
         getDetail: function() {
             var row = $(this).closest('tr'),
@@ -109,6 +141,7 @@
         init: function() {
             // add function
             $('#add_atensi').on('click', function(){
+                $('form[name="atensiForm"]').find('input, textarea').val('');
                 $('#addModal').modal();
             });
             //nav function
@@ -137,6 +170,34 @@
             });
 
             $('form[name="atensiForm"]').on('submit', function() {
+                var name = $('#newName').val();
+                var birth = $('#newBirth').val();
+                var docNumber = $('#newDocNumber').val();
+                var docType = $('#newDocType').val();
+                var docDate = $('#newDocDate').val();
+                var desc = $('#newDesc').val();
+                var type = $('#newType').val();newType
+                var passport = $('#newPaspor').val();
+                var qty = $('#newQty').val();
+                var total = $('#newTotal').val();
+                
+                if (!Ecd.alphaNumericValidate(passport)) {
+                    alert('Isian hanya alpha numeric');
+                    $('#newPaspor').val('').focus();
+                } else if (!Ecd.numericValidate(qty)) {
+                    alert('Isian hanya numeric');
+                    $('#newQty').val('').focus();
+                } else if (!Ecd.numericValidate(total)) {
+                    alert('Isian hanya numeric');
+                    $('#newTotal').val('').focus();
+                }
+
+                var params = {
+                    name: name, birt: birth, number: docNumber, type: docType, date: docDate, desc: desc,
+                    pckg: type, passport: passport, qty: qty, total: total
+                };
+                // console.log(params);
+                Ecd.saveData(params);
                 return false;
             });
 
