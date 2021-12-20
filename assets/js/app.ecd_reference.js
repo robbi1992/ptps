@@ -141,7 +141,7 @@
         init: function() {
             // add function
             $('#add_atensi').on('click', function(){
-                $('form[name="atensiForm"]').find('input, textarea').val('');
+                $('form[name="atensiForm"]').find('#newPaspor, #newName, #newBirth, textarea').val('');
                 $('#addModal').modal();
             });
             //nav function
@@ -176,7 +176,7 @@
                 var docType = $('#newDocType').val();
                 var docDate = $('#newDocDate').val();
                 var desc = $('#newDesc').val();
-                var type = $('#newType').val();newType
+                var type = $('#newType').val();
                 var passport = $('#newPaspor').val();
                 var qty = $('#newQty').val();
                 var total = $('#newTotal').val();

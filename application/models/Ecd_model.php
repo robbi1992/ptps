@@ -280,12 +280,32 @@ class Ecd_model extends CI_Model {
     public function save_reference($params) {
         $return_status = TRUE;
         $this->db->trans_start();
+        // get last doc number
+        $this->db->select('MAX(number_increment) AS increment_number');
+        $this->db->where('year_increment', date('Y'));
+        $increment = $this->db->get('reff_atensi_merah_header')->row_array();
+        $increment_number = $increment['increment_number'];
+        // var_dump($increment_number); exit();
+        if ($increment_number === NULL) {
+            $increment_number = 1;
+        } else {
+            $increment_number++;
+        }
+
+        $docNumber = 'A' . $increment_number . '-' . date('Y');
+    
+        // var_dump($docNumber); exit();
+        // set increment
+        $this->db->set('number_increment', $increment_number);
+        $this->db->set('year_increment', date('Y'));
+
         // header first
         $this->db->set('nama', $params['name']);
         $this->db->set('no_paspor', $params['passport']);
         $this->db->set('tgl_lahir', $params['birt']);
         $this->db->set('jns_dok_hist', $params['type']);
-        $this->db->set('no_dok_hist', $params['number']);
+        $this->db->set('no_dok_hist', $docNumber);
+        // $this->db->set('no_dok_hist', $params['number']);
         $this->db->set('tgl_dok_hist', $params['date']);
         $save_header = $this->db->insert('reff_atensi_merah_header');
 

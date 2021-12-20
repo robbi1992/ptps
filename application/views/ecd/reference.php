@@ -265,24 +265,28 @@
                             <div class="col-6">
                                 <div class="form-group mb-3">
                                     <label for="newDocNumber">No Dokumen</label>
-                                    <input type="text" name="newDocNumber" class="form-control" id="newDocNumber" required />
+                                    <input type="text" name="newDocNumber" class="form-control" id="newDocNumber" value="Otomatis" readonly />
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group mb-3">
                                     <label for="newDocType">Jenis Dokumen</label>
-                                    <select name="newDocType" id="newDocType" class="form-control" data-live-search="false" required>
-                                        <option value="CD">CD</option>
-                                        <option value="SBP">SBP</option>
-                                        <option value="SPPP">SPPP</option>
-                                        <option value="ST">ST</option>
+                                    <select name="newDocType" id="newDocType" class="form-control selectpicker" data-live-search="false" required>
+                                        <option value="NPP">NPP</option>
+                                        <option value="HVG">HVG</option>
+                                        <option value="JASTIP">JASTIP</option>
+                                        <option value="TPPU">TPPU</option>
+                                        <option value="CITES">CITES</option>
+                                        <option value="TERORISME">TERORISME</option>
+                                        <option value="SENJATA API">SENJATA API</option>
+                                        <option value="LAINNYA">LAINNYA</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group mb-3">
                             <label for="newDocDate">Tanggal Dokumen</label>
-                            <input type="text" name="newDocDate" class="form-control bc-date" id="newDocDate" required />
+                            <input type="text" name="newDocDate" class="form-control" id="newDocDate" value="<?=date('Y-m-d');?>" readonly />
                         </div>
                         <div class="form-group mb-3">
                             <label for="newDesc">Uraian atensi</label>
@@ -290,25 +294,25 @@
                         </div>
                         <div class="row">
                             <div class="col-6">
-                                <div class="form-group mb-3">
+                                <div class="form-group mb-3 d-none">
                                     <label for="newQty">Jumlah Barang</label>
-                                    <input type="text" name="newQty" class="form-control" id="newQty" required />
+                                    <input type="text" name="newQty" class="form-control" id="newQty" value="0" />
                                 </div>
                             </div>
                             <div class="col-6">
-                                <div class="form-group mb-3">
+                                <div class="form-group mb-3 d-none">
                                     <label for="newType">Satuan</label>
-                                    <select name="newType" id="newType" class="form-control" required>
-                                        <!-- <option value="">-- Pilih --</option> -->
+                                    <select name="newType" id="newType" class="form-control">
+                                        <option value="">-- Pilih --</option>
                                         <option value="PCE">PCE</option>
                                         <option value="SET">SET</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-3 d-none">
                             <label for="newTotal">Total Pungutan</label>
-                            <input type="text" name="newTotal" class="form-control" id="newTotal" required />
+                            <input type="text" name="newTotal" class="form-control" id="newTotal" value="0" />
                         </div>
                     </div>
                     <div class="modal-footer">
