@@ -21,6 +21,7 @@
         <link href="<?=base_url('assets/css/themes/layout/header/menu/light.css'); ?>" rel="stylesheet" type="text/css" />
         <link href="<?=base_url('assets/css/themes/layout/brand/dark.css'); ?>" rel="stylesheet" type="text/css" />
         <link href="<?=base_url('assets/css/themes/layout/aside/dark.css'); ?>" rel="stylesheet" type="text/css" />
+        <link href="<?=base_url('assets/css/bc-style.css'); ?>" rel="stylesheet" type="text/css" />
         <!--end::Layout Themes-->
         <link rel="shortcut icon" href="<?=base_url('assets/media/logos/bc_logo.png')?>" />
     </head>

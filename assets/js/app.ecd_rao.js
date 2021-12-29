@@ -10,16 +10,16 @@
                 dataType: 'json',
                 data: JSON.stringify(params)
             }).done(function(result) {
-                $('[view="detail-change-zone"]').removeClass('bg-danger');
+                $('[view="detail-change-zone"]').removeClass('bc-bg-red');
                 $('[view="detail-change-zone"]').addClass('bg-secondary');
 
                 // change zone layout
-                $('[view="detail-zone"]').removeClass('bg-success');
-                $('[view="detail-zone"]').addClass('bg-danger');
+                $('[view="detail-zone"]').removeClass('bc-bg-green');
+                $('[view="detail-zone"]').addClass('bc-bg-red');
                 $('[view="detail-zone-text"]').html('MERAH');
                 // set header
-                $('.card-header').removeClass('bg-success');
-                $('.card-header').addClass('bg-danger');
+                $('.card-header').removeClass('bc-bg-green');
+                $('.card-header').addClass('bc-bg-red');
             }).fail(function() {
                 alert('terjadi kesalahan, coba lagi nanti..');
             });
@@ -74,26 +74,26 @@
             // set zone
             if (data.zone == '1') {
                 // set header
-                $('.card-header').removeClass('bg-success');
-                $('.card-header').addClass('bg-danger');
+                $('.card-header').removeClass('bc-bg-green');
+                $('.card-header').addClass('bc-bg-red');
 
-                $('[view="detail-zone"]').removeClass('bg-success');
-                $('[view="detail-zone"]').addClass('bg-danger');
+                $('[view="detail-zone"]').removeClass('bc-bg-green');
+                $('[view="detail-zone"]').addClass('bc-bg-red');
                 $('[view="detail-zone-text"]').html('MERAH');
 
                 // intersect
-                $('[view="detail-change-zone"]').removeClass('bg-danger');
+                $('[view="detail-change-zone"]').removeClass('bc-bg-red');
                 $('[view="detail-change-zone"]').addClass('bg-secondary');
             } else {
                 // set header
-                $('.card-header').removeClass('bg-danger');
-                $('.card-header').addClass('bg-success');  
+                $('.card-header').removeClass('bc-bg-red');
+                $('.card-header').addClass('bc-bg-green');  
 
-                $('[view="detail-zone"]').removeClass('bg-danger');
-                $('[view="detail-zone"]').addClass('bg-success');
+                $('[view="detail-zone"]').removeClass('bc-bg-red');
+                $('[view="detail-zone"]').addClass('bc-bg-green');
                 $('[view="detail-zone-text"]').html('HIJAU');
 
-                $('[view="detail-change-zone"]').addClass('bg-danger');
+                $('[view="detail-change-zone"]').addClass('bc-bg-red');
                 $('[view="detail-change-zone"]').removeClass('bg-secondary');
                 
                 $('[view="detail-change-zone"]').on('click', function(){

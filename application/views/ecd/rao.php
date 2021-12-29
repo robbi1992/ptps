@@ -166,18 +166,18 @@
                                             <!-- end div col md 6 -->
                                             <div class="col-md-3">
                                                 <h4>Pesawat / Tgl Kedatangan</h4>
-                                                <div class="card bg-info text-white text-center">
-                                                    <span class="pt-3" view="flight"></span>
+                                                <div class="card text-white text-center bc-bg-black">
+                                                    <span class="pt-3 bc-font-flight" view="flight"></span>
                                                     <span class="pb-3" view="arrival"></span>
                                                 </div>
 
                                                 <h3 class="mt-3">Penjaluran</h3>
-                                                <div view="detail-zone" class="card bg-success text-white text-center">
+                                                <div view="detail-zone" class="card bc-bg-green text-white text-center">
                                                     <span view="detail-zone-text" class="pt-5 pb-5">HIJAU</span>
                                                 </div>
 
                                                 <h3 class="mt-3">Intercept RAO</h3>
-                                                <div view="detail-change-zone" class="card bg-danger text-center">
+                                                <div view="detail-change-zone" class="card bc-bg-red text-center">
                                                     <span class="pt-5 pb-5 text-white"><i class="fa fa-bullseye text-white"></i> Ubah Merah</span>
                                                 </div>
                                             </div>
