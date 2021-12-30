@@ -132,6 +132,9 @@
             // set dnone
             $('div[name="bc-data"]').removeClass('d-none');
             $('div[name="bc-none"]').addClass('d-none');
+
+            // bold all input
+            $('div[name="bc-data"]').find('input, textarea').css('font-weight', 'bold');
         },
         init: function() {
             // set minimize
