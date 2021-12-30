@@ -3,11 +3,11 @@
 }
 
 .bc-bg-green {
-    background-color: #22c122;
+    background-color: #22c122 !important;
 }
 
 .bc-bg-red {
-    background-color: #ff0033
+    background-color: #ff0033 !important;
 }
 
 .bc-font-flight {

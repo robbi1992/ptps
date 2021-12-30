@@ -57,7 +57,7 @@
                             <div class="container" style="margin-top: -70px;">
                                 <!--begin::Card-->
                                 <div class="card card-custom">
-                                    <div class="card-header  bg-success">
+                                    <div class="card-header  bc-bg-green">
                                         <div class="card-title">
                                             <span class="card-icon text-white">
                                                 <img style="width: 40px;" src="assets/media/logos/bc_logo.png" />
