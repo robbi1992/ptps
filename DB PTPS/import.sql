@@ -11,7 +11,7 @@
  Target Server Version : 100119
  File Encoding         : 65001
 
- Date: 21/10/2021 10:05:46
+ Date: 03/01/2022 14:36:10
 */
 
 SET NAMES utf8mb4;
@@ -25,6 +25,8 @@ CREATE TABLE `import` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `doc_number` varchar(32) NOT NULL,
   `doc_date` date NOT NULL,
+  `year_increment` int(4) DEFAULT NULL,
+  `number_increment` int(4) DEFAULT NULL,
   `identity_type` enum('1','2','3') NOT NULL,
   `name` varchar(128) NOT NULL,
   `address` varchar(255) NOT NULL,
@@ -48,13 +50,13 @@ CREATE TABLE `import` (
   `re_name` varchar(128) DEFAULT NULL,
   `re_notes` varchar(255) DEFAULT NULL,
   `re_status` enum('0','1','2') DEFAULT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`id`) USING BTREE,
   KEY `import_air_in_fk_office_id` (`airport_in`),
   KEY `import_air_out_fk_office_id` (`airport_out`),
   KEY `import__re_office_fk_off_id` (`re_office`),
   CONSTRAINT `import__re_office_fk_off_id` FOREIGN KEY (`re_office`) REFERENCES `office` (`id`),
   CONSTRAINT `import_air_in_fk_office_id` FOREIGN KEY (`airport_in`) REFERENCES `office` (`id`),
   CONSTRAINT `import_air_out_fk_office_id` FOREIGN KEY (`airport_out`) REFERENCES `office` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=latin1;
 
 SET FOREIGN_KEY_CHECKS = 1;
