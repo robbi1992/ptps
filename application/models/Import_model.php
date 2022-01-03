@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Import_model extends CI_Model {
+class Import_model extends MY_Model {
 
     /**
      * bpj status
@@ -230,8 +230,9 @@ class Import_model extends CI_Model {
         // remove items from temp after inserted
         $this->db->where('key_header', $keys['header']);
         $this->db->delete('import_items_temp');
-        $re_doc_number = $header_id . '/BPJ/KPU.03/' . date('Y');
-        $doc_number  = $header_id . '/IS/KPU.03/' . date('Y');
+        $increment_number =  $this->get_doc_number('import');
+        $re_doc_number = $increment_number . '/BPJ/KPU.03/' . date('Y');
+        $doc_number  = $increment_number . '/IS/KPU.03/' . date('Y');
         $this->db->where('id', $header_id);
         $this->db->set('re_doc_number', $re_doc_number);
         $this->db->set('doc_number', $doc_number);

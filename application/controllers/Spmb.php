@@ -26,7 +26,7 @@ class Spmb extends MY_Controller {
 	}
 	public function max_spmb(){
 		$max = $this->spmb_model->get_max_spmb();
-		$max = $max->id_dokumen+1 ;
+		// $max = $max->id_dokumen+1 ;
 		return $max;
     }
 
@@ -50,7 +50,8 @@ class Spmb extends MY_Controller {
 		$spmb_airport_arrival = $this->input->POST("spmb_airport_arrival");
 		$spmb_address =$this->input->POST("spmb_address");
 		$max = $this->max_spmb();
-		$maxdok = $max.'/KB/T3U/SH/2021';
+		// $maxdok = $max.'/KB/T3U/SH/2021';
+		$maxdok  = $max . '/KB/T3U/SH/' . date('Y');
 
 		$users = $this->session->userdata('users');
 		// key header

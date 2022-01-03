@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Spmb_model extends CI_Model {
+class Spmb_model extends MY_Model {
 	
 	private function item_status($id) {
 		$status = array(
@@ -49,7 +49,8 @@ class Spmb_model extends CI_Model {
 	}
 
 	public function get_max_spmb() {
-		$data = $this->db->query("SELECT MAX(id_dokumen) as id_dokumen FROM spmb_header")->row();
+		$data = $this->get_doc_number('spmb_header');
+		// $data = $this->db->query("SELECT MAX(id_dokumen) as id_dokumen FROM spmb_header")->row();
    	 	return $data;
 	}
 	public function get_spmb($search, $offset, $limit) {

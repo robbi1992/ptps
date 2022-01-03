@@ -39,7 +39,7 @@
 		                                            <span class="navi-text text-muted text-hover-primary"><?= $users['name'] . ' - ' . $users['nip']?></span>
 		                                        </span>
 		                                    </a>
-		                                    <a href="<?=base_url('user/logout')?>" class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5">Sign Out</a>
+		                                    <!-- <a href="<?=base_url('site/logout')?>" class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5">Sign Out</a> -->
 		                                </div>
 		                            </div>
 		                        </div>

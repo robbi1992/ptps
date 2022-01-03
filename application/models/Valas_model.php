@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Valas_model extends CI_Model {
+class Valas_model extends MY_Model {
 
     private function data_ipl($id) {
         $data = array(
@@ -212,7 +212,8 @@ class Valas_model extends CI_Model {
 
         // update doc_number here
         // doc number for arrival
-        $arr_doc_number  = $header_id . '/KD/VALAS/SH/' . date('Y');
+        $increment_number =  $this->get_doc_number('arr_valas');
+        $arr_doc_number  = $increment_number . '/KD/VALAS/SH/' . date('Y');
         $this->db->where('id', $header_id);
         $this->db->set('doc_number', $arr_doc_number);
         $this->db->update('arr_valas');
