@@ -485,6 +485,12 @@ class Spmb_model extends MY_Model {
 		$this->db->insert('spmb_header', $spmb);
 		$header_id =  $this->db->insert_id();
 		
+		// set year & number
+        $this->db->set('year_increment', date('Y'));
+        $this->db->set('number_increment', $spmb['id_dokumen']);
+		$this->db->where('id', $header_id);
+		$this->db->update('spmb_header');
+		
 		// insert table item from temp
 		// params is key_header
 		// $this->db->where('nip_user', $nip);

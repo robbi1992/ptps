@@ -236,6 +236,9 @@ class Import_model extends MY_Model {
         $this->db->where('id', $header_id);
         $this->db->set('re_doc_number', $re_doc_number);
         $this->db->set('doc_number', $doc_number);
+        // set year & number
+        $this->db->set('year_increment', date('Y'));
+        $this->db->set('number_increment', $increment_number);
         $this->db->update('import');
 
         $this->db->trans_complete();

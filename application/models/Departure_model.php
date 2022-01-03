@@ -216,6 +216,9 @@ class Departure_model extends MY_Model {
         $arr_doc_number  = $increment_number . '/KB/VALAS/SH/' . date('Y');
         $this->db->where('id', $header_id);
         $this->db->set('doc_number', $arr_doc_number);
+        // set year & number
+        $this->db->set('year_increment', date('Y'));
+        $this->db->set('number_increment', $increment_number);
         $this->db->update('dep_valas');
 
         $this->db->trans_complete();
