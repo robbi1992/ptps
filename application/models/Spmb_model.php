@@ -64,7 +64,12 @@ class Spmb_model extends MY_Model {
 		);
 
 		if ($search <> '') {
-			$this->db->like('nomor_dokumen', $search);
+			// $this->db->like('nomor_dokumen', $search);
+			$this->db->group_start()
+                ->like('nomor_dokumen', $search)
+                ->or_like('nama', $search)
+				->or_like('nomor_paspor', $search)
+                ->group_end();
 		}
 		// $data = $this->db->query("SELECT * FROM spmb_header");
 		$this->db->limit($limit, $offset);
