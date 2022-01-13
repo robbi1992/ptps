@@ -127,8 +127,8 @@
                                                 </div>
                                                 <div class="col-md-3">
                                                     <div class="form-group">
-                                                        <label for="flightNumber">Kode Penerbangan</label>
-                                                        <input type="text" name="flightNumber" class="form-control" id="flightNumber" />
+                                                        <label for="flightNumber">Kata Pencarian</label>
+                                                        <input type="text" name="flightNumber" class="form-control" id="flightNumber" placeholder="nama/paspor/petugas/jalur" />
                                                     </div>  
                                                 </div>
                                                 <div class="col-md-1">&nbsp;</div>

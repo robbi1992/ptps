@@ -17,7 +17,27 @@ class Ecd_model extends CI_Model {
             $this->db->where('A.arrival_date <=', $params['dateUntil']);
         }
         if (!empty($params['flightNumber'])) {
-            $this->db->like('A.flight_number', $params['flightNumber']);
+            // $this->db->like('A.flight_number', $params['flightNumber']);
+            // zone
+            $zone_code = strtolower($params['flightNumber']);
+            $zone = '';
+            if ($zone_code == 'merah') {
+                $zone = '1';
+            } elseif ($zone_code == 'hijau') {
+                $zone = '0';
+            }
+            // echo $zone; exit();
+            $this->db->group_start()
+                // ->like('A.flight_number', $params['flightNumber'])
+                ->like('A.full_name', $params['flightNumber'])
+				->or_like('A.passport_number', $params['flightNumber'])
+                ->or_like('A.scan_by', $params['flightNumber'])
+                ->or_where('A.zone', $zone)
+            ->group_end();
+
+            if (!empty($zone)) {
+                // $this->db->where('A.zone', $zone);
+            }
         }
 
         $this->db->order_by('A.id', 'DESC');
