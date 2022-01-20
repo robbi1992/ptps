@@ -311,8 +311,9 @@ class Ecd_model extends CI_Model {
         } else {
             $increment_number++;
         }
-
-        $docNumber = 'A' . $increment_number . '-' . date('Y');
+        // change format number
+        $docNumber = $increment_number . '/ANALIS' . '/' . date('Y');
+        // $docNumber = 'A' . $increment_number . '-' . date('Y');
     
         // var_dump($docNumber); exit();
         // set increment
