@@ -747,6 +747,9 @@
                     if(this.value.length > 2){
                         $.getJSON("https://api-patops.bcsoetta.org/hs?number=50&q=" + $(this).val(),
                         function(data){
+                            // console.log(data);
+                            // add first option in select
+                            $('#itemCode').append('<option bm_tarif="" ppn_tarif="" ppnbm_tarif="" value=""></option>');
                             $.each(data.data, function(i,val){
                                 $('#itemCode').append('<option bm_tarif="'+val.bm_tarif+'" ppn_tarif="'+val.ppn_tarif+'" ppnbm_tarif="'+val.ppnbm_tarif+'" value="'+val.id+'">'+val.raw_code+ ' - ' + val.uraian + ' - ' + val.jenis_tarif +'</option>');
                             });
