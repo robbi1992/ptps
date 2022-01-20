@@ -620,6 +620,7 @@ function reset_spmb_data(){
 function showImage(data) {
 	// console.log(data);
 	// $('#imageItem').attr('src', '/assets/custom/docs/' + data);
+	$('#ReviewModal').modal('hide');
 	$('#imageViewer').modal('show');
 }
 function renderDocsTemp() {
@@ -744,6 +745,7 @@ function renderItems(items, printStatus) {
 	
 	$('.image-link').on('click', function() {
 		$('#imageItem').attr('src', '/assets/custom/items/' + $(this).attr('view'));
+		$('#ReviewModal').modal('hide');
 		$('#imageViewer').modal('show');
 	});
 }
@@ -862,4 +864,10 @@ function deleteDocs(data) {
 		// alert('terjadi kesalahan, coba lagi nanti..');
 	});
 }
+
+$('#imageViewer').on('hidden.bs.modal', function (e) {
+	// do something...
+	// $('#ReviewModal').modal('hide');
+	$('#ReviewModal').modal('show');
+});
 
