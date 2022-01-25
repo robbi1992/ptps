@@ -217,6 +217,7 @@ class Ecd_model extends CI_Model {
             'baggage_ex' => $data['baggage_ex'],
             'scanned' => $data['scan_status'],
             'zone' => $data['zone'],
+            'zone_by' => $data['zone_by'],
             'goods' => $goods,
             'family' => $fams,
             'declare' => $declare,
@@ -227,7 +228,9 @@ class Ecd_model extends CI_Model {
     }
 
     public function change_zone($params) {
+        // add parameter zone by
         $this->db->set('zone', '1');
+        $this->db->set('zone_by', 'RAO');
         $this->db->where('id', $params['personal']);
         return $this->db->update('ecd_personal');
     }

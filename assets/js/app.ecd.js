@@ -27,7 +27,7 @@
                 // change zone layout
                 $('[view="detail-zone"]').removeClass('bg-success');
                 $('[view="detail-zone"]').addClass('bg-danger');
-                $('[view="detail-zone-text"]').html('MERAH');
+                $('[view="detail-zone-text"]').html('MERAH RAO');
                 // set header
                 $('.modal-header').removeClass('bg-success');
                 $('.modal-header').addClass('bg-danger');
@@ -108,7 +108,7 @@
 
                 $('[view="detail-zone"]').removeClass('bg-success');
                 $('[view="detail-zone"]').addClass('bg-danger');
-                $('[view="detail-zone-text"]').html('MERAH');
+                $('[view="detail-zone-text"]').html('MERAH ' + data.zone_by);
 
                 // intersect
                 $('[view="detail-change-zone"]').removeClass('bg-danger');
