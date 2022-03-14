@@ -32,7 +32,15 @@
             $('#fullName').val(data.name);
             $('#birth').val(data.birth);
             $('#occupation').val(data.occupation);
-            $('#nationality').val(data.nationality);
+            
+            /**
+            * for new nationality
+            */
+           var nationality = data.nationality;
+           if (nationality == null) {
+               nationality = data.nationality_text;
+           }
+           $('#nationality').val(nationality);
             $('#passport').val(data.passport);
             $('#address').val(data.address);
             $('#arrival').val(data.arrival);

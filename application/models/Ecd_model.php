@@ -155,7 +155,7 @@ class Ecd_model extends CI_Model {
         $result = array();
         $data = array();
         $this->db->select('A.*, B.name AS nationality');
-        $this->db->join('en_countries B', 'B.id = A.nationality');
+        $this->db->join('en_countries B', 'B.id = A.nationality', 'LEFT');
         
         if ($rao) {
             $this->db->where('A.qr_code', $val['qrcode']);
@@ -207,6 +207,7 @@ class Ecd_model extends CI_Model {
             'personalID' => $data['id'],
             'name' => $data['full_name'],
             'nationality' => $data['nationality'],
+            'nationality_text' => $data['nationality_text'],
             'birth' => date('d/m/Y', strtotime($data['date_of_birth'])),
             'occupation' => $data['occupation'],
             'passport' => $data['passport_number'],
