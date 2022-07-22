@@ -186,6 +186,7 @@
                     - detail pungutan: <br />
                     <?php
                     echo 'Jenis Barang      :' . $bpj['desc'] . '<br />';
+                    echo $bpj['code'] . '<br />';
                     echo 'BM : ' . $bpj['bmtax'] . ' %, ' . 'PPn : ' . $bpj['ppntax'] . ' %, ' . 'PPnbm : ' . $bpj['ppnbmtax'] . ' %, ' . 'PPh : ' . $bpj['pphtax'] . '%' . '<br />'; 
                     echo setIdr($bpj['bm']) . ' + ' . setIdr($bpj['ppn']) . ' + ' . setIdr($bpj['ppnbm']) . ' + ' . setIdr($bpj['pph']) . ' = Rp. ' . setIdr($bpj['total']);
                     ?>

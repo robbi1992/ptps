@@ -512,7 +512,7 @@ class Import_model extends MY_Model {
             $total = $bm + $ppn + $ppnbm + $pph; 
             $bpj = array(
                 'desc' => $name, 'bmtax' => $bmtax, 'ppntax' => $ppntax, 'ppnbmtax' => $ppnbmtax, 'pphtax' => $pphtax,
-                'bm' => $bm, 'ppn' => $ppn, 'ppnbm' => $ppnbm, 'pph' => $pph, 'total' => $total
+                'bm' => $bm, 'ppn' => $ppn, 'ppnbm' => $ppnbm, 'pph' => $pph, 'total' => $total, 'code' => $val['pos_code']
             );
 
             $items_array[] = array(
@@ -527,7 +527,8 @@ class Import_model extends MY_Model {
                 'currency' => $val['currency'],
                 'insurance' => $val['insurance'],
                 'pabean_value' => setIDR($multiplier),
-                'hs' => 'BM: ' . $val['bm_tax'] . '%, PPn: ' . $val['ppn_tax'] . '%, PPnbm: ' . $val['ppnbm_tax'] . '%, PPh: ' . $val['pph_tax'] . '%',
+                'code' => $val['pos_code'],
+                'hs' => $val['pos_code'] . '<br />' . 'BM: ' . $val['bm_tax'] . '%, PPn: ' . $val['ppn_tax'] . '%, PPnbm: ' . $val['ppnbm_tax'] . '%, PPh: ' . $val['pph_tax'] . '%',
                 'bmIdr' => setIDR($bmIdr), 'ppnIdr' => setIDR($ppnIdr), 'ppnbmIdr' => setIDR($ppnbmIdr), 'pphIdr' => setIDR($pphIdr),
                 'total' => setIDR($bmIdr + $ppnIdr + $ppnbmIdr + $pphIdr)
             );
