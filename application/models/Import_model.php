@@ -201,6 +201,8 @@ class Import_model extends MY_Model {
                 $this->db->set('pph_tax', $val['pph_tax']);
                 $this->db->set('ppnbm_tax', $val['ppnbm_tax']);
                 $this->db->set('header_id', $header_id);
+                $this->db->set('pos_code', $val['pos_code']);
+                $this->db->set('pos_desc', $val['pos_desc']);
                 $this->db->insert('import_items');
 
                 $item_id = $this->db->insert_id();
@@ -285,7 +287,9 @@ class Import_model extends MY_Model {
             'free_currency' => $val['free_currency'],
             'key_header' => $val['keyHeader'],
             'key_item' => $val['keyItem'],
-            'description' => $val['description']
+            'description' => $val['description'],
+            'pos_code' => $val['posCode'],
+            'pos_desc' => $val['posDesc']
         );
         $insert = $this->db->insert('import_items_temp', $dataItems);
 

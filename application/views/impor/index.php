@@ -631,6 +631,9 @@
                                     </select>
                                     <!-- <textarea type="text" name="itemCode" class="form-control" id="itemCode"></textarea> -->
                                 </div>
+                                <!-- set other values but not for display-->
+                                <input type="hidden" name="itemPosCode" id="itemPosCode"  />
+                                <input type="hidden" name="itemPosDesc" id="itemPosDesc" />
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">

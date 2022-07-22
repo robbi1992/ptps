@@ -587,13 +587,20 @@
                     freeIDR = Import.unsetIdr($(this).find('[name="itemFreeIDR"]').val());
                     // console.log(itemPackage);
                     // return false;
+                    /**
+                     * new items that must be send to server
+                     */
+                     posCode = $(this).find('[name="itemPosCode"]').val();
+                     posDesc = $(this).find('[name="itemPosDesc"]').val();
+
                 var params = {
                     name: itemName, quantity : itemTotal, package: itemPackage, category: itemCategory, bruto: itemBruto,
                     currency: itemCurrencyText, kurs: itemCurrency, description: itemDescription,
                     fob: fob, freight: freight, insurance: insurance,
                     cif: cif, pabeanIn: pabeanIn, ppn: ppn, pph: pph, ppnbm: ppnbm, fine: fine,
                     freeIDR: freeIDR, free_value: free, free_currency: freeCurrencyText,
-                    keyHeader: Import.params.keyHeaderPost, keyItem: Import.params.keyItemPost
+                    keyHeader: Import.params.keyHeaderPost, keyItem: Import.params.keyItemPost,
+                    posCode: posCode, posDesc: posDesc
                 };
                 // validate no save if no attachment choosed
 
@@ -751,7 +758,7 @@
                             // add first option in select
                             $('#itemCode').append('<option bm_tarif="" ppn_tarif="" ppnbm_tarif="" value=""></option>');
                             $.each(data.data, function(i,val){
-                                $('#itemCode').append('<option bm_tarif="'+val.bm_tarif+'" ppn_tarif="'+val.ppn_tarif+'" ppnbm_tarif="'+val.ppnbm_tarif+'" value="'+val.id+'">'+val.raw_code+ ' - ' + val.uraian + ' - ' + val.jenis_tarif +'</option>');
+                                $('#itemCode').append('<option bm_tarif="'+val.bm_tarif+'" ppn_tarif="'+val.ppn_tarif+'" ppnbm_tarif="'+val.ppnbm_tarif+'" value="'+val.id+'" raw_code="'+val.raw_code+'" uraian="'+val.uraian+'">'+val.raw_code+ ' - ' + val.uraian + ' - ' + val.jenis_tarif +'</option>');
                             });
                             $('#itemCode').selectpicker('refresh'); 
                         });        
@@ -761,6 +768,17 @@
             });
 
             $('#itemCode').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) { 
+                /**
+                 * get code and name
+                 */
+                var pos_code = $('#itemCode option:selected').attr('raw_code');
+                var pos_desc = $('#itemCode option:selected').attr('uraian');
+                /**
+                 * set code to hidden input
+                 */
+                 $('#itemPosCode').val(pos_code);
+                 $('#itemPosDesc').val(pos_desc);
+                 
                 // pabean value = nilai pabean - pembebasan
                 var bm = $('#itemCode option:selected').attr('bm_tarif'),
                 ppn = $('#itemCode option:selected').attr('ppn_tarif'),
